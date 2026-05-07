@@ -260,7 +260,8 @@ const pageTitleMap: Record<string, string> = {
   '/published-products': '已发布商品',
   '/llm-config': '模型配置',
   '/feishu': '飞书集成',
-  '/webhooks': 'Webhook管理'
+  '/webhooks': 'Webhook管理',
+  '/tasks/:id': '任务详情'
 }
 
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')

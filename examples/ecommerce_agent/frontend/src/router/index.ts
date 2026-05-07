@@ -95,6 +95,11 @@ const routes: RouteRecordRaw[] = [
     path: '/webhooks',
     name: 'Webhooks',
     component: () => import('../views/Webhooks.vue')
+  },
+  {
+    path: '/tasks/:id',
+    name: 'TaskDetail',
+    component: () => import('../views/TaskDetail.vue')
   }
 ]
 
