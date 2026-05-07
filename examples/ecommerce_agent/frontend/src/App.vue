@@ -21,6 +21,10 @@
             <el-icon><component :is="icons.Robot" /></el-icon>
             <span>Agent工作台</span>
           </el-menu-item>
+          <el-menu-item index="/chat">
+            <el-icon><component :is="icons.ChatDotRound" /></el-icon>
+            <span>任务对话</span>
+          </el-menu-item>
           <el-menu-item index="/workflow-config">
             <el-icon><component :is="icons.Setting" /></el-icon>
             <span>工作流配置</span>
@@ -40,6 +44,10 @@
           <el-menu-item index="/skills">
             <el-icon><component :is="icons.Tools" /></el-icon>
             <span>技能管理</span>
+          </el-menu-item>
+          <el-menu-item index="/llm-config">
+            <el-icon><component :is="icons.Cpu" /></el-icon>
+            <span>模型配置</span>
           </el-menu-item>
         </div>
         
@@ -216,6 +224,7 @@ const shortcuts = [
 const pageTitleMap: Record<string, string> = {
   '/': '控制台',
   '/agent': 'Agent工作台',
+  '/chat': '任务对话',
   '/workflow-config': '工作流配置',
   '/stores': '店铺管理',
   '/tasks': '任务管理',
@@ -225,7 +234,8 @@ const pageTitleMap: Record<string, string> = {
   '/scheduled-tasks': '定时任务',
   '/data': '数据分析',
   '/orders': '订单管理',
-  '/products': '商品管理'
+  '/products': '商品管理',
+  '/llm-config': '模型配置'
 }
 
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')

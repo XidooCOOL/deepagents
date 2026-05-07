@@ -60,6 +60,16 @@ const routes: RouteRecordRaw[] = [
     path: '/products',
     name: 'Products',
     component: () => import('../views/Products.vue')
+  },
+  {
+    path: '/llm-config',
+    name: 'LLMConfig',
+    component: () => import('../views/LLMConfig.vue')
+  },
+  {
+    path: '/chat',
+    name: 'ChatInterface',
+    component: () => import('../views/ChatInterface.vue')
   }
 ]
 
