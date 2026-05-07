@@ -26,8 +26,8 @@
         </template>
 
         <el-alert
-          title="💡 支持多个数据源"
-          description="可以为不同的商品链接配置不同的数据源，或者多个链接共享同一数据源"
+          title="💡 数据配置说明"
+          description="链接参数表（多个链接）、SKU数据表（每个链接对应自己的SKU）、图片文件夹（每个链接对应自己的图片）"
           type="info"
           :closable="false"
           style="margin-bottom: 20px;"
@@ -113,8 +113,8 @@
 
         <!-- SKU数据源 -->
         <div class="data-source-section">
-          <h4>📦 SKU 数据源（可选）</h4>
-          <p class="section-desc">包含商品规格、货号、库存等 SKU 信息的 Excel 文件</p>
+          <h4>📦 SKU 数据源</h4>
+          <p class="section-desc">包含商品规格、货号、库存等 SKU 信息的 Excel 文件（每个链接对应自己的 SKU 数据）</p>
           
           <el-row :gutter="20">
             <el-col :span="12">
@@ -139,6 +139,34 @@
               </el-form-item>
             </el-col>
           </el-row>
+
+          <!-- SKU 关联字段配置 -->
+          <div v-if="dataSources.sku.preview.length > 0" class="field-mapping">
+            <h5>SKU 关联配置（重要）</h5>
+            <el-alert
+              title="如何关联？"
+              description="SKU表需要有一个关联字段（如标题），用来匹配到对应的链接参数。例如：SKU表中有一列'商品标题'，值是'运动鞋A'，就会自动匹配到链接参数中标题为'运动鞋A'的那条数据"
+              type="warning"
+              :closable="false"
+              style="margin-bottom: 15px;"
+            />
+            <el-row :gutter="15">
+              <el-col :span="12">
+                <el-form-item label="SKU表关联字段">
+                  <el-select v-model="skuRelationConfig.skuTableField" placeholder="选择 SKU 表中的关联列" style="width: 100%;">
+                    <el-option v-for="col in dataSources.sku.columns" :key="col" :label="col" :value="col" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="匹配到链接参数的字段">
+                  <el-select v-model="skuRelationConfig.linkField" placeholder="选择链接参数表中的字段" style="width: 100%;">
+                    <el-option v-for="col in dataSources.linkParams.columns" :key="col" :label="col" :value="col" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
 
           <!-- SKU 字段映射 -->
           <div v-if="dataSources.sku.preview.length > 0" class="field-mapping">
@@ -174,6 +202,9 @@
             <el-table :data="dataSources.sku.preview" border size="small" max-height="200">
               <el-table-column v-for="col in dataSources.sku.columns" :key="col" :prop="col" :label="col" min-width="100" />
             </el-table>
+            <div class="preview-info">
+              共 {{ dataSources.sku.totalRows || '?' }} 行 SKU 数据
+            </div>
           </div>
         </div>
 
@@ -515,7 +546,8 @@ const dataSources = ref({
     filePath: '',
     sheetName: 'Sheet1',
     columns: [] as string[],
-    preview: [] as any[]
+    preview: [] as any[],
+    totalRows: 0
   },
   images: {
     folderPath: '',
@@ -534,6 +566,11 @@ const skuFieldMappings = ref({
   skuId: '',
   specs: '',
   stock: ''
+})
+
+const skuRelationConfig = ref({
+  skuTableField: '',
+  linkField: ''
 })
 
 const folderNamingRule = ref('title')
@@ -630,6 +667,7 @@ const loadSkuData = async () => {
 
     dataSources.value.sku.columns = response.data.columns.map((c: any) => c.name)
     dataSources.value.sku.preview = response.data.rows
+    dataSources.value.sku.totalRows = response.data.total_rows
 
     ElMessage.success('SKU 数据加载成功')
   } catch (error: any) {
@@ -683,10 +721,13 @@ const performMatching = () => {
       index,
       title,
       price: row[fieldMappings.value.price] || '',
+      origin: row[fieldMappings.value.origin] || '',
+      brand: row[fieldMappings.value.brand] || '',
       folder: matchedFolder?.name || '',
       folderImages: matchedFolder?.images || [],
       imageCount: matchedFolder?.images?.length || 0,
-      status: matchedFolder ? 'matched' : 'pending'
+      status: matchedFolder ? 'matched' : 'pending',
+      originalRow: row
     }
   })
 
@@ -701,11 +742,28 @@ const findMatchingFolder = (title: string) => {
     if (matchType.value === 'contains' && folder.includes(title)) {
       return { name: folder, images: [] }
     }
-    if (matchType.value === 'startswith' && folder.startsWith(title.substring(0, Math.min(5, title.length)))) {
+    if (matchType.value === 'startswith' && title.length >= 3 && folder.startsWith(title.substring(0, Math.min(5, title.length)))) {
       return { name: folder, images: [] }
     }
   }
   return null
+}
+
+const findMatchingSkuData = (linkRow: any) => {
+  if (!skuRelationConfig.value.skuTableField || !skuRelationConfig.value.linkField) {
+    return []
+  }
+
+  const linkFieldValue = linkRow[skuRelationConfig.value.linkField] || ''
+  
+  return dataSources.value.sku.preview.filter((skuRow: any) => {
+    const skuFieldValue = skuRow[skuRelationConfig.value.skuTableField] || ''
+    return skuFieldValue === linkFieldValue
+  }).map((skuRow: any) => ({
+    skuId: skuRow[skuFieldMappings.value.skuId] || '',
+    specs: skuRow[skuFieldMappings.value.specs] || '',
+    stock: skuRow[skuFieldMappings.value.stock] || 0
+  }))
 }
 
 const autoMatchProducts = () => {
@@ -722,16 +780,20 @@ const editMatch = (row: any) => {
 const refreshPreview = () => {
   productsToPublish.value = matchResults.value
     .filter(r => r.status === 'matched')
-    .map(r => ({
-      title: r.title,
-      price: r.price,
-      origin: '',
-      folder: r.folder,
-      images: [],
-      skuData: []
-    }))
+    .map(r => {
+      const skuData = findMatchingSkuData(r.originalRow)
+      return {
+        title: r.title,
+        price: r.price,
+        origin: r.origin,
+        brand: r.brand,
+        folder: r.folder,
+        images: [],
+        skuData: skuData
+      }
+    })
 
-  ElMessage.success('预览已刷新')
+  ElMessage.success(`预览已刷新，共 ${productsToPublish.value.length} 个商品`)
 }
 
 const nextStep = () => {
