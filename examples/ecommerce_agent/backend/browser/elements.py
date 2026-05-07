@@ -216,6 +216,29 @@ DEFAULT_ELEMENTS = {
                 ],
                 "description": "商品标题输入框"
             }
+        },
+        "publish_success": {
+            "product_id": {
+                "selectors": [
+                    {"type": "css", "value": "[data-product-id]"},
+                    {"type": "xpath", "value": "//*[contains(@class, 'product-id')]"}
+                ],
+                "description": "商品ID"
+            },
+            "product_url": {
+                "selectors": [
+                    {"type": "css", "value": "a[href*='product']"},
+                    {"type": "xpath", "value": "//a[contains(@href, 'product')]"}
+                ],
+                "description": "商品链接"
+            },
+            "title": {
+                "selectors": [
+                    {"type": "css", "value": ".product-title"},
+                    {"type": "css", "value": "[class*='title']"}
+                ],
+                "description": "商品标题"
+            }
         }
     },
     "pinduoduo": {
@@ -224,6 +247,63 @@ DEFAULT_ELEMENTS = {
                 "selectors": [{"type": "css", "value": "#username"}],
                 "description": "用户名输入框"
             }
+        },
+        "publish": {
+            "title_input": {
+                "selectors": [
+                    {"type": "css", "value": "input[placeholder*='商品名称']"},
+                    {"type": "css", "value": ".goods-name-input"}
+                ],
+                "description": "商品标题输入框"
+            },
+            "price_input": {
+                "selectors": [
+                    {"type": "css", "value": "input[placeholder*='价格']"},
+                    {"type": "css", "value": ".goods-price-input"}
+                ],
+                "description": "商品价格输入框"
+            },
+            "publish_button": {
+                "selectors": [
+                    {"type": "css", "value": ".goods-submit-btn"},
+                    {"type": "text", "value": "发布"}
+                ],
+                "description": "发布按钮"
+            }
+        },
+        "publish_success": {
+            "product_id": {
+                "selectors": [
+                    {"type": "css", "value": "#goods-id"},
+                    {"type": "css", "value": "[data-goods-id]"},
+                    {"type": "xpath", "value": "//*[contains(@class, 'goods-id')]"},
+                    {"type": "css", "value": ".goods-id"}
+                ],
+                "description": "拼多多商品ID"
+            },
+            "product_url": {
+                "selectors": [
+                    {"type": "css", "value": ".goods-link"},
+                    {"type": "css", "value": "a[href*='goods']"},
+                    {"type": "css", "value": ".goods-detail-link"}
+                ],
+                "description": "拼多多商品链接"
+            },
+            "title": {
+                "selectors": [
+                    {"type": "css", "value": ".goods-title"},
+                    {"type": "css", "value": ".item-title"},
+                    {"type": "xpath", "value": "//*[contains(@class, 'title')]"}
+                ],
+                "description": "拼多多商品标题"
+            },
+            "price": {
+                "selectors": [
+                    {"type": "css", "value": ".goods-price"},
+                    {"type": "css", "value": ".price"}
+                ],
+                "description": "拼多多商品价格"
+            }
         }
     },
     "taobao": {
@@ -231,6 +311,45 @@ DEFAULT_ELEMENTS = {
             "username_input": {
                 "selectors": [{"type": "css", "value": "#fm-login-id"}],
                 "description": "用户名输入框"
+            }
+        },
+        "publish_success": {
+            "product_id": {
+                "selectors": [
+                    {"type": "css", "value": "#itemId"},
+                    {"type": "css", "value": "[data-item-id]"}
+                ],
+                "description": "淘宝商品ID"
+            },
+            "product_url": {
+                "selectors": [
+                    {"type": "css", "value": ".item-link"},
+                    {"type": "xpath", "value": "//a[contains(@href, 'item')]"}
+                ],
+                "description": "淘宝商品链接"
+            }
+        }
+    },
+    "jd": {
+        "login": {
+            "username_input": {
+                "selectors": [{"type": "css", "value": "#username"}],
+                "description": "用户名输入框"
+            }
+        },
+        "publish_success": {
+            "product_id": {
+                "selectors": [
+                    {"type": "css", "value": "[data-sku]"},
+                    {"type": "xpath", "value": "//*[contains(@class, 'sku')]"}
+                ],
+                "description": "京东商品SKU"
+            },
+            "product_url": {
+                "selectors": [
+                    {"type": "css", "value": "a[href*='product']"}
+                ],
+                "description": "京东商品链接"
             }
         }
     }
