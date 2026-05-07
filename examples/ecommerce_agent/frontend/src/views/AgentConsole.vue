@@ -49,11 +49,11 @@
         <el-card class="stats-card">
           <div class="stats-content">
             <div class="stats-icon" style="background: #e6a23c;">
-              <el-icon><component :is="icons.Link" /></el-icon>
+              <el-icon><component :is="icons.Box" /></el-icon>
             </div>
             <div class="stats-info">
-              <div class="stats-value">{{ activePlatforms }}</div>
-              <div class="stats-label">活跃平台</div>
+              <div class="stats-value">{{ totalAbilities }}</div>
+              <div class="stats-label">能力库总数</div>
             </div>
           </div>
         </el-card>
@@ -64,6 +64,7 @@
       <div class="card-header">
         <h3>📝 输入任务指令</h3>
         <div class="header-actions">
+          <el-button type="warning" size="small" @click="showAbilityLibrary = true" icon="Box">能力库</el-button>
           <el-button type="primary" size="small" @click="showAgentManager = true" icon="Setting">Agent 管理</el-button>
           <el-button type="success" size="small" @click="showExamples = true" icon="Connection">示例指令</el-button>
         </div>
@@ -130,7 +131,14 @@
                         </el-avatar>
                         <div class="agent-info">
                           <div class="agent-name">{{ agent.name }}</div>
-                          <div class="agent-tasks">{{ agent.tasks.join(', ') }}</div>
+                          <div class="agent-abilities">
+                            <el-tag v-for="ability in agent.abilities.slice(0, 2)" :key="ability" size="small" type="info" style="margin: 2px;">
+                              {{ ability }}
+                            </el-tag>
+                            <el-tag v-if="agent.abilities.length > 2" size="small" type="warning">
+                              +{{ agent.abilities.length - 2 }}
+                            </el-tag>
+                          </div>
                         </div>
                         <el-tag size="small" type="success">就绪</el-tag>
                       </div>
@@ -170,7 +178,7 @@
                   </el-avatar>
                   <div class="execution-details">
                     <div class="execution-name">{{ task.agentName }}</div>
-                    <div class="execution-platform">{{ task.platform }} · {{ task.tasks.join('+') }}</div>
+                    <div class="execution-platform">{{ task.platform }}</div>
                   </div>
                 </div>
                 <div class="execution-actions">
@@ -178,6 +186,12 @@
                     {{ getTaskStatusText(task.status) }}
                   </el-tag>
                 </div>
+              </div>
+              
+              <div class="execution-abilities">
+                <el-tag v-for="ability in task.abilities.slice(0, 3)" :key="ability" size="small" type="info" style="margin: 2px;">
+                  {{ ability }}
+                </el-tag>
               </div>
               
               <div class="execution-progress">
@@ -227,11 +241,72 @@
       </el-col>
     </el-row>
 
-    <el-dialog v-model="showAgentManager" title="🤖 Agent 管理" width="80%">
+    <el-dialog v-model="showAbilityLibrary" title="📦 能力库" width="80%">
+      <el-tabs v-model="abilityLibraryTab">
+        <el-tab-pane label="基础能力" name="basic">
+          <el-row :gutter="20">
+            <el-col :span="8" v-for="(ability, index) in abilityLibrary.basic" :key="index">
+              <el-card class="ability-card" shadow="hover">
+                <div class="ability-header">
+                  <el-icon :size="24" :style="{ color: ability.color }"><component :is="ability.icon" /></el-icon>
+                  <div class="ability-info">
+                    <div class="ability-name">{{ ability.name }}</div>
+                    <div class="ability-desc">{{ ability.description }}</div>
+                  </div>
+                </div>
+                <div class="ability-tags">
+                  <el-tag v-for="tag in ability.tags" :key="tag" size="small" type="info">{{ tag }}</el-tag>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        
+        <el-tab-pane label="技能" name="skills">
+          <el-row :gutter="20">
+            <el-col :span="8" v-for="(ability, index) in abilityLibrary.skills" :key="index">
+              <el-card class="ability-card" shadow="hover">
+                <div class="ability-header">
+                  <el-icon :size="24" :style="{ color: ability.color }"><component :is="ability.icon" /></el-icon>
+                  <div class="ability-info">
+                    <div class="ability-name">{{ ability.name }}</div>
+                    <div class="ability-desc">{{ ability.description }}</div>
+                  </div>
+                </div>
+                <div class="ability-tags">
+                  <el-tag v-for="tag in ability.tags" :key="tag" size="small" type="success">{{ tag }}</el-tag>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        
+        <el-tab-pane label="知识库" name="knowledge">
+          <el-row :gutter="20">
+            <el-col :span="8" v-for="(ability, index) in abilityLibrary.knowledge" :key="index">
+              <el-card class="ability-card" shadow="hover">
+                <div class="ability-header">
+                  <el-icon :size="24" :style="{ color: ability.color }"><component :is="ability.icon" /></el-icon>
+                  <div class="ability-info">
+                    <div class="ability-name">{{ ability.name }}</div>
+                    <div class="ability-desc">{{ ability.description }}</div>
+                  </div>
+                </div>
+                <div class="ability-tags">
+                  <el-tag v-for="tag in ability.tags" :key="tag" size="small" type="warning">{{ tag }}</el-tag>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
+
+    <el-dialog v-model="showAgentManager" title="🤖 Agent 管理" width="90%">
       <el-tabs v-model="agentManagerTab">
         <el-tab-pane label="已配置的 Agent" name="list">
           <el-row :gutter="20">
-            <el-col :span="8" v-for="(agents, platform) in configuredAgents" :key="platform">
+            <el-col :span="12" v-for="(agents, platform) in configuredAgents" :key="platform">
               <el-card class="agent-config-card">
                 <template #header>
                   <div class="platform-header">
@@ -244,17 +319,19 @@
                 </template>
                 
                 <div v-for="(agent, index) in agents" :key="index" class="agent-config-item">
-                  <el-avatar :size="32" :style="{ background: agent.color }">
+                  <el-avatar :size="40" :style="{ background: agent.color }">
                     {{ agent.name.charAt(agent.name.length - 1) }}
                   </el-avatar>
                   <div class="agent-config-info">
                     <div class="agent-config-name">{{ agent.name }}</div>
                     <div class="agent-config-status">
+                      <el-switch v-model="agent.active" size="small" />
                       <el-tag v-if="agent.active" size="small" type="success">启用</el-tag>
                       <el-tag v-else size="small" type="info">禁用</el-tag>
                     </div>
                   </div>
                   <el-button-group>
+                    <el-button size="small" @click="openAbilityConfig(platform, index)" icon="Box">能力</el-button>
                     <el-button size="small" @click="editAgent(platform, index)" icon="Edit" />
                     <el-button size="small" type="danger" @click="removeAgent(platform, index)" icon="Delete" />
                   </el-button-group>
@@ -296,6 +373,120 @@
       </el-tabs>
     </el-dialog>
 
+    <el-dialog v-model="showAbilityConfig" title="⚙️ Agent 能力配置" width="80%">
+      <div v-if="selectedAgent" class="ability-config">
+        <el-alert type="info" :closable="false" style="margin-bottom: 20px;">
+          <template #title>
+            <strong>{{ selectedAgent.name }}</strong> 的能力配置
+          </template>
+        </el-alert>
+        
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-card class="ability-section-card">
+              <template #header>
+                <div class="section-header">
+                  <span>📋 复制能力</span>
+                  <el-button size="small" type="primary" @click="copyAbilities" icon="CopyDocument">从其他 Agent 复制</el-button>
+                </div>
+              </template>
+              
+              <div class="ability-list">
+                <el-tag v-for="ability in selectedAgent.abilities" :key="ability" closable size="large" 
+                        type="success" style="margin: 5px;" @close="removeAbility(ability)">
+                  {{ ability }}
+                </el-tag>
+                <el-tag v-if="selectedAgent.abilities.length === 0" type="info">暂无能力，请从下方添加</el-tag>
+              </div>
+            </el-card>
+          </el-col>
+          
+          <el-col :span="12">
+            <el-card class="ability-section-card">
+              <template #header>
+                <span>🛠️ 添加能力</span>
+              </template>
+              
+              <el-collapse v-model="addAbilityActive">
+                <el-collapse-item title="基础能力" name="basic">
+                  <div v-for="ability in abilityLibrary.basic" :key="ability.name" class="ability-option">
+                    <el-checkbox :checked="selectedAgent.abilities.includes(ability.name)" 
+                               @change="toggleAbility(ability.name)">
+                      <div class="ability-option-content">
+                        <strong>{{ ability.name }}</strong>
+                        <div class="ability-option-desc">{{ ability.description }}</div>
+                      </div>
+                    </el-checkbox>
+                  </div>
+                </el-collapse-item>
+                
+                <el-collapse-item title="技能" name="skills">
+                  <div v-for="ability in abilityLibrary.skills" :key="ability.name" class="ability-option">
+                    <el-checkbox :checked="selectedAgent.abilities.includes(ability.name)"
+                               @change="toggleAbility(ability.name)">
+                      <div class="ability-option-content">
+                        <strong>{{ ability.name }}</strong>
+                        <div class="ability-option-desc">{{ ability.description }}</div>
+                      </div>
+                    </el-checkbox>
+                  </div>
+                </el-collapse-item>
+                
+                <el-collapse-item title="知识库" name="knowledge">
+                  <div v-for="ability in abilityLibrary.knowledge" :key="ability.name" class="ability-option">
+                    <el-checkbox :checked="selectedAgent.abilities.includes(ability.name)"
+                               @change="toggleAbility(ability.name)">
+                      <div class="ability-option-content">
+                        <strong>{{ ability.name }}</strong>
+                        <div class="ability-option-desc">{{ ability.description }}</div>
+                      </div>
+                    </el-checkbox>
+                  </div>
+                </el-collapse-item>
+                
+                <el-collapse-item title="自定义能力" name="custom">
+                  <el-input v-model="customAbilityName" placeholder="输入自定义能力名称" style="margin-bottom: 10px;">
+                    <template #append>
+                      <el-button @click="addCustomAbility" icon="Plus">添加</el-button>
+                    </template>
+                  </el-input>
+                </el-collapse-item>
+              </el-collapse>
+            </el-card>
+          </el-col>
+        </el-row>
+        
+        <div slot="footer">
+          <el-button @click="showAbilityConfig = false">关闭</el-button>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog v-model="showCopyAbilities" title="📋 从其他 Agent 复制能力" width="50%">
+      <el-form label-width="120px">
+        <el-form-item label="选择源 Agent">
+          <el-select v-model="copySourceAgent" placeholder="选择 Agent" @change="onSelectCopySource">
+            <el-option-group v-for="(agents, platform) in configuredAgents" :key="platform" :label="platform">
+              <el-option v-for="agent in agents" :key="agent.name" :label="agent.name" :value="agent.name"
+                        :disabled="agent.name === selectedAgent?.name" />
+            </el-option-group>
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="该 Agent 的能力">
+          <el-tag v-for="ability in copySourceAbilities" :key="ability" size="large" type="success" style="margin: 5px;">
+            {{ ability }}
+          </el-tag>
+          <el-tag v-if="copySourceAbilities.length === 0" type="info">该 Agent 暂无能力</el-tag>
+        </el-form-item>
+      </el-form>
+      
+      <div slot="footer">
+        <el-button @click="showCopyAbilities = false">取消</el-button>
+        <el-button type="primary" @click="confirmCopyAbilities" :disabled="!copySourceAgent">复制所有能力</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog v-model="showExamples" title="💡 示例指令" width="60%">
       <el-card v-for="(example, index) in taskExamples" :key="index" class="example-card" shadow="hover">
         <div class="example-content">
@@ -333,8 +524,15 @@
                 <el-tag :type="getPlatformTagType(scope.row.platform)">{{ scope.row.platform }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="tasks" label="任务" min-width="200">
-              <template #default="scope">{{ scope.row.tasks.join(' + ') }}</template>
+            <el-table-column prop="abilities" label="使用能力" min-width="200">
+              <template #default="scope">
+                <el-tag v-for="ability in scope.row.abilities.slice(0, 3)" :key="ability" size="small" type="info" style="margin: 2px;">
+                  {{ ability }}
+                </el-tag>
+                <el-tag v-if="scope.row.abilities.length > 3" size="small" type="warning">
+                  +{{ scope.row.abilities.length - 3 }}
+                </el-tag>
+              </template>
             </el-table-column>
             <el-table-column prop="status" label="状态" width="100">
               <template #default="scope">
@@ -366,32 +564,68 @@ export default {
     const executionSummary = ref([])
     const showAnalysis = ref(false)
     const showAgentManager = ref(false)
+    const showAbilityLibrary = ref(false)
+    const showAbilityConfig = ref(false)
     const showExamples = ref(false)
+    const showCopyAbilities = ref(false)
     const logFilter = ref('all')
     const logsListRef = ref(null)
     const activeAnalysisTab = ref('agents')
     const agentManagerTab = ref('list')
+    const abilityLibraryTab = ref('basic')
     const taskSteps = ref([])
     const currentStepIndex = ref(-1)
     const plannedPlatformAgents = ref({})
     const completedTasks = ref(0)
+    const selectedAgent = ref(null)
+    const selectedAgentKey = ref({ platform: '', index: 0 })
+    const addAbilityActive = ref('basic')
+    const customAbilityName = ref('')
+    const copySourceAgent = ref('')
+    const copySourceAbilities = ref([])
 
     let executionTimer = null
 
+    const abilityLibrary = ref({
+      basic: [
+        { name: '浏览器自动化', description: '控制浏览器执行网页操作', icon: 'Monitor', color: '#409eff', tags: ['点击', '输入', '导航', '截图'] },
+        { name: 'DOM元素定位', description: '智能识别和定位页面元素', icon: 'Aim', color: '#67c23a', tags: ['CSS', 'XPath', '智能匹配'] },
+        { name: '自然语言理解', description: '理解用户自然语言指令', icon: 'ChatLineRound', color: '#e6a23c', tags: ['意图识别', '实体提取'] },
+        { name: '反检测机制', description: '模拟人类行为避免被检测', icon: 'Shield', color: '#f56c6c', tags: ['随机延迟', '行为模拟'] }
+      ],
+      skills: [
+        { name: '商品发布技能', description: '在各平台发布商品的完整流程', icon: 'Goods', color: '#409eff', tags: ['抖音', '拼多多', '淘宝'] },
+        { name: '好评管理技能', description: '自动回复和管理好评', icon: 'ChatDotRound', color: '#67c23a', tags: ['回复', '追评', '分析'] },
+        { name: '数据采集技能', description: '采集订单和销售数据', icon: 'DataAnalysis', color: '#e6a23c', tags: ['订单', '销售', '推广'] },
+        { name: '订单处理技能', description: '处理订单和物流信息', icon: 'Box', color: '#909399', tags: ['发货', '退款', '售后'] }
+      ],
+      knowledge: [
+        { name: '平台规则知识库', description: '各平台的运营规则和规范', icon: 'Document', color: '#409eff', tags: ['抖音规则', '拼多多规则', '淘宝规则'] },
+        { name: '商品知识库', description: '商品信息管理和优化建议', icon: 'Collection', color: '#67c23a', tags: ['标题优化', '描述生成'] },
+        { name: '行业经验库', description: '电商运营最佳实践', icon: 'Star', color: '#e6a23c', tags: ['运营技巧', '案例分析'] }
+      ]
+    })
+
     const configuredAgents = ref({
       '抖音': [
-        { name: '抖音-A旗舰店', color: '#fe2c55', active: true, description: '主旗舰店，负责新品发布' },
-        { name: '抖音-B专卖店', color: '#ff6b9d', active: true, description: '专卖店，负责好评管理' },
-        { name: '抖音-C专营店', color: '#c94b6d', active: false, description: '专营店，待启用' }
+        { name: '抖音-A旗舰店', color: '#fe2c55', active: true, description: '主旗舰店', 
+          abilities: ['浏览器自动化', '商品发布技能', '好评管理技能'] },
+        { name: '抖音-B专卖店', color: '#ff6b9d', active: true, description: '专卖店',
+          abilities: ['浏览器自动化', '好评管理技能', '自然语言理解'] },
+        { name: '抖音-C专营店', color: '#c94b6d', active: false, description: '专营店',
+          abilities: [] }
       ],
       '拼多多': [
-        { name: '拼多多-旗舰店', color: '#ee4d2e', active: true, description: '主旗舰店' }
+        { name: '拼多多-旗舰店', color: '#ee4d2e', active: true, description: '主旗舰店',
+          abilities: ['浏览器自动化', '商品发布技能', '数据采集技能'] }
       ],
       '淘宝': [
-        { name: '淘宝-官方店', color: '#ff5000', active: true, description: '官方店铺' }
+        { name: '淘宝-官方店', color: '#ff5000', active: true, description: '官方店铺',
+          abilities: ['浏览器自动化', '商品发布技能', '订单处理技能'] }
       ],
       '京东': [
-        { name: '京东-自营店', color: '#c9190e', active: false, description: '自营店铺，待启用' }
+        { name: '京东-自营店', color: '#c9190e', active: false, description: '自营店铺',
+          abilities: [] }
       ]
     })
 
@@ -399,27 +633,22 @@ export default {
       platform: '',
       name: '',
       description: '',
-      active: true
+      active: true,
+      abilities: []
     })
 
     const taskExamples = [
       {
-        title: '多平台多 Agent 商品发布',
-        description: '使用多个店铺的 Agent 同时发布商品',
-        agents: ['抖音-A旗舰店', '抖音-B专卖店', '拼多多-旗舰店', '淘宝-官方店'],
-        input: '帮我把新品发布到抖音A、抖音B、拼多多和淘宝'
+        title: '多平台商品发布',
+        description: '使用多个 Agent 同时发布商品',
+        agents: ['抖音-A旗舰店', '抖音-B专卖店', '拼多多-旗舰店'],
+        input: '帮我把新品发布到抖音A、抖音B和拼多多'
       },
       {
-        title: '指定 Agent 处理好评',
-        description: '让特定的 Agent 处理好评回复',
+        title: '好评管理',
+        description: '让有好评管理技能的 Agent 处理好评',
         agents: ['抖音-A旗舰店', '抖音-B专卖店'],
         input: '用抖音A和抖音B处理所有待回复的好评'
-      },
-      {
-        title: '全平台数据采集',
-        description: '所有启用的 Agent 采集各自的数据',
-        agents: ['抖音-A旗舰店', '拼多多-旗舰店', '淘宝-官方店'],
-        input: '采集所有店铺的今日订单数据'
       }
     ]
 
@@ -427,10 +656,8 @@ export default {
       return Object.values(configuredAgents.value).flat().filter(a => a.active).length
     })
 
-    const activePlatforms = computed(() => {
-      return Object.keys(configuredAgents.value).filter(p => 
-        configuredAgents.value[p].some(a => a.active)
-      ).length
+    const totalAbilities = computed(() => {
+      return abilityLibrary.value.basic.length + abilityLibrary.value.skills.length + abilityLibrary.value.knowledge.length
     })
 
     const detectedPlatforms = computed(() => {
@@ -467,32 +694,17 @@ export default {
     })
 
     const getPlatformColor = (platform) => {
-      const colorMap = {
-        '抖音': '#fe2c55',
-        '拼多多': '#ee4d2e',
-        '淘宝': '#ff5000',
-        '京东': '#c9190e'
-      }
+      const colorMap = { '抖音': '#fe2c55', '拼多多': '#ee4d2e', '淘宝': '#ff5000', '京东': '#c9190e' }
       return colorMap[platform] || '#409eff'
     }
 
     const getStatusText = (status) => {
-      const statusMap = {
-        idle: '空闲',
-        running: '执行中',
-        analyzing: '分析中',
-        completed: '已完成'
-      }
+      const statusMap = { idle: '空闲', running: '执行中', analyzing: '分析中', completed: '已完成' }
       return statusMap[status] || status
     }
 
     const getPlatformTagType = (platform) => {
-      const typeMap = {
-        '抖音': '',
-        '拼多多': 'warning',
-        '淘宝': 'success',
-        '京东': 'danger'
-      }
+      const typeMap = { '抖音': '', '拼多多': 'warning', '淘宝': 'success', '京东': 'danger' }
       return typeMap[platform] || 'info'
     }
 
@@ -520,6 +732,62 @@ export default {
       return new Date(timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
     }
 
+    const openAbilityConfig = (platform, index) => {
+      selectedAgent.value = configuredAgents.value[platform][index]
+      selectedAgentKey.value = { platform, index }
+      showAbilityConfig.value = true
+    }
+
+    const toggleAbility = (abilityName) => {
+      if (!selectedAgent.value) return
+      const index = selectedAgent.value.abilities.indexOf(abilityName)
+      if (index === -1) {
+        selectedAgent.value.abilities.push(abilityName)
+      } else {
+        selectedAgent.value.abilities.splice(index, 1)
+      }
+    }
+
+    const removeAbility = (ability) => {
+      if (!selectedAgent.value) return
+      const index = selectedAgent.value.abilities.indexOf(ability)
+      if (index !== -1) {
+        selectedAgent.value.abilities.splice(index, 1)
+      }
+    }
+
+    const addCustomAbility = () => {
+      if (!customAbilityName.value.trim() || !selectedAgent.value) return
+      if (!selectedAgent.value.abilities.includes(customAbilityName.value.trim())) {
+        selectedAgent.value.abilities.push(customAbilityName.value.trim())
+        customAbilityName.value = ''
+        ElMessage.success('自定义能力添加成功')
+      }
+    }
+
+    const copyAbilities = () => {
+      showCopyAbilities.value = true
+      copySourceAgent.value = ''
+      copySourceAbilities.value = []
+    }
+
+    const onSelectCopySource = () => {
+      for (const platform of Object.keys(configuredAgents.value)) {
+        const agent = configuredAgents.value[platform].find(a => a.name === copySourceAgent.value)
+        if (agent) {
+          copySourceAbilities.value = [...agent.abilities]
+          break
+        }
+      }
+    }
+
+    const confirmCopyAbilities = () => {
+      if (!copySourceAgent.value || !selectedAgent.value) return
+      selectedAgent.value.abilities = [...copySourceAbilities.value]
+      showCopyAbilities.value = false
+      ElMessage.success(`已从 ${copySourceAgent.value} 复制 ${copySourceAbilities.value.length} 个能力`)
+    }
+
     const analyzeTask = () => {
       if (!taskInput.value.trim()) return
       
@@ -536,8 +804,8 @@ export default {
         
         plannedPlatformAgents.value = createMultiAgentPlans(platforms, tasks)
         
-        const totalAgents = Object.values(plannedPlatformAgents.value).flat().length
-        addLog('decide', '分配 Agent', `共 ${totalAgents} 个 Agent 将参与执行`)
+        const totalAgentsCount = Object.values(plannedPlatformAgents.value).flat().length
+        addLog('decide', '分配 Agent', `共 ${totalAgentsCount} 个 Agent 将参与执行`)
         
         taskSteps.value = generateTaskSteps(platforms, tasks)
         
@@ -548,34 +816,26 @@ export default {
 
     const analyzeTaskContent = (input) => {
       const tasks = []
-      if (input.includes('发布') || input.includes('上架')) {
-        tasks.push({ type: 'publish', name: '商品发布' })
-      }
-      if (input.includes('好评') || input.includes('评价')) {
-        tasks.push({ type: 'review', name: '好评管理' })
-      }
-      if (input.includes('数据') || input.includes('订单')) {
-        tasks.push({ type: 'data', name: '数据采集' })
-      }
+      if (input.includes('发布') || input.includes('上架')) tasks.push({ type: 'publish', name: '商品发布' })
+      if (input.includes('好评') || input.includes('评价')) tasks.push({ type: 'review', name: '好评管理' })
+      if (input.includes('数据') || input.includes('订单')) tasks.push({ type: 'data', name: '数据采集' })
       return tasks.length > 0 ? tasks : [{ type: 'general', name: '通用任务' }]
     }
 
     const createMultiAgentPlans = (platforms, tasks) => {
       const plans = {}
-      
       platforms.forEach(platform => {
         const agents = configuredAgents.value[platform] || []
         const activeAgents = agents.filter(a => a.active)
-        
         if (activeAgents.length > 0) {
-          plans[platform] = activeAgents.map((agent, index) => ({
+          plans[platform] = activeAgents.map(agent => ({
             name: agent.name,
             color: agent.color,
+            abilities: [...agent.abilities],
             tasks: tasks.map(t => t.name)
           }))
         }
       })
-      
       return plans
     }
 
@@ -584,14 +844,9 @@ export default {
       platforms.forEach(platform => {
         const agents = configuredAgents.value[platform] || []
         const activeAgents = agents.filter(a => a.active)
-        
         activeAgents.forEach(agent => {
           tasks.forEach(task => {
-            steps.push({
-              name: `${agent.name} - ${task.name}`,
-              agentName: agent.name,
-              platform: platform
-            })
+            steps.push({ name: `${agent.name} - ${task.name}`, agentName: agent.name, platform: platform })
           })
         })
       })
@@ -605,8 +860,8 @@ export default {
       executingTasks.value = []
       executionSummary.value = []
       
-      const totalAgents = Object.values(plannedPlatformAgents.value).flat().length
-      addLog('execute', '任务执行开始', `共 ${totalAgents} 个 Agent 将并行执行`)
+      const totalAgentsCount = Object.values(plannedPlatformAgents.value).flat().length
+      addLog('execute', '任务执行开始', `共 ${totalAgentsCount} 个 Agent 将并行执行`)
       
       Object.entries(plannedPlatformAgents.value).forEach(([platform, agents]) => {
         agents.forEach((agent, index) => {
@@ -615,6 +870,7 @@ export default {
             agentName: agent.name,
             platform: platform,
             color: agent.color,
+            abilities: [...agent.abilities],
             tasks: agent.tasks,
             status: 'running',
             progress: 0,
@@ -631,8 +887,8 @@ export default {
     const generateExecutionSteps = (agent) => {
       return [
         { name: '初始化', completed: false },
+        { name: '加载能力', completed: false },
         { name: '加载技能', completed: false },
-        { name: '导航页面', completed: false },
         { name: '执行任务', completed: false },
         { name: '验证结果', completed: false },
         { name: '完成', completed: false }
@@ -642,7 +898,6 @@ export default {
     const runParallelExecution = async () => {
       executionTimer = setInterval(async () => {
         let allCompleted = true
-        
         for (const task of executingTasks.value) {
           if (task.status === 'running') {
             allCompleted = false
@@ -654,11 +909,8 @@ export default {
           clearInterval(executionTimer)
           globalStatus.value = 'idle'
           completedTasks.value += executingTasks.value.length
-          
           addLog('complete', '所有任务执行完成', `成功执行 ${executingTasks.value.length} 个 Agent`)
-          
           generateExecutionSummary()
-          
           ElMessage.success('所有 Agent 任务执行完成！')
         }
       }, 1000)
@@ -692,7 +944,7 @@ export default {
       executionSummary.value = executingTasks.value.map(task => ({
         agentName: task.agentName,
         platform: task.platform,
-        tasks: task.tasks,
+        abilities: task.abilities,
         color: task.color,
         status: task.status === 'completed' ? 'success' : 'failed',
         duration: `${(task.steps.length * 1.5).toFixed(1)}秒`
@@ -749,7 +1001,8 @@ export default {
         name: newAgentForm.value.name,
         color: getPlatformColor(platform),
         active: newAgentForm.value.active,
-        description: newAgentForm.value.description
+        description: newAgentForm.value.description,
+        abilities: []
       })
       
       ElMessage.success('Agent 创建成功')
@@ -758,7 +1011,7 @@ export default {
     }
 
     const resetNewAgentForm = () => {
-      newAgentForm.value = { platform: '', name: '', description: '', active: true }
+      newAgentForm.value = { platform: '', name: '', description: '', active: true, abilities: [] }
     }
 
     const useExample = (example) => {
@@ -768,8 +1021,23 @@ export default {
     }
 
     const exportSummary = () => {
-      const report = `# Agent 执行报告\n\n生成时间: ${new Date().toLocaleString('zh-CN')}\n\n## 执行摘要\n\n- 总任务数: ${executingTasks.value.length}\n- 成功: ${executingTasks.value.filter(t => t.status === 'completed').length}\n\n## 详细结果\n\n` + executionSummary.value.map((item, i) => 
-        `${i + 1}. **${item.agentName}** (${item.platform})\n   - 任务: ${item.tasks.join(' + ')}\n   - 状态: ${item.status === 'success' ? '✅ 成功' : '❌ 失败'}\n   - 耗时: ${item.duration}\n`
+      const report = `# Agent 执行报告
+
+生成时间: ${new Date().toLocaleString('zh-CN')}
+
+## 执行摘要
+
+- 总任务数: ${executingTasks.value.length}
+- 成功: ${executingTasks.value.filter(t => t.status === 'completed').length}
+
+## 详细结果
+
+` + executionSummary.value.map((item, i) => 
+        `${i + 1}. **${item.agentName}** (${item.platform})
+   - 使用能力: ${item.abilities.join(', ') || '无'}
+   - 状态: ${item.status === 'success' ? '✅ 成功' : '❌ 失败'}
+   - 耗时: ${item.duration}
+`
       ).join('\n')
       
       const blob = new Blob([report], { type: 'text/markdown' })
@@ -797,7 +1065,10 @@ export default {
       executionSummary,
       showAnalysis,
       showAgentManager,
+      showAbilityLibrary,
+      showAbilityConfig,
       showExamples,
+      showCopyAbilities,
       logFilter,
       logsListRef,
       activeAnalysisTab,
@@ -806,14 +1077,21 @@ export default {
       plannedPlatformAgents,
       completedTasks,
       configuredAgents,
+      abilityLibrary,
       newAgentForm,
       agentManagerTab,
+      abilityLibraryTab,
       taskExamples,
       totalAgents,
-      activePlatforms,
+      totalAbilities,
       detectedPlatforms,
       estimatedAgents,
       filteredLogs,
+      selectedAgent,
+      addAbilityActive,
+      customAbilityName,
+      copySourceAgent,
+      copySourceAbilities,
       getPlatformColor,
       getStatusText,
       getPlatformTagType,
@@ -822,6 +1100,13 @@ export default {
       getLogTagType,
       getLogTypeName,
       formatTime,
+      openAbilityConfig,
+      toggleAbility,
+      removeAbility,
+      addCustomAbility,
+      copyAbilities,
+      onSelectCopySource,
+      confirmCopyAbilities,
       analyzeTask,
       executeTask,
       clearLogs,
@@ -870,7 +1155,8 @@ export default {
 .execution-details { display: flex; flex-direction: column; }
 .execution-name { font-weight: bold; color: #303133; }
 .execution-platform { font-size: 12px; color: #909399; }
-.execution-progress { margin-bottom: 15px; }
+.execution-abilities { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.execution-progress { margin-bottom: 10px; }
 .execution-steps { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; }
 .step-item { display: flex; align-items: center; gap: 6px; min-width: 100px; padding: 6px 8px; background: white; border-radius: 4px; transition: all 0.3s; }
 .step-item.active { background: #ecf5ff; border: 2px solid #409eff; }
@@ -897,12 +1183,25 @@ export default {
 .agent-item { display: flex; align-items: center; gap: 10px; padding: 8px; background: #f5f7fa; border-radius: 6px; margin-bottom: 8px; }
 .agent-info { flex: 1; }
 .agent-name { font-weight: 500; color: #303133; font-size: 14px; }
-.agent-tasks { font-size: 12px; color: #909399; }
+.agent-abilities { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 .agent-config-card { margin-bottom: 15px; }
-.agent-config-item { display: flex; align-items: center; gap: 10px; padding: 8px; }
+.agent-config-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #f0f0f0; }
 .agent-config-info { flex: 1; }
 .agent-config-name { font-weight: 500; color: #303133; }
-.agent-config-status { margin-top: 3px; }
+.agent-config-status { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.ability-card { margin-bottom: 15px; }
+.ability-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.ability-info { flex: 1; }
+.ability-name { font-weight: bold; color: #303133; }
+.ability-desc { font-size: 12px; color: #909399; margin-top: 4px; }
+.ability-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.ability-section-card { height: 100%; }
+.section-header { display: flex; justify-content: space-between; align-items: center; }
+.ability-list { display: flex; flex-wrap: wrap; gap: 8px; min-height: 100px; padding: 10px; background: #f5f7fa; border-radius: 8px; }
+.ability-option { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+.ability-option:last-child { border-bottom: none; }
+.ability-option-content { display: inline-block; }
+.ability-option-desc { font-size: 12px; color: #909399; margin-top: 4px; }
 .example-card { margin-bottom: 15px; }
 .example-content { margin-bottom: 10px; }
 .example-title { font-weight: bold; color: #303133; margin-bottom: 5px; }
