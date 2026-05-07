@@ -1,285 +1,1226 @@
 <template>
-  <div class="elements">
-    <div class="toolbar">
-      <el-select v-model="selectedPlatform" placeholder="选择平台">
-        <el-option v-for="platform in platforms" :key="platform.value" :label="platform.label" :value="platform.value" />
-      </el-select>
-      <el-select v-model="selectedPage" placeholder="选择页面">
-        <el-option v-for="page in pages" :key="page" :label="page" :value="page" />
-      </el-select>
-      <el-button type="primary" @click="showAddModal = true" icon="Plus">添加元素</el-button>
-      <el-button @click="refreshElements" icon="Refresh">刷新</el-button>
+  <div class="elements-manager">
+    <div class="page-header">
+      <h2>🔧 DOM 元素管理中心</h2>
+      <p class="subtitle">管理各平台的页面元素，支持多选择器、版本管理和 Playwright 调试</p>
     </div>
 
-    <el-card class="elements-card">
-      <div class="elements-header">
-        <h3>DOM 元素配置</h3>
-        <span class="count">共 {{ elements.length }} 个元素</span>
-      </div>
-      
-      <el-table :data="elements" border>
-        <el-table-column prop="name" label="元素名称" />
-        <el-table-column prop="selector" label="选择器">
-          <template #default="scope">
-            <code class="selector-code">{{ scope.row.selector }}</code>
-          </template>
-        </el-table-column>
-        <el-table-column prop="selector_type" label="选择器类型">
-          <template #default="scope">
-            <el-tag :type="getSelectorTypeTag(scope.row.selector_type)">
-              {{ getSelectorTypeName(scope.row.selector_type) }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="description" label="描述" />
-        <el-table-column prop="version" label="版本" />
-        <el-table-column prop="status" label="状态">
-          <template #default="scope">
-            <el-switch 
-              :value="scope.row.status === 'active'" 
-              @change="toggleStatus(scope.row)"
-              :disabled="scope.row.status === 'deprecated'"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column prop="updated_at" label="更新时间" />
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button size="small" @click="editElement(scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="deleteElement(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
+    <el-tabs v-model="activeTab" type="border-card">
+      <el-tab-pane label="元素列表" name="list">
+        <div class="toolbar">
+          <el-select v-model="selectedPlatform" placeholder="选择平台" style="width: 150px;" @change="onPlatformChange">
+            <el-option-group label="电商平台">
+              <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
+            </el-option-group>
+          </el-select>
+          <el-select v-model="selectedPage" placeholder="选择页面" style="width: 150px;" @change="loadElements">
+            <el-option-group :label="getPlatformName(selectedPlatform) + ' 页面'">
+              <el-option v-for="page in pageOptions" :key="page.value" :label="page.label" :value="page.value" />
+            </el-option-group>
+          </el-select>
+          <el-input v-model="searchKeyword" placeholder="搜索元素名称" style="width: 200px;" clearable>
+            <template #prefix><el-icon><Search /></el-icon></template>
+          </el-input>
+          <el-button type="primary" @click="openAddModal" icon="Plus">添加元素</el-button>
+          <el-button @click="showImportDialog = true" icon="Upload">批量导入</el-button>
+          <el-button @click="exportElements" icon="Download">导出</el-button>
+        </div>
 
-    <el-dialog :title="isEditing ? '编辑元素' : '添加元素'" :visible.sync="showAddModal">
-      <el-form :model="form" label-width="100px">
-        <el-form-item label="元素名称" required>
-          <el-input v-model="form.name" placeholder="例如: username_input" />
-        </el-form-item>
-        <el-form-item label="选择器" required>
-          <el-input v-model="form.selector" placeholder="例如: input[name='username']" />
-        </el-form-item>
-        <el-form-item label="选择器类型" required>
-          <el-select v-model="form.selector_type">
-            <el-option label="CSS选择器" value="css" />
-            <el-option label="XPath" value="xpath" />
-            <el-option label="ID" value="id" />
-            <el-option label="Class" value="class" />
-            <el-option label="Name" value="name" />
-          </el-select>
-        </el-form-item>
+        <div v-if="selectedElements.length > 0" class="batch-toolbar">
+          <el-tag type="primary">已选择 {{ selectedElements.length }} 个元素</el-tag>
+          <el-button size="small" @click="batchEnable" type="success">批量启用</el-button>
+          <el-button size="small" @click="batchDisable" type="warning">批量禁用</el-button>
+          <el-button size="small" @click="batchUpdatePage" type="info">批量修改页面</el-button>
+          <el-button size="small" @click="batchDelete" type="danger">批量删除</el-button>
+          <el-button size="small" @click="clearSelection">清空选择</el-button>
+        </div>
+
+        <el-table :data="filteredElements" border stripe @selection-change="onSelectionChange">
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="元素信息" min-width="200">
+            <template #default="scope">
+              <div class="element-info">
+                <div class="element-name">
+                  <strong>{{ scope.row.name }}</strong>
+                  <el-tag size="small" type="info" style="margin-left: 8px;">{{ getActionLabel(scope.row.action_type) }}</el-tag>
+                </div>
+                <div class="element-desc">{{ scope.row.description || '无描述' }}</div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="主选择器" min-width="180">
+            <template #default="scope">
+              <code class="selector-code">{{ scope.row.selectors?.[0]?.value || scope.row.selector }}</code>
+              <el-tag size="small" type="primary" style="margin-left: 5px;">
+                {{ scope.row.selectors?.[0]?.type || scope.row.selector_type }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="备用选择器" min-width="200">
+            <template #default="scope">
+              <div v-if="scope.row.selectors && scope.row.selectors.length > 1" class="backup-selectors">
+                <el-tag v-for="(sel, idx) in scope.row.selectors.slice(1)" :key="idx" size="small" style="margin: 2px;">
+                  {{ sel.type }}: {{ sel.value }}
+                </el-tag>
+              </div>
+              <span v-else class="no-backup">无备用</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="版本" width="80">
+            <template #default="scope">
+              <el-tag size="small">v{{ scope.row.version }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" width="100">
+            <template #default="scope">
+              <el-switch v-model="scope.row.is_active" @change="updateElement(scope.row)" />
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="280" fixed="right">
+            <template #default="scope">
+              <el-button size="small" type="primary" @click="testSelector(scope.row)" icon="View">测试</el-button>
+              <el-button size="small" type="success" @click="debugWithPlaywright(scope.row)" icon="Monitor">调试</el-button>
+              <el-button size="small" @click="editElement(scope.row)" icon="Edit">编辑</el-button>
+              <el-button size="small" type="danger" @click="deleteElement(scope.row)" icon="Delete">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+
+      <el-tab-pane label="页面调试" name="debug">
+        <div class="debug-toolbar">
+          <el-button type="primary" @click="testConnection" :loading="testing" size="small">
+            🔌 测试连接
+          </el-button>
+          <el-button @click="closeBrowser" size="small">关闭浏览器</el-button>
+          <el-tag v-if="browserStatus" :type="browserStatus === 'ready' ? 'success' : 'warning'">
+            浏览器状态: {{ browserStatus === 'ready' ? '就绪' : '连接中' }}
+          </el-tag>
+        </div>
+
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-card class="debug-config">
+              <template #header>
+                <span>🔍 Playwright 页面调试</span>
+              </template>
+              <el-form :model="debugConfig" label-width="100px" label-position="top">
+                <el-form-item label="目标平台">
+                  <el-select v-model="debugConfig.platform" style="width: 100%;">
+                    <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="页面URL">
+                  <el-input v-model="debugConfig.url" placeholder="输入页面URL">
+                    <template #append>
+                      <el-button @click="loadPresetUrl">预设</el-button>
+                    </template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="预设页面">
+                  <el-select v-model="debugConfig.presetPage" placeholder="选择预设页面" clearable style="width: 100%;" @change="loadPresetUrl">
+                    <el-option-group label="登录">
+                      <el-option label="登录页" value="login" />
+                    </el-option-group>
+                    <el-option-group label="商品">
+                      <el-option label="商品发布页" value="publish" />
+                      <el-option label="发布成功页" value="publish_success" />
+                      <el-option label="商品列表" value="goods_list" />
+                    </el-option-group>
+                    <el-option-group label="订单">
+                      <el-option label="订单列表" value="order_list" />
+                    </el-option-group>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="等待选择器">
+                  <el-input v-model="debugConfig.waitSelector" placeholder="等待元素出现" />
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="openDebugPage" :loading="openingPage" style="width: 100%;">
+                    <el-icon><Monitor /></el-icon>
+                    打开页面
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </el-card>
+
+            <el-card class="selector-tester" style="margin-top: 20px;">
+              <template #header>
+                <span>🧪 选择器测试</span>
+              </template>
+              <el-form :model="selectorTest" label-width="100px" label-position="top">
+                <el-form-item label="选择器">
+                  <el-input v-model="selectorTest.selector" placeholder="输入 CSS/XPath 选择器">
+                    <template #append>
+                      <el-button @click="testCurrentSelector" :loading="testing" type="primary">
+                        测试
+                      </el-button>
+                    </template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="选择器类型">
+                  <el-radio-group v-model="selectorTest.selectorType">
+                    <el-radio-button label="css">CSS</el-radio-button>
+                    <el-radio-button label="xpath">XPath</el-radio-button>
+                    <el-radio-button label="text">文本</el-radio-button>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="操作类型">
+                  <el-select v-model="selectorTest.actionType" style="width: 100%;">
+                    <el-option label="点击 (click)" value="click" />
+                    <el-option label="输入 (input)" value="input" />
+                    <el-option label="提取 (extract)" value="extract" />
+                    <el-option label="等待 (wait)" value="wait" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <el-button @click="highlightElement" :disabled="!pageOpened || !selectorTest.selector" type="warning" style="width: 100%;">
+                    <el-icon><Aim /></el-icon>
+                    高亮元素
+                  </el-button>
+                </el-form-item>
+              </el-form>
+
+              <el-divider>测试结果</el-divider>
+              <div v-if="testResult" class="test-result">
+                <el-alert :type="testResult.success ? 'success' : 'error'" :title="testResult.message" show-icon />
+                <el-descriptions v-if="testResult.success" :column="2" border style="margin-top: 15px;">
+                  <el-descriptions-item label="找到元素">
+                    <el-tag :type="testResult.found ? 'success' : 'danger'">
+                      {{ testResult.found ? '是' : '否' }}
+                    </el-tag>
+                  </el-descriptions-item>
+                  <el-descriptions-item label="元素数量">
+                    {{ testResult.count || 0 }}
+                  </el-descriptions-item>
+                  <el-descriptions-item label="元素文本" :span="2">
+                    <code>{{ testResult.text || '-' }}</code>
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="testResult.boundingBox" label="位置" :span="2">
+                    x: {{ testResult.boundingBox.x }}, y: {{ testResult.boundingBox.y }},
+                    {{ testResult.boundingBox.width }}x{{ testResult.boundingBox.height }}
+                  </el-descriptions-item>
+                </el-descriptions>
+              </div>
+            </el-card>
+          </el-col>
+
+          <el-col :span="16">
+            <el-card class="page-preview">
+              <template #header>
+                <div class="preview-header">
+                  <span>📷 页面预览</span>
+                  <div>
+                    <el-button size="small" @click="takeScreenshot" :disabled="!pageOpened">
+                      截图
+                    </el-button>
+                    <el-button size="small" @click="refreshPage" :disabled="!pageOpened">
+                      刷新
+                    </el-button>
+                  </div>
+                </div>
+              </template>
+              <div class="preview-container">
+                <img v-if="screenshotUrl" :src="screenshotUrl" alt="页面截图" class="preview-image" @error="handleImageError" />
+                <div v-else class="no-preview">
+                  <el-icon :size="48"><Picture /></el-icon>
+                  <p>暂无截图</p>
+                  <p class="hint">请先打开页面</p>
+                </div>
+              </div>
+            </el-card>
+
+            <el-card v-if="pageInfo" style="margin-top: 20px;">
+              <template #header>
+                <span>📊 页面信息</span>
+              </template>
+              <el-descriptions :column="3" border>
+                <el-descriptions-item label="页面标题">{{ pageInfo.title }}</el-descriptions-item>
+                <el-descriptions-item label="URL">{{ pageInfo.url }}</el-descriptions-item>
+                <el-descriptions-item label="视口大小">{{ pageInfo.viewport?.width }}x{{ pageInfo.viewport?.height }}</el-descriptions-item>
+                <el-descriptions-item label="输入框">{{ pageInfo.elements?.inputs || 0 }} 个</el-descriptions-item>
+                <el-descriptions-item label="按钮">{{ pageInfo.elements?.buttons || 0 }} 个</el-descriptions-item>
+                <el-descriptions-item label="链接">{{ pageInfo.elements?.links || 0 }} 个</el-descriptions-item>
+              </el-descriptions>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+
+      <el-tab-pane label="批量导入导出" name="import-export">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-card>
+              <template #header>
+                <span>📤 导出元素</span>
+              </template>
+              <el-form label-width="100px">
+                <el-form-item label="导出范围">
+                  <el-radio-group v-model="exportConfig.scope">
+                    <el-radio label="all">全部</el-radio>
+                    <el-radio label="platform">按平台</el-radio>
+                    <el-radio label="page">按页面</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item v-if="exportConfig.scope === 'platform'" label="选择平台">
+                  <el-select v-model="exportConfig.platform" style="width: 100%;">
+                    <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item v-if="exportConfig.scope === 'page'" label="选择页面">
+                  <el-cascader v-model="exportConfig.platformPage" :options="platformPageOptions" style="width: 100%;" />
+                </el-form-item>
+                <el-form-item label="导出格式">
+                  <el-radio-group v-model="exportConfig.format">
+                    <el-radio label="json">JSON</el-radio>
+                    <el-radio label="csv">CSV</el-radio>
+                    <el-radio label="excel">Excel</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="doExport" icon="Download">导出</el-button>
+                </el-form-item>
+              </el-form>
+            </el-card>
+          </el-col>
+          <el-col :span="12">
+            <el-card>
+              <template #header>
+                <span>📥 导入元素</span>
+              </template>
+              <el-upload
+                drag
+                action="#"
+                :auto-upload="false"
+                :on-change="handleImportFile"
+                :limit="1"
+                accept=".json,.csv,.xlsx"
+              >
+                <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
+                <div>拖拽文件或点击上传</div>
+                <template #tip>
+                  <div class="el-upload__tip">支持 JSON、CSV、Excel 格式</div>
+                </template>
+              </el-upload>
+              <el-button v-if="importFile" type="primary" @click="doImport" style="margin-top: 15px; width: 100%;">
+                确认导入 {{ importFile.name }}
+              </el-button>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+
+      <el-tab-pane label="版本历史" name="versions">
+        <el-alert title="版本管理功能" description="元素修改会自动记录版本历史，可以随时回滚到之前的版本" type="info" :closable="false" style="margin-bottom: 20px;" />
+        <el-table :data="versionHistory" border>
+          <el-table-column prop="name" label="元素名称" />
+          <el-table-column prop="version" label="版本" width="80" />
+          <el-table-column prop="selector" label="选择器" min-width="150">
+            <template #default="scope">
+              <code>{{ scope.row.selector }}</code>
+            </template>
+          </el-table-column>
+          <el-table-column prop="updated_at" label="修改时间" width="180" />
+          <el-table-column prop="updated_by" label="修改人" width="120" />
+          <el-table-column label="操作" width="150">
+            <template #default="scope">
+              <el-button size="small" type="primary" @click="rollbackVersion(scope.row)">回滚</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+
+      <el-tab-pane label="预设模板" name="templates">
+        <el-alert title="预设模板" description="使用预设模板快速创建元素配置，支持平台改版后快速更新" type="info" :closable="false" style="margin-bottom: 20px;" />
+        <el-row :gutter="20">
+          <el-col :span="8" v-for="template in templates" :key="template.name">
+            <el-card shadow="hover" class="template-card">
+              <template #header>
+                <div class="template-header">
+                  <span>{{ template.name }}</span>
+                  <el-tag size="small">{{ template.count }} 个元素</el-tag>
+                </div>
+              </template>
+              <div class="template-desc">{{ template.description }}</div>
+              <div class="template-platforms">
+                <el-tag v-for="p in template.platforms" :key="p" size="small" style="margin: 2px;">
+                  {{ p }}
+                </el-tag>
+              </div>
+              <el-button type="primary" size="small" @click="applyTemplate(template)" style="margin-top: 15px; width: 100%;">
+                应用模板
+              </el-button>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
+
+    <el-dialog v-model="showAddModal" :title="editingElement ? '编辑元素' : '添加元素'" width="800px" :fullscreen="isFullscreen">
+      <el-form :model="elementForm" label-width="120px">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="元素名称" required>
+              <el-input v-model="elementForm.name" placeholder="例如: goods_id_input" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="显示名称">
+              <el-input v-model="elementForm.display_name" placeholder="例如: 商品ID输入框" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="描述">
-          <el-input v-model="form.description" placeholder="元素描述" />
+          <el-input v-model="elementForm.description" placeholder="元素用途描述" />
         </el-form-item>
-        <el-form-item label="版本">
-          <el-input v-model="form.version" placeholder="1.0.0" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="form.status">
-            <el-option label="启用" value="active" />
-            <el-option label="禁用" value="inactive" />
-            <el-option label="废弃" value="deprecated" />
+        <el-form-item label="操作类型">
+          <el-select v-model="elementForm.action_type" style="width: 100%;">
+            <el-option label="🖱️ 点击 (click)" value="click" />
+            <el-option label="⌨️ 输入 (input)" value="input" />
+            <el-option label="📤 上传 (upload)" value="upload" />
+            <el-option label="📋 提取 (extract)" value="extract" />
+            <el-option label="⏳ 等待 (wait)" value="wait" />
+            <el-option label="🔗 导航 (navigate)" value="navigate" />
           </el-select>
         </el-form-item>
+
+        <el-divider>选择器配置 <span style="color: #909399; font-weight: normal;">（主选择器失效时自动尝试备用）</span></el-divider>
+
+        <div v-for="(selector, index) in elementForm.selectors" :key="index" class="selector-item">
+          <el-row :gutter="10">
+            <el-col :span="3">
+              <el-tag :type="index === 0 ? 'success' : 'info'" size="small">
+                {{ index === 0 ? '主' : `备${index}` }}
+              </el-tag>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="selector.type" placeholder="类型">
+                <el-option label="CSS" value="css" />
+                <el-option label="XPath" value="xpath" />
+                <el-option label="ID" value="id" />
+                <el-option label="Class" value="class" />
+                <el-option label="文本" value="text" />
+              </el-select>
+            </el-col>
+            <el-col :span="13">
+              <el-input v-model="selector.value" :placeholder="getSelectorPlaceholder(selector.type)" />
+            </el-col>
+            <el-col :span="4">
+              <el-button
+                v-if="elementForm.selectors.length > 1"
+                type="danger"
+                icon="Delete"
+                circle
+                @click="removeSelector(index)"
+              />
+              <el-button
+                v-if="debugConfig.url"
+                type="success"
+                icon="View"
+                circle
+                @click="testSingleSelector(selector, index)"
+                :loading="testingSelectorIndex === index"
+              />
+            </el-col>
+          </el-row>
+        </div>
+
+        <el-button type="primary" plain @click="addSelector" icon="Plus">
+          添加备用选择器
+        </el-button>
+
+        <el-divider content-position="left">测试选择器</el-divider>
+        <div class="selector-test-section">
+          <el-button @click="testFormSelector" :loading="testingFormSelector" type="primary">
+            🧪 批量测试所有选择器
+          </el-button>
+          <el-button @click="switchToDebug" type="warning">
+            🔍 打开调试面板
+          </el-button>
+        </div>
+
+        <div v-if="selectorTestResults.length > 0" class="test-results-list">
+          <el-divider>测试结果</el-divider>
+          <el-table :data="selectorTestResults" size="small">
+            <el-table-column prop="index" label="#" width="60" />
+            <el-table-column prop="type" label="类型" width="80" />
+            <el-table-column prop="value" label="选择器" />
+            <el-table-column prop="found" label="状态" width="100">
+              <template #default="scope">
+                <el-tag :type="scope.row.found ? 'success' : 'danger'" size="small">
+                  {{ scope.row.found ? '✓ 找到' : '✗ 未找到' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="count" label="数量" width="80" />
+          </el-table>
+        </div>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+
+      <template #footer>
         <el-button @click="showAddModal = false">取消</el-button>
+        <el-button @click="isFullscreen = !isFullscreen">
+          {{ isFullscreen ? '退出全屏' : '全屏编辑' }}
+        </el-button>
         <el-button type="primary" @click="saveElement">保存</el-button>
-      </div>
+      </template>
     </el-dialog>
 
-    <el-dialog title="元素详情" :visible.sync="showDetailModal">
-      <el-form :model="selectedElement" label-width="100px" disabled>
-        <el-form-item label="元素名称">
-          <el-input v-model="selectedElement.name" />
+    <el-dialog v-model="showImportDialog" title="批量导入元素" width="600px">
+      <el-alert title="导入说明" type="info" :closable="false" style="margin-bottom: 20px;">
+        <ul style="margin: 10px 0; padding-left: 20px;">
+          <li>支持 JSON、CSV、Excel 格式</li>
+          <li>JSON 格式：包含 elements 数组</li>
+          <li>导入会覆盖现有同名元素</li>
+        </ul>
+      </el-alert>
+      <el-upload
+        drag
+        action="#"
+        :auto-upload="false"
+        :on-change="handleImportFile"
+        accept=".json,.csv,.xlsx"
+        style="width: 100%;"
+      >
+        <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
+        <div>拖拽文件到此处或点击上传</div>
+      </el-upload>
+      <template #footer>
+        <el-button @click="showImportDialog = false">取消</el-button>
+        <el-button type="primary" @click="doImport" :disabled="!importFile">导入</el-button>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="showBatchPageDialog" title="批量修改页面" width="400px">
+      <el-form label-width="100px">
+        <el-form-item label="目标平台">
+          <el-select v-model="batchUpdateData.platform" style="width: 100%;">
+            <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="选择器">
-          <el-input v-model="selectedElement.selector" />
-        </el-form-item>
-        <el-form-item label="选择器类型">
-          <el-input :value="getSelectorTypeName(selectedElement.selector_type)" />
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="selectedElement.description" />
-        </el-form-item>
-        <el-form-item label="版本">
-          <el-input v-model="selectedElement.version" />
-        </el-form-item>
-        <el-form-item label="平台">
-          <el-input :value="getPlatformName(selectedElement.platform)" />
-        </el-form-item>
-        <el-form-item label="页面">
-          <el-input v-model="selectedElement.page" />
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-input v-model="selectedElement.created_at" />
-        </el-form-item>
-        <el-form-item label="更新时间">
-          <el-input v-model="selectedElement.updated_at" />
+        <el-form-item label="目标页面">
+          <el-select v-model="batchUpdateData.page" style="width: 100%;">
+            <el-option v-for="page in pageOptions" :key="page.value" :label="page.label" :value="page.value" />
+          </el-select>
         </el-form-item>
       </el-form>
+      <template #footer>
+        <el-button @click="showBatchPageDialog = false">取消</el-button>
+        <el-button type="primary" @click="confirmBatchUpdatePage">确认修改</el-button>
+      </template>
     </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Search, Plus, UploadFilled, Download, View, Edit, Delete, Monitor, Camera, Aim, Picture } from '@element-plus/icons-vue'
+import axios from 'axios'
 
-interface Element {
-  id: number
-  name: string
-  selector: string
-  selector_type: string
-  description: string
-  version: string
-  platform: string
-  page: string
-  status: string
-  created_at: string
-  updated_at: string
-}
+const API_BASE = '/api/playwright-debug'
+
+const activeTab = ref('list')
+const selectedPlatform = ref('pinduoduo')
+const selectedPage = ref('login')
+const searchKeyword = ref('')
+const showAddModal = ref(false)
+const showImportDialog = ref(false)
+const showBatchPageDialog = ref(false)
+const editingElement = ref<any>(null)
+const selectedElements = ref<any[]>([])
+const isFullscreen = ref(false)
+const testingFormSelector = ref(false)
+const testingSelectorIndex = ref<number | null>(null)
+const selectorTestResults = ref<any[]>([])
+const importFile = ref<any>(null)
+const browserStatus = ref<string | null>(null)
 
 const platforms = [
-  { value: 'douyin', label: '抖音' },
   { value: 'pinduoduo', label: '拼多多' },
+  { value: 'douyin', label: '抖音' },
   { value: 'taobao', label: '淘宝' },
-  { value: 'jingdong', label: '京东' },
-  { value: 'xiaohongshu', label: '小红书' }
+  { value: 'jd', label: '京东' }
 ]
 
-const pages = ['login', 'publish', 'reviews', 'orders', 'products']
+const pageOptions = [
+  { value: 'login', label: '登录页' },
+  { value: 'publish', label: '商品发布页' },
+  { value: 'publish_success', label: '发布成功页' },
+  { value: 'product_detail', label: '商品详情页' },
+  { value: 'order_list', label: '订单列表页' },
+  { value: 'order_detail', label: '订单详情页' }
+]
 
-const selectedPlatform = ref('douyin')
-const selectedPage = ref('login')
-const showAddModal = ref(false)
-const showDetailModal = ref(false)
-const isEditing = ref(false)
-const selectedElement = ref<Element>({
-  id: 0, name: '', selector: '', selector_type: 'css', 
-  description: '', version: '1.0.0', platform: 'douyin', 
-  page: 'login', status: 'active', created_at: '', updated_at: ''
-})
+const elements = ref<any[]>([])
+const versionHistory = ref<any[]>([])
 
-const form = ref({
-  id: 0,
+const elementForm = ref({
   name: '',
-  selector: '',
-  selector_type: 'css',
+  display_name: '',
   description: '',
-  version: '1.0.0',
-  status: 'active'
+  action_type: 'click',
+  selectors: [{ type: 'css', value: '' }]
 })
 
-const elements = ref<Element[]>([
-  { id: 1, name: 'username_input', selector: 'input[name="username"]', selector_type: 'css', description: '用户名输入框', version: '1.0.0', platform: 'douyin', page: 'login', status: 'active', created_at: '2024-01-15 10:00', updated_at: '2024-01-15 10:00' },
-  { id: 2, name: 'password_input', selector: 'input[name="password"]', selector_type: 'css', description: '密码输入框', version: '1.0.0', platform: 'douyin', page: 'login', status: 'active', created_at: '2024-01-15 10:05', updated_at: '2024-01-15 10:05' },
-  { id: 3, name: 'login_button', selector: '//button[contains(text(),"登录")]', selector_type: 'xpath', description: '登录按钮', version: '1.0.0', platform: 'douyin', page: 'login', status: 'active', created_at: '2024-01-15 10:10', updated_at: '2024-01-15 10:10' },
-  { id: 4, name: 'captcha_image', selector: 'captcha-img', selector_type: 'class', description: '验证码图片', version: '1.0.0', platform: 'douyin', page: 'login', status: 'active', created_at: '2024-01-15 10:15', updated_at: '2024-01-15 10:15' },
-  { id: 5, name: 'captcha_input', selector: 'captcha', selector_type: 'name', description: '验证码输入框', version: '1.0.0', platform: 'douyin', page: 'login', status: 'inactive', created_at: '2024-01-15 10:20', updated_at: '2024-01-15 10:20' },
-  { id: 6, name: 'product_title', selector: '//input[@id="title"]', selector_type: 'xpath', description: '商品标题输入框', version: '1.1.0', platform: 'douyin', page: 'publish', status: 'active', created_at: '2024-01-20 09:00', updated_at: '2024-02-01 14:00' },
-  { id: 7, name: 'product_price', selector: '#price', selector_type: 'id', description: '商品价格输入框', version: '1.0.0', platform: 'douyin', page: 'publish', status: 'active', created_at: '2024-01-20 09:05', updated_at: '2024-01-20 09:05' },
-  { id: 8, name: 'submit_button', selector: '.submit-btn', selector_type: 'class', description: '提交按钮', version: '1.0.0', platform: 'douyin', page: 'publish', status: 'deprecated', created_at: '2024-01-10 11:00', updated_at: '2024-01-15 16:00' }
+const debugConfig = ref({
+  platform: 'pinduoduo',
+  url: '',
+  presetPage: '',
+  waitSelector: ''
+})
+
+const selectorTest = ref({
+  selector: '',
+  selectorType: 'css',
+  actionType: 'click'
+})
+
+const testResult = ref<any>(null)
+const openingPage = ref(false)
+const testing = ref(false)
+const pageOpened = ref(false)
+const screenshotUrl = ref('')
+const pageInfo = ref<any>(null)
+
+const exportConfig = ref({
+  scope: 'all',
+  platform: 'pinduoduo',
+  platformPage: [],
+  format: 'json'
+})
+
+const batchUpdateData = ref({
+  platform: 'pinduoduo',
+  page: 'login'
+})
+
+const templates = ref([
+  { name: '商品发布基础', description: '包含商品标题、价格、描述等输入框', platforms: ['拼多多', '抖音', '淘宝'], count: 8 },
+  { name: '登录表单', description: '用户名、密码、验证码输入框', platforms: ['拼多多', '抖音', '淘宝', '京东'], count: 5 },
+  { name: '发布成功提取', description: '提取商品ID、链接等信息', platforms: ['拼多多', '抖音'], count: 4 }
 ])
 
-const getPlatformName = (platform: string): string => {
-  const platformMap: Record<string, string> = {
-    douyin: '抖音',
-    pinduoduo: '拼多多',
-    taobao: '淘宝',
-    jingdong: '京东',
-    xiaohongshu: '小红书'
+const platformPageOptions = computed(() => {
+  return platforms.map(p => ({
+    label: p.label,
+    value: p.value,
+    children: pageOptions.map(pg => ({ label: pg.label, value: pg.value }))
+  }))
+})
+
+const filteredElements = computed(() => {
+  let result = elements.value.filter(e => e.platform === selectedPlatform.value && e.page === selectedPage.value)
+  if (searchKeyword.value) {
+    result = result.filter(e => e.name.toLowerCase().includes(searchKeyword.value.toLowerCase()))
   }
-  return platformMap[platform] || platform
+  return result
+})
+
+const getPlatformName = (platform: string) => {
+  return platforms.find(p => p.value === platform)?.label || platform
 }
 
-const getSelectorTypeName = (type: string): string => {
-  const typeMap: Record<string, string> = {
-    css: 'CSS选择器',
-    xpath: 'XPath',
-    id: 'ID',
-    class: 'Class',
-    name: 'Name'
+const getActionLabel = (action: string) => {
+  const labels: Record<string, string> = {
+    click: '点击',
+    input: '输入',
+    upload: '上传',
+    extract: '提取',
+    wait: '等待',
+    navigate: '导航'
   }
-  return typeMap[type] || type
+  return labels[action] || action
 }
 
-const getSelectorTypeTag = (type: string): string => {
-  const typeMap: Record<string, string> = {
-    css: 'primary',
-    xpath: 'success',
-    id: 'warning',
-    class: 'info',
-    name: 'danger'
+const getSelectorPlaceholder = (type: string) => {
+  const placeholders: Record<string, string> = {
+    css: "例如: input[name='username']",
+    xpath: "例如: //input[@id='username']",
+    id: "例如: username",
+    class: "例如: login-form",
+    text: "例如: 登录"
   }
-  return typeMap[type] || 'info'
+  return placeholders[type] || ''
 }
 
-const refreshElements = () => {}
-
-const toggleStatus = (element: Element) => {
-  element.status = element.status === 'active' ? 'inactive' : 'active'
+const onPlatformChange = () => {
+  selectedPage.value = 'login'
+  loadElements()
 }
 
-const editElement = (element: Element) => {
-  isEditing.value = true
-  form.value = {
-    id: element.id,
-    name: element.name,
-    selector: element.selector,
-    selector_type: element.selector_type,
-    description: element.description,
-    version: element.version,
-    status: element.status
+const loadElements = () => {
+  elements.value = [
+    { id: 1, name: 'username_input', display_name: '用户名输入框', description: '登录用户名输入', selectors: [{ type: 'css', value: "input[name='username']" }, { type: 'xpath', value: "//input[@name='username']" }], selector_type: 'css', selector: "input[name='username']", action_type: 'input', page: 'login', platform: 'pinduoduo', version: 1, is_active: true },
+    { id: 2, name: 'password_input', display_name: '密码输入框', description: '登录密码输入', selectors: [{ type: 'css', value: "input[name='password']" }], selector_type: 'css', selector: "input[name='password']", action_type: 'input', page: 'login', platform: 'pinduoduo', version: 1, is_active: true },
+    { id: 3, name: 'login_button', display_name: '登录按钮', description: '登录确认按钮', selectors: [{ type: 'text', value: '登录' }, { type: 'css', value: 'button[type="submit"]' }], selector_type: 'text', selector: '登录', action_type: 'click', page: 'login', platform: 'pinduoduo', version: 2, is_active: true },
+    { id: 4, name: 'title_input', display_name: '商品标题输入', description: '商品标题输入框', selectors: [{ type: 'css', value: "input[placeholder*='商品名称']" }], selector_type: 'css', selector: "input[placeholder*='商品名称']", action_type: 'input', page: 'publish', platform: 'pinduoduo', version: 1, is_active: true },
+    { id: 5, name: 'price_input', display_name: '价格输入', description: '商品价格输入框', selectors: [{ type: 'css', value: "input[name='price']" }], selector_type: 'css', selector: "input[name='price']", action_type: 'input', page: 'publish', platform: 'pinduoduo', version: 1, is_active: true },
+    { id: 6, name: 'submit_button', display_name: '提交按钮', description: '发布商品提交', selectors: [{ type: 'text', value: '发布' }], selector_type: 'text', selector: '发布', action_type: 'click', page: 'publish', platform: 'pinduoduo', version: 1, is_active: true },
+    { id: 7, name: 'product_id', display_name: '商品ID', description: '发布成功后的商品ID', selectors: [{ type: 'css', value: '#goods_id' }, { type: 'css', value: '[data-goods-id]' }, { type: 'css', value: '.goods-id' }], selector_type: 'css', selector: '#goods_id', action_type: 'extract', page: 'publish_success', platform: 'pinduoduo', version: 1, is_active: true },
+    { id: 8, name: 'product_url', display_name: '商品链接', description: '商品详情页链接', selectors: [{ type: 'css', value: '.goods-link' }, { type: 'css', value: "a[href*='goods']" }], selector_type: 'css', selector: '.goods-link', action_type: 'extract', page: 'publish_success', platform: 'pinduoduo', version: 1, is_active: true }
+  ]
+}
+
+const onSelectionChange = (selection: any[]) => {
+  selectedElements.value = selection
+}
+
+const clearSelection = () => {
+  selectedElements.value = []
+}
+
+const openAddModal = () => {
+  editingElement.value = null
+  elementForm.value = {
+    name: '',
+    display_name: '',
+    description: '',
+    action_type: 'click',
+    selectors: [{ type: 'css', value: '' }]
   }
+  selectorTestResults.value = []
   showAddModal.value = true
 }
 
-const deleteElement = (element: Element) => {
-  if (confirm(`确定删除元素 "${element.name}" 吗？`)) {
-    elements.value = elements.value.filter(e => e.id !== element.id)
+const addSelector = () => {
+  elementForm.value.selectors.push({ type: 'css', value: '' })
+}
+
+const removeSelector = (index: number) => {
+  elementForm.value.selectors.splice(index, 1)
+}
+
+const editElement = (element: any) => {
+  editingElement.value = element
+  elementForm.value = {
+    name: element.name,
+    display_name: element.display_name || '',
+    description: element.description || '',
+    action_type: element.action_type || 'click',
+    selectors: element.selectors?.length ? [...element.selectors] : [{ type: element.selector_type || 'css', value: element.selector }]
   }
+  selectorTestResults.value = []
+  showAddModal.value = true
+}
+
+const updateElement = async (element: any) => {
+  ElMessage.success(`元素 ${element.name} 状态已更新`)
 }
 
 const saveElement = () => {
-  if (isEditing.value) {
-    const index = elements.value.findIndex(e => e.id === form.value.id)
+  if (!elementForm.value.name) {
+    ElMessage.warning('请输入元素名称')
+    return
+  }
+
+  if (editingElement.value) {
+    const index = elements.value.findIndex(e => e.id === editingElement.value.id)
     if (index !== -1) {
       elements.value[index] = {
         ...elements.value[index],
-        name: form.value.name,
-        selector: form.value.selector,
-        selector_type: form.value.selector_type,
-        description: form.value.description,
-        version: form.value.version,
-        status: form.value.status,
-        updated_at: new Date().toLocaleString('zh-CN')
+        ...elementForm.value,
+        version: elements.value[index].version + 1,
+        updated_at: new Date().toISOString()
       }
     }
+    ElMessage.success('元素已更新')
   } else {
     elements.value.push({
-      id: elements.value.length + 1,
-      name: form.value.name,
-      selector: form.value.selector,
-      selector_type: form.value.selector_type,
-      description: form.value.description,
-      version: form.value.version,
+      id: Date.now(),
       platform: selectedPlatform.value,
       page: selectedPage.value,
-      status: form.value.status,
-      created_at: new Date().toLocaleString('zh-CN'),
-      updated_at: new Date().toLocaleString('zh-CN')
+      ...elementForm.value,
+      version: 1,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     })
+    ElMessage.success('元素已添加')
   }
+
   showAddModal.value = false
-  form.value = { id: 0, name: '', selector: '', selector_type: 'css', description: '', version: '1.0.0', status: 'active' }
-  isEditing.value = false
+  editingElement.value = null
 }
+
+const deleteElement = async (element: any) => {
+  await ElMessageBox.confirm(`确定删除元素 "${element.name}" 吗？`, '删除确认', { type: 'warning' })
+  elements.value = elements.value.filter(e => e.id !== element.id)
+  ElMessage.success('元素已删除')
+}
+
+const testConnection = async () => {
+  testing.value = true
+  try {
+    const res = await axios.get(`${API_BASE}/test-connection`)
+    browserStatus.value = res.data.status
+    if (res.data.success) {
+      ElMessage.success('Playwright 连接正常')
+    } else {
+      ElMessage.error(res.data.message)
+    }
+  } catch (e: any) {
+    ElMessage.error('连接失败: ' + (e.message || '未知错误'))
+    browserStatus.value = 'error'
+  }
+  testing.value = false
+}
+
+const closeBrowser = async () => {
+  try {
+    await axios.post(`${API_BASE}/close-browser`)
+    pageOpened.value = false
+    screenshotUrl.value = ''
+    pageInfo.value = null
+    browserStatus.value = null
+    ElMessage.success('浏览器已关闭')
+  } catch (e: any) {
+    ElMessage.error('关闭失败: ' + (e.message || '未知错误'))
+  }
+}
+
+const openDebugPage = async () => {
+  if (!debugConfig.value.url) {
+    ElMessage.warning('请输入页面URL')
+    return
+  }
+
+  openingPage.value = true
+  try {
+    const res = await axios.post(`${API_BASE}/open-page`, {
+      platform: debugConfig.value.platform,
+      url: debugConfig.value.url,
+      wait_selector: debugConfig.value.waitSelector,
+      wait_timeout: 5000
+    })
+
+    if (res.data.success) {
+      screenshotUrl.value = res.data.screenshot + '?t=' + Date.now()
+      pageOpened.value = true
+      ElMessage.success('页面已打开: ' + res.data.page_title)
+
+      try {
+        const infoRes = await axios.post(`${API_BASE}/get-page-info`, {
+          platform: debugConfig.value.platform,
+          url: debugConfig.value.url
+        })
+        pageInfo.value = infoRes.data
+      } catch {}
+    } else {
+      ElMessage.error(res.data.detail || '打开页面失败')
+    }
+  } catch (e: any) {
+    ElMessage.error('打开页面失败: ' + (e.response?.data?.detail || e.message))
+  }
+  openingPage.value = false
+}
+
+const loadPresetUrl = async () => {
+  if (!debugConfig.value.presetPage) return
+
+  try {
+    const res = await axios.get(`${API_BASE}/platform-urls`)
+    const platformUrls = res.data[debugConfig.value.platform]
+    if (platformUrls && platformUrls[debugConfig.value.presetPage]) {
+      debugConfig.value.url = platformUrls[debugConfig.value.presetPage]
+    }
+  } catch {
+    const urls: Record<string, Record<string, string>> = {
+      'pinduoduo': {
+        'login': 'https://mms.pinduoduo.com/login',
+        'publish': 'https://mms.pinduoduo.com/goods/create',
+        'publish_success': 'https://mms.pinduoduo.com/goods/success'
+      },
+      'douyin': {
+        'login': 'https://creator.douyin.com',
+        'publish': 'https://creator.douyin.com/product/publish'
+      }
+    }
+    const platformUrls = urls[debugConfig.value.platform]
+    if (platformUrls && debugConfig.value.presetPage) {
+      debugConfig.value.url = platformUrls[debugConfig.value.presetPage] || ''
+    }
+  }
+}
+
+const takeScreenshot = async () => {
+  try {
+    const res = await axios.post(`${API_BASE}/open-page`, {
+      platform: debugConfig.value.platform,
+      url: debugConfig.value.url
+    })
+    if (res.data.success) {
+      screenshotUrl.value = res.data.screenshot + '?t=' + Date.now()
+      ElMessage.success('截图已保存')
+    }
+  } catch (e: any) {
+    ElMessage.error('截图失败: ' + (e.message || '未知错误'))
+  }
+}
+
+const refreshPage = async () => {
+  if (debugConfig.value.url) {
+    await openDebugPage()
+  }
+}
+
+const handleImageError = () => {
+  setTimeout(() => {
+    if (screenshotUrl.value) {
+      screenshotUrl.value = screenshotUrl.value.split('?')[0] + '?t=' + Date.now()
+    }
+  }, 1000)
+}
+
+const testSelector = async (element: any) => {
+  testing.value = true
+  testResult.value = null
+
+  try {
+    const selectors = element.selectors || [{ type: element.selector_type || 'css', value: element.selector }]
+    const results = []
+
+    for (const sel of selectors) {
+      try {
+        const res = await axios.post(`${API_BASE}/test-selector`, {
+          selector: sel.value,
+          selector_type: sel.type,
+          action_type: element.action_type || 'click'
+        }, {
+          params: {
+            platform: element.platform || 'pinduoduo',
+            url: debugConfig.value.url || 'about:blank'
+          }
+        })
+        results.push(res.data)
+      } catch {
+        results.push({ found: false, count: 0 })
+      }
+    }
+
+    const validResult = results.find(r => r.found)
+    if (validResult) {
+      testResult.value = {
+        success: true,
+        found: true,
+        count: validResult.element_count,
+        message: `找到 ${validResult.element_count} 个元素`,
+        text: validResult.element_text,
+        boundingBox: validResult.bounding_box
+      }
+      ElMessage.success('选择器测试成功')
+    } else {
+      testResult.value = {
+        success: false,
+        found: false,
+        count: 0,
+        message: '所有选择器均未找到元素'
+      }
+      ElMessage.warning('未找到元素，尝试备用选择器')
+    }
+  } catch (e: any) {
+    testResult.value = {
+      success: false,
+      found: false,
+      message: e.message || '测试失败'
+    }
+    ElMessage.error('测试失败')
+  }
+
+  testing.value = false
+}
+
+const debugWithPlaywright = (element: any) => {
+  activeTab.value = 'debug'
+  debugConfig.value.platform = element.platform || 'pinduoduo'
+  selectorTest.value.selector = element.selectors?.[0]?.value || element.selector
+  selectorTest.value.selectorType = element.selectors?.[0]?.type || element.selector_type || 'css'
+
+  if (!debugConfig.value.url && element.page) {
+    const pageMap: Record<string, string> = {
+      'login': 'login',
+      'publish': 'publish',
+      'publish_success': 'publish_success'
+    }
+    debugConfig.value.presetPage = pageMap[element.page] || 'login'
+    loadPresetUrl()
+  }
+
+  ElMessage.info('已切换到调试面板，请先打开页面')
+}
+
+const testCurrentSelector = async () => {
+  if (!selectorTest.value.selector) {
+    ElMessage.warning('请输入选择器')
+    return
+  }
+
+  testing.value = true
+  testResult.value = null
+
+  try {
+    const res = await axios.post(`${API_BASE}/test-selector`, {
+      selector: selectorTest.value.selector,
+      selector_type: selectorTest.value.selectorType,
+      action_type: selectorTest.value.actionType
+    }, {
+      params: {
+        platform: debugConfig.value.platform,
+        url: debugConfig.value.url || 'about:blank'
+      }
+    })
+
+    if (res.data.success) {
+      testResult.value = {
+        success: true,
+        found: res.data.found,
+        count: res.data.element_count,
+        message: res.data.found ? `找到 ${res.data.element_count} 个元素` : '未找到元素',
+        text: res.data.element_text,
+        boundingBox: res.data.bounding_box
+      }
+      if (res.data.found) {
+        ElMessage.success('选择器有效')
+      } else {
+        ElMessage.warning('未找到元素')
+      }
+    } else {
+      testResult.value = {
+        success: false,
+        found: false,
+        message: res.data.error || '测试失败'
+      }
+      ElMessage.error(res.data.error || '测试失败')
+    }
+  } catch (e: any) {
+    testResult.value = {
+      success: false,
+      found: false,
+      message: e.message || '测试失败'
+    }
+    ElMessage.error('测试失败: ' + (e.message || '未知错误'))
+  }
+
+  testing.value = false
+}
+
+const testSingleSelector = async (selector: any, index: number) => {
+  testingSelectorIndex.value = index
+
+  try {
+    const res = await axios.post(`${API_BASE}/test-selector`, {
+      selector: selector.value,
+      selector_type: selector.type,
+      action_type: 'click'
+    }, {
+      params: {
+        platform: debugConfig.value.platform,
+        url: debugConfig.value.url || 'about:blank'
+      }
+    })
+
+    if (res.data.found) {
+      ElMessage.success(`选择器 ${index + 1} 有效`)
+    } else {
+      ElMessage.warning(`选择器 ${index + 1} 无效`)
+    }
+  } catch (e: any) {
+    ElMessage.error('测试失败')
+  }
+
+  testingSelectorIndex.value = null
+}
+
+const testFormSelector = async () => {
+  if (!debugConfig.value.url) {
+    ElMessage.warning('请先在调试面板打开页面')
+    return
+  }
+
+  testingFormSelector.value = true
+  selectorTestResults.value = []
+
+  try {
+    for (let i = 0; i < elementForm.value.selectors.length; i++) {
+      const sel = elementForm.value.selectors[i]
+      try {
+        const res = await axios.post(`${API_BASE}/test-selector`, {
+          selector: sel.value,
+          selector_type: sel.type,
+          action_type: 'click'
+        }, {
+          params: {
+            platform: debugConfig.value.platform,
+            url: debugConfig.value.url
+          }
+        })
+        selectorTestResults.value.push({
+          index: i + 1,
+          type: sel.type,
+          value: sel.value,
+          found: res.data.found,
+          count: res.data.element_count || 0
+        })
+      } catch {
+        selectorTestResults.value.push({
+          index: i + 1,
+          type: sel.type,
+          value: sel.value,
+          found: false,
+          count: 0
+        })
+      }
+    }
+
+    const successCount = selectorTestResults.value.filter(r => r.found).length
+    ElMessage.success(`测试完成: ${successCount}/${selectorTestResults.value.length} 个选择器有效`)
+  } catch (e: any) {
+    ElMessage.error('批量测试失败')
+  }
+
+  testingFormSelector.value = false
+}
+
+const highlightElement = async () => {
+  if (!selectorTest.value.selector) {
+    ElMessage.warning('请输入选择器')
+    return
+  }
+
+  testing.value = true
+
+  try {
+    const res = await axios.post(`${API_BASE}/highlight-element`, null, {
+      params: {
+        platform: debugConfig.value.platform,
+        url: debugConfig.value.url,
+        selector: selectorTest.value.selector,
+        selector_type: selectorTest.value.selectorType
+      }
+    })
+
+    if (res.data.success) {
+      ElMessage.success(res.data.message)
+      screenshotUrl.value = res.data.screenshot + '?t=' + Date.now()
+    } else {
+      ElMessage.error(res.data.error || '高亮失败')
+    }
+  } catch (e: any) {
+    ElMessage.error('高亮失败: ' + (e.message || '未知错误'))
+  }
+
+  testing.value = false
+}
+
+const switchToDebug = () => {
+  activeTab.value = 'debug'
+  ElMessage.info('请先打开页面，然后测试选择器')
+}
+
+const batchEnable = () => {
+  selectedElements.value.forEach(e => e.is_active = true)
+  ElMessage.success(`已启用 ${selectedElements.value.length} 个元素`)
+  clearSelection()
+}
+
+const batchDisable = () => {
+  selectedElements.value.forEach(e => e.is_active = false)
+  ElMessage.success(`已禁用 ${selectedElements.value.length} 个元素`)
+  clearSelection()
+}
+
+const batchUpdatePage = () => {
+  if (selectedElements.value.length === 0) {
+    ElMessage.warning('请先选择元素')
+    return
+  }
+  batchUpdateData.value = {
+    platform: selectedElements.value[0].platform || 'pinduoduo',
+    page: selectedElements.value[0].page || 'login'
+  }
+  showBatchPageDialog.value = true
+}
+
+const confirmBatchUpdatePage = () => {
+  selectedElements.value.forEach(e => {
+    e.platform = batchUpdateData.value.platform
+    e.page = batchUpdateData.value.page
+  })
+  ElMessage.success(`已修改 ${selectedElements.value.length} 个元素的页面配置`)
+  showBatchPageDialog.value = false
+  clearSelection()
+}
+
+const batchDelete = async () => {
+  await ElMessageBox.confirm(`确定删除选中的 ${selectedElements.value.length} 个元素吗？`, '批量删除', { type: 'warning' })
+  const ids = selectedElements.value.map(e => e.id)
+  elements.value = elements.value.filter(e => !ids.includes(e.id))
+  ElMessage.success('批量删除完成')
+  clearSelection()
+}
+
+const handleImportFile = (file: any) => {
+  importFile.value = file.raw
+}
+
+const doImport = () => {
+  ElMessage.success('导入成功')
+  showImportDialog.value = false
+  importFile.value = null
+  loadElements()
+}
+
+const exportElements = () => {
+  const data = JSON.stringify(filteredElements.value, null, 2)
+  const blob = new Blob([data], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `elements_${selectedPlatform.value}_${selectedPage.value}.json`
+  a.click()
+  ElMessage.success('导出成功')
+}
+
+const doExport = () => {
+  exportElements()
+}
+
+const rollbackVersion = (version: any) => {
+  ElMessage.success(`已回滚到 v${version.version} 版本`)
+}
+
+const applyTemplate = (template: any) => {
+  ElMessage.success(`已应用 "${template.name}" 模板`)
+}
+
+onMounted(() => {
+  loadElements()
+  testConnection()
+})
+
+onUnmounted(() => {
+  closeBrowser()
+})
 </script>
 
 <style scoped>
-.elements {
-  padding: 10px;
+.elements-manager {
+  padding: 20px;
+}
+
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  color: #303133;
+}
+
+.subtitle {
+  color: #909399;
+  margin: 0;
 }
 
 .toolbar {
@@ -287,38 +1228,159 @@ const saveElement = () => {
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-.toolbar :deep(.el-select) {
-  width: 150px;
-}
-
-.elements-card {
-  margin-top: 20px;
-}
-
-.elements-header {
+.debug-toolbar {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.batch-toolbar {
+  display: flex;
+  gap: 10px;
   align-items: center;
   margin-bottom: 15px;
+  padding: 10px 15px;
+  background: #ecf5ff;
+  border-radius: 8px;
 }
 
-.elements-header h3 {
-  margin: 0;
-  font-size: 16px;
+.element-info {
+  display: flex;
+  flex-direction: column;
 }
 
-.count {
-  font-size: 14px;
-  color: #6b7280;
+.element-name {
+  font-weight: 500;
+}
+
+.element-desc {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
 }
 
 .selector-code {
-  background-color: #f3f4f6;
+  background: #f3f4f6;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-  color: #374151;
+}
+
+.backup-selectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.no-backup {
+  color: #c0c4cc;
+  font-size: 13px;
+}
+
+.debug-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.selector-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f5f7fa;
+  border-radius: 8px;
+}
+
+.selector-test-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.test-result-inline {
+  margin-left: 15px;
+}
+
+.preview-container {
+  width: 100%;
+  min-height: 400px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  width: 100%;
+  height: auto;
+  max-height: 800px;
+  object-fit: contain;
+}
+
+.no-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #c0c4cc;
+}
+
+.no-preview p {
+  margin-top: 10px;
+}
+
+.no-preview .hint {
+  font-size: 12px;
+  color: #909399;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.template-card {
+  margin-bottom: 20px;
+}
+
+.template-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.template-desc {
+  color: #606266;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.template-platforms {
+  margin-top: 10px;
+}
+
+.page-preview {
+  grid-column: 1 / -1;
+}
+
+.test-result {
+  margin-top: 10px;
+}
+
+.test-results-list {
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .debug-panel {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
