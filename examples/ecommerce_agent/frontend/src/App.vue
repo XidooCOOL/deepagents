@@ -53,6 +53,10 @@
             <el-icon><component :is="icons.Message" /></el-icon>
             <span>飞书集成</span>
           </el-menu-item>
+          <el-menu-item index="/webhooks">
+            <el-icon><component :is="icons.Bell" /></el-icon>
+            <span>Webhook管理</span>
+          </el-menu-item>
         </div>
         
         <div class="menu-section">
@@ -255,7 +259,8 @@ const pageTitleMap: Record<string, string> = {
   '/product-publish': '批量发布',
   '/published-products': '已发布商品',
   '/llm-config': '模型配置',
-  '/feishu': '飞书集成'
+  '/feishu': '飞书集成',
+  '/webhooks': 'Webhook管理'
 }
 
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')

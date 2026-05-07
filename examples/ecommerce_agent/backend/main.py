@@ -123,6 +123,10 @@ app.include_router(status_router)
 from backend.api.feishu import router as feishu_router
 app.include_router(feishu_router)
 
+# 注册 Webhook 管理 API
+from backend.api.webhooks import router as webhooks_router
+app.include_router(webhooks_router)
+
 # 注册已发布商品 API
 from backend.api.published_products import router as published_products_router
 app.include_router(published_products_router)

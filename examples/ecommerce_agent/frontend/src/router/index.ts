@@ -90,6 +90,11 @@ const routes: RouteRecordRaw[] = [
     path: '/feishu',
     name: 'Feishu',
     component: () => import('../views/Feishu.vue')
+  },
+  {
+    path: '/webhooks',
+    name: 'Webhooks',
+    component: () => import('../views/Webhooks.vue')
   }
 ]
 
