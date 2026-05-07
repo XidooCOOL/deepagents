@@ -9,6 +9,10 @@
           <el-icon><component :is="icons.HomeFilled" /></el-icon>
           <span>控制台</span>
         </el-menu-item>
+        <el-menu-item index="/agent">
+          <el-icon><component :is="icons.Robot" /></el-icon>
+          <span>Agent工作台</span>
+        </el-menu-item>
         <el-menu-item index="/stores">
           <el-icon><component :is="icons.OfficeBuilding" /></el-icon>
           <span>店铺管理</span>
@@ -70,6 +74,7 @@ const activeMenu = computed(() => route.path)
 
 const pageTitleMap: Record<string, string> = {
   '/': '控制台',
+  '/agent': 'Agent工作台',
   '/stores': '店铺管理',
   '/tasks': '任务管理',
   '/workflow': '工作流',
