@@ -12,6 +12,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/AgentConsole.vue')
   },
   {
+    path: '/workflow-config',
+    name: 'WorkflowConfig',
+    component: () => import('../views/WorkflowConfig.vue')
+  },
+  {
     path: '/stores',
     name: 'Stores',
     component: () => import('../views/Stores.vue')
