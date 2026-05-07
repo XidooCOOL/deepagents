@@ -2,11 +2,11 @@
   <div class="workflow-config">
     <div class="page-header">
       <h2>⚙️ 工作流配置中心</h2>
-      <p class="subtitle">配置自动化工作流 · 定义执行步骤 · 管理上传文件</p>
+      <p class="subtitle">灵活编排步骤 · 智能页面绑定 · 自动 DOM 关联</p>
     </div>
 
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card class="stats-card">
           <div class="stats-content">
             <div class="stats-icon" style="background: #409eff;">
@@ -19,7 +19,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card class="stats-card">
           <div class="stats-content">
             <div class="stats-icon" style="background: #67c23a;">
@@ -32,20 +32,20 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card class="stats-card">
           <div class="stats-content">
             <div class="stats-icon" style="background: #e6a23c;">
               <el-icon><component :is="icons.FolderOpened" /></el-icon>
             </div>
             <div class="stats-info">
-              <div class="stats-value">{{ fileTemplates.length }}</div>
-              <div class="stats-label">文件模板</div>
+              <div class="stats-value">{{ domElements.length }}</div>
+              <div class="stats-label">DOM 元素</div>
             </div>
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card class="stats-card">
           <div class="stats-content">
             <div class="stats-icon" style="background: #f56c6c;">
@@ -64,11 +64,14 @@
       <div class="card-header">
         <h3>📋 工作流模板列表</h3>
         <div class="header-actions">
+          <el-select v-model="selectedPlatform" placeholder="筛选平台" clearable size="default" style="width: 150px; margin-right: 10px;">
+            <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
+          </el-select>
           <el-button type="primary" @click="showCreateDialog = true" icon="Plus">创建模板</el-button>
         </div>
       </div>
 
-      <el-table :data="workflowTemplates" border stripe>
+      <el-table :data="filteredWorkflows" border stripe>
         <el-table-column prop="name" label="模板名称" min-width="150">
           <template #default="scope">
             <div class="template-name">
@@ -78,7 +81,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" min-width="200" />
-        <el-table-column prop="platform" label="适用平台" width="150">
+        <el-table-column prop="platform" label="适用平台" width="200">
           <template #default="scope">
             <el-tag v-for="p in scope.row.platforms" :key="p" size="small" type="success" style="margin: 2px;">
               {{ p }}
@@ -86,246 +89,516 @@
           </template>
         </el-table-column>
         <el-table-column prop="steps" label="步骤数" width="100">
-          <template #default="scope">{{ scope.row.steps.length }} 步</template>
-        </el-table-column>
-        <el-table-column prop="parameters" label="参数" width="100">
-          <template #default="scope">{{ scope.row.parameters.length }} 个</template>
-        </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
           <template #default="scope">
-            <el-button size="small" type="primary" @click="editWorkflow(scope.row)">编辑</el-button>
-            <el-button size="small" type="success" @click="previewWorkflow(scope.row)">预览</el-button>
-            <el-button size="small" type="danger" @click="deleteWorkflow(scope.row)">删除</el-button>
+            <el-badge :value="scope.row.steps.length" type="primary" />
+          </template>
+        </el-table-column>
+        <el-table-column label="涉及页面" width="150">
+          <template #default="scope">
+            <el-tag v-for="page in getUniquePages(scope.row)" :key="page" size="small" style="margin: 2px;">
+              {{ page }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="280" fixed="right">
+          <template #default="scope">
+            <el-button size="small" type="primary" @click="editWorkflow(scope.row)" icon="Edit">编辑</el-button>
+            <el-button size="small" type="success" @click="duplicateWorkflow(scope.row)" icon="Copy">复制</el-button>
+            <el-button size="small" type="info" @click="previewWorkflow(scope.row)" icon="View">预览</el-button>
+            <el-button size="small" type="danger" @click="deleteWorkflow(scope.row)" icon="Delete">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
 
-    <el-row :gutter="20" style="margin-top: 20px;">
-      <el-col :span="12">
-        <el-card class="param-card">
-          <div class="card-header">
-            <h3>📝 参数模板管理</h3>
-            <el-button size="small" type="primary" @click="showParamDialog = true" icon="Plus">创建参数模板</el-button>
-          </div>
-          
-          <el-table :data="parameterTemplates" border stripe size="small">
-            <el-table-column prop="name" label="参数名称" width="150" />
-            <el-table-column prop="type" label="类型" width="120">
-              <template #default="scope">
-                <el-tag size="small" :type="getParamTypeTag(scope.row.type)">{{ scope.row.type }}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="description" label="描述" />
-            <el-table-column label="操作" width="120">
-              <template #default="scope">
-                <el-button size="small" @click="editParam(scope.row)" icon="Edit" />
-                <el-button size="small" type="danger" @click="deleteParam(scope.row)" icon="Delete" />
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-      </el-col>
+    <el-dialog v-model="showCreateDialog" :title="editingWorkflow ? '✏️ 编辑工作流模板' : '✨ 创建工作流模板'" width="95%" top="3vh" :fullscreen="isFullscreen">
+      <template #header>
+        <div class="dialog-header">
+          <span>{{ editingWorkflow ? '编辑工作流模板' : '创建工作流模板' }}</span>
+          <el-button text @click="isFullscreen = !isFullscreen" :icon="isFullscreen ? 'Close' : 'FullScreen'">
+            {{ isFullscreen ? '退出全屏' : '全屏编辑' }}
+          </el-button>
+        </div>
+      </template>
       
-      <el-col :span="12">
-        <el-card class="file-card">
-          <div class="card-header">
-            <h3>📁 文件/图片配置</h3>
-            <el-button size="small" type="primary" @click="showFileDialog = true" icon="Plus">添加文件配置</el-button>
-          </div>
-          
-          <div class="file-list">
-            <div v-for="file in fileTemplates" :key="file.id" class="file-item">
-              <div class="file-info">
-                <el-icon :size="20"><component :is="getFileIcon(file.type)" /></el-icon>
-                <div class="file-details">
-                  <div class="file-name">{{ file.name }}</div>
-                  <div class="file-type">{{ file.type }} · {{ file.source }}</div>
-                </div>
-              </div>
-              <div class="file-actions">
-                <el-tag v-if="file.required" size="small" type="danger">必填</el-tag>
-                <el-tag v-else size="small" type="info">可选</el-tag>
-                <el-button-group>
-                  <el-button size="small" @click="editFile(file)" icon="Edit" />
-                  <el-button size="small" type="danger" @click="deleteFile(file)" icon="Delete" />
-                </el-button-group>
-              </div>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-dialog v-model="showCreateDialog" :title="editingWorkflow ? '编辑工作流模板' : '创建工作流模板'" width="90%" top="5vh">
       <div v-if="currentWorkflow" class="workflow-editor">
-        <el-form :model="currentWorkflow" label-width="120px">
-          <el-form-item label="模板名称">
-            <el-input v-model="currentWorkflow.name" placeholder="例如：商品发布工作流" />
-          </el-form-item>
+        <el-form :model="currentWorkflow" label-width="120px" class="workflow-form">
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="模板名称" required>
+                <el-input v-model="currentWorkflow.name" placeholder="例如：商品发布工作流" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="适用平台" required>
+                <el-checkbox-group v-model="currentWorkflow.platforms">
+                  <el-checkbox label="抖音" />
+                  <el-checkbox label="拼多多" />
+                  <el-checkbox label="淘宝" />
+                  <el-checkbox label="京东" />
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-form-item label="描述">
             <el-input v-model="currentWorkflow.description" type="textarea" :rows="2" placeholder="描述此工作流的用途" />
           </el-form-item>
-          <el-form-item label="适用平台">
-            <el-checkbox-group v-model="currentWorkflow.platforms">
-              <el-checkbox label="抖音" />
-              <el-checkbox label="拼多多" />
-              <el-checkbox label="淘宝" />
-              <el-checkbox label="京东" />
-            </el-checkbox-group>
-          </el-form-item>
         </el-form>
 
-        <el-divider>📝 参数定义</el-divider>
+        <el-divider content-position="left">
+          <el-icon><component :is="icons.Setting" /></el-icon>
+          参数定义
+        </el-divider>
         
         <div class="params-section">
-          <div v-for="(param, index) in currentWorkflow.parameters" :key="index" class="param-item">
-            <el-input v-model="param.name" placeholder="参数名" style="width: 150px;" />
-            <el-select v-model="param.type" placeholder="类型" style="width: 120px;">
-              <el-option label="文本" value="text" />
-              <el-option label="数字" value="number" />
-              <el-option label="文件列表" value="files" />
-              <el-option label="下拉选择" value="select" />
-              <el-option label="布尔值" value="boolean" />
-            </el-select>
-            <el-input v-model="param.description" placeholder="描述" style="flex: 1;" />
-            <el-input v-model="param.default" placeholder="默认值" style="width: 150px;" />
-            <el-button type="danger" @click="removeParam(index)" icon="Delete" />
-          </div>
-          <el-button type="primary" @click="addParam" icon="Plus">添加参数</el-button>
+          <el-row :gutter="10" v-for="(param, index) in currentWorkflow.parameters" :key="index" class="param-row">
+            <el-col :span="4">
+              <el-input v-model="param.name" placeholder="参数名" size="small">
+                <template #prepend>{param}</template>
+              </el-input>
+            </el-col>
+            <el-col :span="3">
+              <el-select v-model="param.type" placeholder="类型" size="small">
+                <el-option label="文本" value="text" />
+                <el-option label="数字" value="number" />
+                <el-option label="文件列表" value="files" />
+                <el-option label="下拉选择" value="select" />
+                <el-option label="布尔值" value="boolean" />
+              </el-select>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="param.default" placeholder="默认值" size="small" />
+            </el-col>
+            <el-col :span="10">
+              <el-input v-model="param.description" placeholder="描述" size="small" />
+            </el-col>
+            <el-col :span="3">
+              <el-button type="danger" size="small" @click="removeParam(index)" icon="Delete">删除</el-button>
+            </el-col>
+          </el-row>
+          <el-button type="primary" size="small" @click="addParam" icon="Plus">添加参数</el-button>
         </div>
 
-        <el-divider>🔧 工作流步骤</el-divider>
+        <el-divider content-position="left">
+          <el-icon><component :is="icons.List" /></el-icon>
+          工作流步骤（支持拖拽排序）
+        </el-divider>
 
         <div class="steps-section">
-          <el-table :data="currentWorkflow.steps" border size="small">
-            <el-table-column label="顺序" width="80" type="index" />
-            <el-table-column label="步骤名称" width="150">
-              <template #default="scope">
-                <el-input v-model="scope.row.name" placeholder="步骤名称" />
-              </template>
-            </el-table-column>
-            <el-table-column label="操作类型" width="150">
-              <template #default="scope">
-                <el-select v-model="scope.row.action" @change="onActionChange(scope.row)">
-                  <el-option label="导航" value="navigate" />
-                  <el-option label="点击" value="click" />
-                  <el-option label="输入文本" value="input" />
-                  <el-option label="上传文件" value="upload" />
-                  <el-option label="等待" value="wait" />
-                  <el-option label="条件判断" value="if" />
-                  <el-option label="循环" value="loop" />
-                  <el-option label="执行子工作流" value="subworkflow" />
-                  <el-option label="截图" value="screenshot" />
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column label="配置">
-              <template #default="scope">
-                <div class="step-config">
-                  <template v-if="scope.row.action === 'navigate'">
-                    <el-input v-model="scope.row.config.url" placeholder="URL地址" />
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'click' || scope.row.action === 'input'">
-                    <el-select v-model="scope.row.config.selectorType" placeholder="选择器类型" style="width: 100px;">
-                      <el-option label="CSS" value="css" />
-                      <el-option label="XPath" value="xpath" />
-                      <el-option label="ID" value="id" />
-                      <el-option label="文本" value="text" />
-                    </el-select>
-                    <el-input v-model="scope.row.config.selector" placeholder="选择器表达式" style="flex: 1;" />
-                    <template v-if="scope.row.action === 'input'">
-                      <el-input v-model="scope.row.config.value" placeholder="输入值，使用{param}引用参数" style="margin-top: 5px;" />
-                    </template>
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'upload'">
-                    <el-select v-model="scope.row.config.paramName" placeholder="参数名" style="width: 150px;">
-                      <el-option v-for="p in currentWorkflow.parameters.filter(p => p.type === 'files')" :key="p.name" :label="p.name" :value="p.name" />
-                    </el-select>
-                    <el-select v-model="scope.row.config.selectorType" placeholder="选择器类型" style="width: 100px;">
-                      <el-option label="CSS" value="css" />
-                      <el-option label="XPath" value="xpath" />
-                    </el-select>
-                    <el-input v-model="scope.row.config.selector" placeholder="选择器" style="flex: 1;" />
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'wait'">
-                    <el-input v-model="scope.row.config.duration" placeholder="等待时间（毫秒）" type="number" style="width: 150px;" />
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'if'">
-                    <el-input v-model="scope.row.config.condition" placeholder="条件表达式" style="flex: 1;" />
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'loop'">
-                    <el-input v-model="scope.row.config.items" placeholder="循环项" style="flex: 1;" />
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'subworkflow'">
-                    <el-select v-model="scope.row.config.workflowName" placeholder="子工作流">
-                      <el-option v-for="wf in workflowTemplates" :key="wf.id" :label="wf.name" :value="wf.name" />
-                    </el-select>
-                  </template>
-                  
-                  <template v-else-if="scope.row.action === 'screenshot'">
-                    <el-input v-model="scope.row.config.filename" placeholder="截图文件名" style="flex: 1;" />
-                  </template>
+          <el-alert
+            title="💡 提示：拖拽步骤卡片可以调整顺序，点击步骤卡片可展开详细配置"
+            type="info"
+            :closable="false"
+            style="margin-bottom: 15px;"
+          />
+          
+          <draggable 
+            v-model="currentWorkflow.steps" 
+            item-key="id" 
+            handle=".drag-handle"
+            ghost-class="ghost-step"
+            @end="onDragEnd"
+            class="steps-list"
+          >
+            <template #item="{ element: step, index }">
+              <div 
+                class="step-card"
+                :class="{ 
+                  'active': expandedStepIndex === index,
+                  'navigate-step': step.action === 'navigate',
+                  'click-step': step.action === 'click',
+                  'input-step': step.action === 'input',
+                  'upload-step': step.action === 'upload'
+                }"
+                @click="toggleStepExpand(index)"
+              >
+                <div class="step-header">
+                  <el-icon class="drag-handle"><component :is="icons.Grid" /></el-icon>
+                  <span class="step-number">{{ index + 1 }}</span>
+                  <el-tag size="small" :type="getActionTagType(step.action)" class="step-action-tag">
+                    {{ getActionName(step.action) }}
+                  </el-tag>
+                  <el-input 
+                    v-model="step.name" 
+                    placeholder="步骤名称" 
+                    size="small" 
+                    class="step-name-input"
+                    @click.stop
+                  />
+                  <div class="step-actions" @click.stop>
+                    <el-tooltip content="复制步骤" placement="top">
+                      <el-button size="small" @click="duplicateStep(index)" icon="Copy" circle />
+                    </el-tooltip>
+                    <el-tooltip content="在下方插入步骤" placement="top">
+                      <el-button size="small" @click="insertStepBelow(index)" icon="Plus" circle type="primary" />
+                    </el-tooltip>
+                    <el-tooltip content="删除步骤" placement="top">
+                      <el-button size="small" @click="removeStep(index)" icon="Delete" circle type="danger" />
+                    </el-tooltip>
+                    <el-icon class="expand-icon" :class="{ 'expanded': expandedStepIndex === index }">
+                      <component :is="icons.ArrowRight" />
+                    </el-icon>
+                  </div>
                 </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="描述" width="150">
-              <template #default="scope">
-                <el-input v-model="scope.row.description" placeholder="步骤描述" />
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="100">
-              <template #default="scope">
-                <el-button-group>
-                  <el-button size="small" @click="moveStep(scope.$index, -1)" :disabled="scope.$index === 0" icon="Top" />
-                  <el-button size="small" @click="moveStep(scope.$index, 1)" :disabled="scope.$index === currentWorkflow.steps.length - 1" icon="Bottom" />
-                  <el-button size="small" type="danger" @click="removeStep(scope.$index)" icon="Delete" />
-                </el-button-group>
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-button type="primary" @click="addStep" icon="Plus" style="margin-top: 10px;">添加步骤</el-button>
-        </div>
+                
+                <div class="step-page-badge" v-if="step.page">
+                  <el-tag size="small" type="warning">
+                    <el-icon><component :is="icons.Document" /></el-icon>
+                    {{ step.page }}
+                  </el-tag>
+                </div>
 
-        <el-divider>📊 参数预览</el-divider>
-        
-        <div class="param-preview">
-          <pre>{{ formatJSON(currentWorkflow.parameters) }}</pre>
+                <div v-if="expandedStepIndex === index" class="step-config">
+                  <el-divider content-position="left">步骤配置</el-divider>
+                  
+                  <el-form label-width="100px" size="small">
+                    <el-form-item label="操作类型">
+                      <el-select v-model="step.action" @change="onActionChange(step)" style="width: 100%;">
+                        <el-option label="🔗 导航" value="navigate" />
+                        <el-option label="🖱️ 点击" value="click" />
+                        <el-option label="⌨️ 输入文本" value="input" />
+                        <el-option label="📤 上传文件" value="upload" />
+                        <el-option label="⏳ 等待" value="wait" />
+                        <el-option label="❓ 条件判断" value="if" />
+                        <el-option label="🔄 循环" value="loop" />
+                        <el-option label="📋 执行子工作流" value="subworkflow" />
+                        <el-option label="📸 截图" value="screenshot" />
+                      </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="所属页面">
+                      <el-select 
+                        v-model="step.page" 
+                        placeholder="选择页面（可选）" 
+                        clearable
+                        style="width: 100%;"
+                        @change="onPageChange(step, index)"
+                      >
+                        <el-option-group label="登录流程">
+                          <el-option label="登录页" value="login" />
+                        </el-option-group>
+                        <el-option-group label="商品流程">
+                          <el-option label="商品列表" value="products" />
+                          <el-option label="商品发布" value="publish" />
+                          <el-option label="商品编辑" value="edit" />
+                        </el-option-group>
+                        <el-option-group label="评价流程">
+                          <el-option label="评价列表" value="reviews" />
+                          <el-option label="评价回复" value="reply" />
+                        </el-option-group>
+                        <el-option-group label="订单流程">
+                          <el-option label="订单列表" value="orders" />
+                          <el-option label="订单详情" value="order-detail" />
+                        </el-option-group>
+                        <el-option-group label="数据流程">
+                          <el-option label="数据中心" value="data" />
+                          <el-option label="数据报表" value="report" />
+                        </el-option-group>
+                      </el-select>
+                    </el-form-item>
+
+                    <template v-if="step.action === 'navigate'">
+                      <el-form-item label="目标 URL">
+                        <el-input v-model="step.config.url" placeholder="https://..." />
+                      </el-form-item>
+                      <el-form-item label="等待加载">
+                        <el-switch v-model="step.config.waitForLoad" />
+                        <span style="margin-left: 10px; color: #909399;">等待页面加载完成</span>
+                      </el-form-item>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'click' || step.action === 'input'">
+                      <el-form-item label="选择 DOM 元素">
+                        <el-select 
+                          v-model="step.config.elementName" 
+                          placeholder="从已配置元素中选择（推荐）" 
+                          clearable
+                          filterable
+                          style="width: 100%;"
+                          @change="onElementSelect(step)"
+                        >
+                          <el-option-group 
+                            v-for="group in filteredElementGroups" 
+                            :key="group.label" 
+                            :label="group.label"
+                          >
+                            <el-option 
+                              v-for="el in group.options" 
+                              :key="el.name" 
+                              :label="`${el.name} (${el.selector})`" 
+                              :value="el.name"
+                            >
+                              <div class="element-option">
+                                <span class="element-name">{{ el.name }}</span>
+                                <code class="element-selector">{{ el.selector }}</code>
+                              </div>
+                            </el-option>
+                          </el-option-group>
+                        </el-select>
+                      </el-form-item>
+                      
+                      <el-form-item label="选择器类型">
+                        <el-radio-group v-model="step.config.selectorType" size="small">
+                          <el-radio-button label="css">CSS</el-radio-button>
+                          <el-radio-button label="xpath">XPath</el-radio-button>
+                          <el-radio-button label="id">ID</el-radio-button>
+                          <el-radio-button label="text">文本</el-radio-button>
+                        </el-radio-group>
+                      </el-form-item>
+                      
+                      <el-form-item label="选择器表达式">
+                        <el-input 
+                          v-model="step.config.selector" 
+                          placeholder="例如: input[name='username'] 或 //button[text()='提交']"
+                        >
+                          <template #append>
+                            <el-button @click="testSelector(step)" :loading="testingSelector">
+                              测试
+                            </el-button>
+                          </template>
+                        </el-input>
+                      </el-form-item>
+                      
+                      <el-form-item v-if="step.config.elementName" label="元素详情">
+                        <el-alert
+                          :title="`已绑定元素: ${step.config.elementName}`"
+                          type="success"
+                          :closable="false"
+                          show-icon
+                        />
+                      </el-form-item>
+                      
+                      <template v-if="step.action === 'input'">
+                        <el-form-item label="输入值">
+                          <el-input 
+                            v-model="step.config.value" 
+                            placeholder="输入值，支持 {param} 引用参数"
+                          />
+                        </el-form-item>
+                        <el-form-item label="引用参数">
+                          <el-tag 
+                            v-for="param in currentWorkflow.parameters" 
+                            :key="param.name"
+                            @click="insertParam(step, param.name)"
+                            style="cursor: pointer; margin: 2px;"
+                          >
+                            { {{ param.name }} }
+                          </el-tag>
+                        </el-form-item>
+                      </template>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'upload'">
+                      <el-form-item label="文件参数">
+                        <el-select v-model="step.config.paramName" placeholder="选择文件参数" style="width: 100%;">
+                          <el-option v-for="p in currentWorkflow.parameters.filter(p => p.type === 'files')" :key="p.name" :label="`{ ${p.name} }`" :value="p.name" />
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="选择 DOM 元素">
+                        <el-select v-model="step.config.elementName" placeholder="从已配置元素中选择" clearable filterable style="width: 100%;">
+                          <el-option-group v-for="group in filteredElementGroups" :key="group.label" :label="group.label">
+                            <el-option v-for="el in group.options" :key="el.name" :label="el.name" :value="el.name">
+                              <span>{{ el.name }}</span>
+                              <code style="margin-left: 10px; color: #909399;">{{ el.selector }}</code>
+                            </el-option>
+                          </el-option-group>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="选择器">
+                        <el-input v-model="step.config.selector" placeholder="选择器表达式" />
+                      </el-form-item>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'wait'">
+                      <el-form-item label="等待时间">
+                        <el-input-number v-model="step.config.duration" :min="0" :step="100" />
+                        <span style="margin-left: 10px;">毫秒</span>
+                      </el-form-item>
+                      <el-form-item label="等待条件">
+                        <el-select v-model="step.config.waitFor" placeholder="等待条件">
+                          <el-option label="固定时间" value="timeout" />
+                          <el-option label="元素可见" value="visible" />
+                          <el-option label="元素消失" value="hidden" />
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item v-if="step.config.waitFor !== 'timeout'" label="等待选择器">
+                        <el-input v-model="step.config.waitSelector" placeholder="选择器表达式" />
+                      </el-form-item>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'if'">
+                      <el-form-item label="条件表达式">
+                        <el-input v-model="step.config.condition" placeholder="例如: {param} > 0" />
+                      </el-form-item>
+                      <el-form-item label="为真时执行">
+                        <el-input v-model="step.config.thenSteps" placeholder="步骤索引，用逗号分隔" />
+                      </el-form-item>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'loop'">
+                      <el-form-item label="循环项">
+                        <el-input v-model="step.config.items" placeholder="例如: {productList}" />
+                      </el-form-item>
+                      <el-form-item label="循环变量">
+                        <el-input v-model="step.config.loopVar" placeholder="例如: product" />
+                      </el-form-item>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'subworkflow'">
+                      <el-form-item label="子工作流">
+                        <el-select v-model="step.config.workflowName" placeholder="选择子工作流" style="width: 100%;">
+                          <el-option v-for="wf in workflowTemplates.filter(w => w.id !== currentWorkflow.id)" :key="wf.id" :label="wf.name" :value="wf.name" />
+                        </el-select>
+                      </el-form-item>
+                    </template>
+                    
+                    <template v-else-if="step.action === 'screenshot'">
+                      <el-form-item label="文件名">
+                        <el-input v-model="step.config.filename" placeholder="例如: step_{index}_{timestamp}" />
+                      </el-form-item>
+                      <el-form-item label="截图范围">
+                        <el-radio-group v-model="step.config.capture">
+                          <el-radio-button label="full">整页</el-radio-button>
+                          <el-radio-button label="viewport">可视区域</el-radio-button>
+                          <el-radio-button label="element">指定元素</el-radio-button>
+                        </el-radio-group>
+                      </el-form-item>
+                    </template>
+
+                    <el-form-item label="步骤描述">
+                      <el-input v-model="step.description" type="textarea" :rows="2" placeholder="步骤的详细描述" />
+                    </el-form-item>
+
+                    <el-form-item label="失败处理">
+                      <el-select v-model="step.config.onError" placeholder="出错时">
+                        <el-option label="停止执行" value="stop" />
+                        <el-option label="跳过继续" value="skip" />
+                        <el-option label="重试" value="retry" />
+                      </el-select>
+                      <el-input-number 
+                        v-if="step.config.onError === 'retry'" 
+                        v-model="step.config.retryCount" 
+                        :min="1" 
+                        :max="5" 
+                        label="重试次数"
+                        style="margin-left: 10px;"
+                      />
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div>
+            </template>
+          </draggable>
+          
+          <div class="add-step-actions">
+            <el-button type="primary" @click="addStep('navigate')" icon="Plus">
+              添加导航步骤
+            </el-button>
+            <el-button type="success" @click="addStep('click')" icon="Plus">
+              添加点击步骤
+            </el-button>
+            <el-button type="warning" @click="addStep('input')" icon="Plus">
+              添加输入步骤
+            </el-button>
+            <el-button @click="addStep()" icon="Plus">
+              添加空步骤
+            </el-button>
+          </div>
+
+          <el-divider content-position="left">
+            <el-icon><component :is="icons.DataAnalysis" /></el-icon>
+            步骤概览（页面分布）
+          </el-divider>
+
+          <div class="steps-overview">
+            <el-card shadow="hover">
+              <div class="overview-chart">
+                <div 
+                  v-for="(page, index) in getPageDistribution(currentWorkflow)" 
+                  :key="index"
+                  class="page-bar"
+                >
+                  <span class="page-name">{{ page.name }}</span>
+                  <el-progress 
+                    :percentage="page.percentage" 
+                    :color="page.color"
+                    :stroke-width="20"
+                  />
+                  <span class="page-count">{{ page.count }} 步</span>
+                </div>
+              </div>
+            </el-card>
+          </div>
         </div>
       </div>
       
       <template #footer>
-        <el-button @click="showCreateDialog = false">取消</el-button>
-        <el-button type="primary" @click="saveWorkflow">保存模板</el-button>
+        <div class="dialog-footer">
+          <el-button @click="showCreateDialog = false">取消</el-button>
+          <el-button @click="validateWorkflow">验证配置</el-button>
+          <el-button type="primary" @click="saveWorkflow" :loading="saving">
+            {{ editingWorkflow ? '更新模板' : '创建模板' }}
+          </el-button>
+        </div>
       </template>
     </el-dialog>
 
     <el-dialog v-model="showPreviewDialog" title="🔍 工作流预览" width="80%">
       <div v-if="previewWorkflowData" class="workflow-preview">
         <el-descriptions :column="2" border>
-          <el-descriptions-item label="模板名称">{{ previewWorkflowData.name }}</el-descriptions-item>
-          <el-descriptions-item label="步骤数">{{ previewWorkflowData.steps.length }}</el-descriptions-item>
+          <el-descriptions-item label="模板名称">
+            <strong>{{ previewWorkflowData.name }}</strong>
+          </el-descriptions-item>
+          <el-descriptions-item label="步骤数">
+            <el-badge :value="previewWorkflowData.steps.length" type="primary" />
+          </el-descriptions-item>
           <el-descriptions-item label="适用平台" :span="2">
-            <el-tag v-for="p in previewWorkflowData.platforms" :key="p" size="small" type="success" style="margin: 2px;">{{ p }}</el-tag>
+            <el-tag v-for="p in previewWorkflowData.platforms" :key="p" size="small" type="success" style="margin: 2px;">
+              {{ p }}
+            </el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="涉及页面" :span="2">
+            <el-tag v-for="page in getUniquePages(previewWorkflowData)" :key="page" size="small" style="margin: 2px;">
+              {{ page }}
+            </el-tag>
           </el-descriptions-item>
         </el-descriptions>
 
-        <el-divider>步骤流程</el-divider>
+        <el-divider content-position="left">步骤流程</el-divider>
 
-        <el-timeline>
-          <el-timeline-item v-for="(step, index) in previewWorkflowData.steps" :key="index" :color="getStepColor(step.action)">
+        <el-steps :active="previewWorkflowData.steps.length" align-center>
+          <el-step 
+            v-for="(step, index) in previewWorkflowData.steps" 
+            :key="index"
+            :title="`步骤 ${index + 1}`"
+            :description="`${getActionName(step.action)} - ${step.name}`"
+          />
+        </el-steps>
+
+        <el-timeline style="margin-top: 30px;">
+          <el-timeline-item 
+            v-for="(step, index) in previewWorkflowData.steps" 
+            :key="index" 
+            :color="getStepColor(step.action)"
+            :hollow="index % 2 === 1"
+          >
             <el-card class="step-preview-card">
               <div class="step-preview-header">
                 <span class="step-number">步骤 {{ index + 1 }}</span>
-                <el-tag size="small" :type="getActionTagType(step.action)">{{ getActionName(step.action) }}</el-tag>
+                <el-tag size="small" :type="getActionTagType(step.action)">
+                  {{ getActionName(step.action) }}
+                </el-tag>
+                <el-tag v-if="step.page" size="small" type="warning" style="margin-left: 5px;">
+                  <el-icon><component :is="icons.Document" /></el-icon>
+                  {{ step.page }}
+                </el-tag>
               </div>
               <div class="step-preview-name">{{ step.name }}</div>
+              <div v-if="step.config.elementName" class="step-preview-element">
+                <el-tag size="small" type="info">
+                  绑定元素: {{ step.config.elementName }}
+                </el-tag>
+              </div>
               <div class="step-preview-config">
                 <pre>{{ formatJSON(step.config) }}</pre>
               </div>
@@ -333,10 +606,14 @@
           </el-timeline-item>
         </el-timeline>
 
-        <el-divider>参数列表</el-divider>
+        <el-divider content-position="left">参数列表</el-divider>
 
         <el-table :data="previewWorkflowData.parameters" border size="small">
-          <el-table-column prop="name" label="参数名" width="120" />
+          <el-table-column prop="name" label="参数名" width="120">
+            <template #default="scope">
+              <code>{ {{ scope.row.name }} }</code>
+            </template>
+          </el-table-column>
           <el-table-column prop="type" label="类型" width="100">
             <template #default="scope">
               <el-tag size="small">{{ scope.row.type }}</el-tag>
@@ -348,111 +625,309 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-model="showParamDialog" :title="editingParam ? '编辑参数' : '创建参数模板'" width="50%">
-      <el-form :model="currentParam" label-width="100px">
-        <el-form-item label="参数名称">
-          <el-input v-model="currentParam.name" placeholder="参数名称" />
-        </el-form-item>
-        <el-form-item label="参数类型">
-          <el-select v-model="currentParam.type" placeholder="选择类型">
-            <el-option label="文本" value="text" />
-            <el-option label="数字" value="number" />
-            <el-option label="文件列表" value="files" />
-            <el-option label="下拉选择" value="select" />
-            <el-option label="布尔值" value="boolean" />
+    <el-dialog v-model="showElementDialog" title="🔧 DOM 元素管理" width="70%">
+      <div class="element-manager">
+        <div class="toolbar">
+          <el-select v-model="elementFilter.platform" placeholder="选择平台" clearable style="width: 150px;">
+            <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="currentParam.description" type="textarea" :rows="2" />
-        </el-form-item>
-        <el-form-item label="默认值">
-          <el-input v-model="currentParam.default" placeholder="默认值" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="showParamDialog = false">取消</el-button>
-        <el-button type="primary" @click="saveParam">保存</el-button>
-      </template>
+          <el-select v-model="elementFilter.page" placeholder="选择页面" clearable style="width: 150px;">
+            <el-option v-for="pg in pageOptions" :key="pg" :label="pg" :value="pg" />
+          </el-select>
+          <el-button type="primary" @click="showAddElement = true" icon="Plus">添加元素</el-button>
+        </div>
+
+        <el-table :data="filteredElements" border size="small">
+          <el-table-column prop="name" label="元素名称" width="150" />
+          <el-table-column prop="selector" label="选择器" min-width="200">
+            <template #default="scope">
+              <code class="selector-code">{{ scope.row.selector }}</code>
+            </template>
+          </el-table-column>
+          <el-table-column prop="selector_type" label="类型" width="100">
+            <template #default="scope">
+              <el-tag size="small">{{ scope.row.selector_type }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="page" label="页面" width="100" />
+          <el-table-column prop="status" label="状态" width="80">
+            <template #default="scope">
+              <el-tag size="small" :type="scope.row.status === 'active' ? 'success' : 'info'">
+                {{ scope.row.status === 'active' ? '启用' : '禁用' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100">
+            <template #default="scope">
+              <el-button size="small" @click="editElement(scope.row)">编辑</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-dialog>
 
-    <el-dialog v-model="showFileDialog" :title="editingFile ? '编辑文件配置' : '添加文件配置'" width="50%">
-      <el-form :model="currentFile" label-width="100px">
-        <el-form-item label="文件名称">
-          <el-input v-model="currentFile.name" placeholder="如：商品主图" />
+    <el-dialog v-model="showAddElement" title="添加元素" width="50%">
+      <el-form :model="currentElement" label-width="100px">
+        <el-form-item label="元素名称" required>
+          <el-input v-model="currentElement.name" placeholder="例如: username_input" />
         </el-form-item>
-        <el-form-item label="文件类型">
-          <el-select v-model="currentFile.type" placeholder="选择类型">
-            <el-option label="图片" value="image" />
-            <el-option label="视频" value="video" />
-            <el-option label="文档" value="document" />
+        <el-form-item label="所属平台">
+          <el-select v-model="currentElement.platform" style="width: 100%;">
+            <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="来源">
-          <el-select v-model="currentFile.source" placeholder="选择来源">
-            <el-option label="本地文件" value="local" />
-            <el-option label="网络URL" value="url" />
-            <el-option label="云存储" value="cloud" />
+        <el-form-item label="所属页面">
+          <el-select v-model="currentElement.page" style="width: 100%;">
+            <el-option v-for="pg in pageOptions" :key="pg" :label="pg" :value="pg" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否必填">
-          <el-switch v-model="currentFile.required" />
+        <el-form-item label="选择器类型">
+          <el-select v-model="currentElement.selector_type" style="width: 100%;">
+            <el-option label="CSS" value="css" />
+            <el-option label="XPath" value="xpath" />
+            <el-option label="ID" value="id" />
+            <el-option label="文本" value="text" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="文件格式">
-          <el-input v-model="currentFile.extensions" placeholder="如：jpg,png,jpeg" />
+        <el-form-item label="选择器" required>
+          <el-input v-model="currentElement.selector" placeholder="选择器表达式" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="currentFile.description" type="textarea" :rows="2" />
+          <el-input v-model="currentElement.description" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showFileDialog = false">取消</el-button>
-        <el-button type="primary" @click="saveFile">保存</el-button>
+        <el-button @click="showAddElement = false">取消</el-button>
+        <el-button type="primary" @click="saveElement">保存</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import draggable from 'vuedraggable'
 import * as icons from '@element-plus/icons-vue'
 
 export default {
   name: 'WorkflowConfig',
+  components: { draggable },
   setup() {
     const workflowTemplates = ref([])
-    const parameterTemplates = ref([])
-    const fileTemplates = ref([])
+    const domElements = ref([])
     const showCreateDialog = ref(false)
     const showPreviewDialog = ref(false)
-    const showParamDialog = ref(false)
-    const showFileDialog = ref(false)
+    const showElementDialog = ref(false)
+    const showAddElement = ref(false)
     const editingWorkflow = ref(false)
-    const editingParam = ref(null)
-    const editingFile = ref(null)
     const previewWorkflowData = ref(null)
     const currentWorkflow = ref(null)
-    const currentParam = ref({ name: '', type: 'text', description: '', default: '' })
-    const currentFile = ref({ name: '', type: 'image', source: 'local', required: false, extensions: 'jpg,png', description: '' })
+    const selectedPlatform = ref('')
+    const isFullscreen = ref(false)
+    const expandedStepIndex = ref(null)
+    const saving = ref(false)
+    const testingSelector = ref(false)
     const executedCount = ref(0)
+    const isDragging = ref(false)
+
+    const platforms = [
+      { value: 'douyin', label: '抖音' },
+      { value: 'pinduoduo', label: '拼多多' },
+      { value: 'taobao', label: '淘宝' },
+      { value: 'jingdong', label: '京东' },
+      { value: 'xiaohongshu', label: '小红书' }
+    ]
+
+    const pageOptions = ['login', 'products', 'publish', 'edit', 'reviews', 'reply', 'orders', 'order-detail', 'data', 'report']
+
+    const elementFilter = ref({ platform: '', page: '' })
+
+    const currentElement = ref({
+      name: '',
+      platform: 'douyin',
+      page: 'login',
+      selector_type: 'css',
+      selector: '',
+      description: '',
+      status: 'active'
+    })
+
+    const filteredWorkflows = computed(() => {
+      if (!selectedPlatform.value) return workflowTemplates.value
+      return workflowTemplates.value.filter(wf => wf.platforms.includes(selectedPlatform.value))
+    })
+
+    const filteredElements = computed(() => {
+      let result = domElements.value
+      if (elementFilter.value.platform) {
+        result = result.filter(el => el.platform === elementFilter.value.platform)
+      }
+      if (elementFilter.value.page) {
+        result = result.filter(el => el.page === elementFilter.value.page)
+      }
+      return result
+    })
+
+    const filteredElementGroups = computed(() => {
+      const groups = []
+      const pageMap = {}
+      
+      filteredElements.value.forEach(el => {
+        const key = el.page || 'other'
+        if (!pageMap[key]) {
+          pageMap[key] = {
+            label: `${getPageLabel(key)} - ${key}`,
+            options: []
+          }
+        }
+        pageMap[key].options.push(el)
+      })
+      
+      Object.values(pageMap).forEach(group => {
+        if (group.options.length > 0) {
+          groups.push(group)
+        }
+      })
+      
+      return groups
+    })
+
+    const getPageLabel = (page) => {
+      const labels = {
+        login: '登录页',
+        products: '商品列表',
+        publish: '商品发布',
+        edit: '商品编辑',
+        reviews: '评价列表',
+        reply: '评价回复',
+        orders: '订单列表',
+        'order-detail': '订单详情',
+        data: '数据中心',
+        report: '数据报表'
+      }
+      return labels[page] || page
+    }
 
     const totalSteps = computed(() => {
       return workflowTemplates.value.reduce((sum, wf) => sum + wf.steps.length, 0)
     })
 
+    const getUniquePages = (workflow) => {
+      const pages = new Set()
+      workflow.steps.forEach(step => {
+        if (step.page) pages.add(step.page)
+      })
+      return Array.from(pages)
+    }
+
+    const getPageDistribution = (workflow) => {
+      const pageCount = {}
+      workflow.steps.forEach(step => {
+        const page = step.page || '未分类'
+        pageCount[page] = (pageCount[page] || 0) + 1
+      })
+      
+      const colors = ['#409eff', '#67c23a', '#e6a23c', '#f56c6c', '#909399', '#9c27b0']
+      const total = workflow.steps.length
+      
+      return Object.entries(pageCount).map(([name, count], index) => ({
+        name: getPageLabel(name) || name,
+        count,
+        percentage: Math.round((count / total) * 100),
+        color: colors[index % colors.length]
+      }))
+    }
+
+    const toggleStepExpand = (index) => {
+      expandedStepIndex.value = expandedStepIndex.value === index ? null : index
+    }
+
+    const onDragEnd = () => {
+      ElMessage.success('步骤顺序已更新')
+    }
+
     const onActionChange = (step) => {
       const defaultConfigs = {
-        navigate: { url: '' },
-        click: { selectorType: 'css', selector: '' },
-        input: { selectorType: 'css', selector: '', value: '' },
-        upload: { selectorType: 'css', selector: '', paramName: '' },
-        wait: { duration: 1000 },
-        if: { condition: '' },
-        loop: { items: '' },
+        navigate: { url: '', waitForLoad: true },
+        click: { selectorType: 'css', selector: '', elementName: '' },
+        input: { selectorType: 'css', selector: '', value: '', elementName: '' },
+        upload: { selectorType: 'css', selector: '', paramName: '', elementName: '' },
+        wait: { duration: 1000, waitFor: 'timeout' },
+        if: { condition: '', thenSteps: '' },
+        loop: { items: '', loopVar: '' },
         subworkflow: { workflowName: '' },
-        screenshot: { filename: '' }
+        screenshot: { filename: 'step_{index}', capture: 'viewport' }
       }
-      step.config = defaultConfigs[step.action] || {}
+      step.config = { ...defaultConfigs[step.action], onError: 'stop', retryCount: 3 }
+    }
+
+    const onElementSelect = (step) => {
+      if (step.config.elementName) {
+        const element = domElements.value.find(el => el.name === step.config.elementName)
+        if (element) {
+          step.config.selector = element.selector
+          step.config.selectorType = element.selector_type
+          step.page = element.page
+          ElMessage.success(`已自动填充元素: ${element.name}`)
+        }
+      }
+    }
+
+    const onPageChange = (step, index) => {
+      if (step.page && currentWorkflow.value.steps[index - 1]) {
+        const prevStep = currentWorkflow.value.steps[index - 1]
+        if (prevStep.page && prevStep.page !== step.page) {
+          ElMessage.warning(`页面切换: ${prevStep.page} → ${step.page}，可能需要添加导航步骤`)
+        }
+      }
+    }
+
+    const insertParam = (step, paramName) => {
+      if (!step.config.value) {
+        step.config.value = `{${paramName}}`
+      } else {
+        step.config.value += ` {${paramName}}`
+      }
+    }
+
+    const testSelector = async (step) => {
+      testingSelector.value = true
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      ElMessage.info('测试功能需要在浏览器环境中运行，当前显示为演示')
+      testingSelector.value = false
+    }
+
+    const validateWorkflow = () => {
+      if (!currentWorkflow.value.name) {
+        ElMessage.warning('请输入模板名称')
+        return
+      }
+      if (currentWorkflow.value.steps.length === 0) {
+        ElMessage.warning('请至少添加一个步骤')
+        return
+      }
+      
+      const errors = []
+      currentWorkflow.value.steps.forEach((step, index) => {
+        if (!step.name) {
+          errors.push(`步骤 ${index + 1}: 缺少步骤名称`)
+        }
+        if (['click', 'input', 'upload'].includes(step.action)) {
+          if (!step.config.selector) {
+            errors.push(`步骤 ${index + 1}: 缺少选择器`)
+          }
+        }
+      })
+      
+      if (errors.length > 0) {
+        ElMessage.error({
+          message: errors.join('\n'),
+          duration: 5000
+        })
+      } else {
+        ElMessage.success('✅ 工作流配置验证通过！')
+      }
     }
 
     const addParam = () => {
@@ -463,55 +938,97 @@ export default {
       currentWorkflow.value.parameters.splice(index, 1)
     }
 
-    const addStep = () => {
-      currentWorkflow.value.steps.push({
+    const addStep = (action = 'navigate') => {
+      const step = {
+        id: Date.now(),
         name: '',
-        action: 'navigate',
-        config: { url: '' },
+        action,
+        page: '',
+        config: {},
         description: ''
-      })
+      }
+      onActionChange(step)
+      currentWorkflow.value.steps.push(step)
+      expandedStepIndex.value = currentWorkflow.value.steps.length - 1
     }
 
     const removeStep = (index) => {
-      currentWorkflow.value.steps.splice(index, 1)
+      ElMessageBox.confirm('确定要删除这个步骤吗？', '删除确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        currentWorkflow.value.steps.splice(index, 1)
+        ElMessage.success('步骤已删除')
+      }).catch(() => {})
     }
 
-    const moveStep = (index, direction) => {
-      const steps = currentWorkflow.value.steps
-      const newIndex = index + direction
-      if (newIndex >= 0 && newIndex < steps.length) {
-        [steps[index], steps[newIndex]] = [steps[newIndex], steps[index]]
+    const duplicateStep = (index) => {
+      const original = currentWorkflow.value.steps[index]
+      const copy = JSON.parse(JSON.stringify(original))
+      copy.id = Date.now()
+      copy.name = `${original.name} (副本)`
+      currentWorkflow.value.steps.splice(index + 1, 0, copy)
+      ElMessage.success('步骤已复制')
+    }
+
+    const insertStepBelow = (index) => {
+      const newStep = {
+        id: Date.now(),
+        name: '',
+        action: 'navigate',
+        page: '',
+        config: { url: '', waitForLoad: true, onError: 'stop', retryCount: 3 },
+        description: ''
       }
+      currentWorkflow.value.steps.splice(index + 1, 0, newStep)
+      expandedStepIndex.value = index + 1
+      ElMessage.success('已在下方插入新步骤')
     }
 
     const saveWorkflow = () => {
-      if (!currentWorkflow.value.name) {
-        ElMessage.warning('请输入模板名称')
-        return
-      }
+      saving.value = true
       
-      if (editingWorkflow.value) {
-        const index = workflowTemplates.value.findIndex(wf => wf.id === currentWorkflow.value.id)
-        if (index !== -1) {
-          workflowTemplates.value[index] = { ...currentWorkflow.value }
+      setTimeout(() => {
+        if (!currentWorkflow.value.name) {
+          ElMessage.warning('请输入模板名称')
+          saving.value = false
+          return
         }
-        ElMessage.success('模板已更新')
-      } else {
-        workflowTemplates.value.push({
-          ...currentWorkflow.value,
-          id: Date.now()
-        })
-        ElMessage.success('模板已创建')
-      }
-      
-      showCreateDialog.value = false
-      editingWorkflow.value = false
+        
+        if (editingWorkflow.value) {
+          const index = workflowTemplates.value.findIndex(wf => wf.id === currentWorkflow.value.id)
+          if (index !== -1) {
+            workflowTemplates.value[index] = { ...currentWorkflow.value }
+          }
+          ElMessage.success('模板已更新')
+        } else {
+          workflowTemplates.value.push({
+            ...currentWorkflow.value,
+            id: Date.now()
+          })
+          ElMessage.success('模板已创建')
+        }
+        
+        showCreateDialog.value = false
+        editingWorkflow.value = false
+        expandedStepIndex.value = null
+        saving.value = false
+      }, 500)
     }
 
     const editWorkflow = (workflow) => {
       currentWorkflow.value = JSON.parse(JSON.stringify(workflow))
       editingWorkflow.value = true
       showCreateDialog.value = true
+    }
+
+    const duplicateWorkflow = (workflow) => {
+      const copy = JSON.parse(JSON.stringify(workflow))
+      copy.id = Date.now()
+      copy.name = `${workflow.name} (副本)`
+      workflowTemplates.value.push(copy)
+      ElMessage.success('模板已复制')
     }
 
     const previewWorkflow = (workflow) => {
@@ -533,149 +1050,56 @@ export default {
       }).catch(() => {})
     }
 
-    const saveParam = () => {
-      if (!currentParam.value.name) {
-        ElMessage.warning('请输入参数名称')
+    const saveElement = () => {
+      if (!currentElement.value.name || !currentElement.value.selector) {
+        ElMessage.warning('请填写元素名称和选择器')
         return
       }
       
-      if (editingParam.value) {
-        const index = parameterTemplates.value.findIndex(p => p.id === editingParam.value.id)
-        if (index !== -1) {
-          parameterTemplates.value[index] = { ...currentParam.value, id: editingParam.value.id }
-        }
-        ElMessage.success('参数已更新')
-      } else {
-        parameterTemplates.value.push({
-          ...currentParam.value,
-          id: Date.now()
-        })
-        ElMessage.success('参数已创建')
-      }
+      domElements.value.push({
+        ...currentElement.value,
+        id: Date.now(),
+        created_at: new Date().toLocaleString('zh-CN'),
+        updated_at: new Date().toLocaleString('zh-CN')
+      })
       
-      showParamDialog.value = false
-      editingParam.value = null
-      currentParam.value = { name: '', type: 'text', description: '', default: '' }
-    }
-
-    const editParam = (param) => {
-      currentParam.value = { ...param }
-      editingParam.value = param
-      showParamDialog.value = true
-    }
-
-    const deleteParam = (param) => {
-      ElMessageBox.confirm(`确定要删除参数 "${param.name}" 吗？`, '删除确认', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const index = parameterTemplates.value.findIndex(p => p.id === param.id)
-        if (index !== -1) {
-          parameterTemplates.value.splice(index, 1)
-          ElMessage.success('参数已删除')
-        }
-      }).catch(() => {})
-    }
-
-    const saveFile = () => {
-      if (!currentFile.value.name) {
-        ElMessage.warning('请输入文件名称')
-        return
+      showAddElement.value = false
+      currentElement.value = {
+        name: '', platform: 'douyin', page: 'login',
+        selector_type: 'css', selector: '', description: '', status: 'active'
       }
-      
-      if (editingFile.value) {
-        const index = fileTemplates.value.findIndex(f => f.id === editingFile.value.id)
-        if (index !== -1) {
-          fileTemplates.value[index] = { ...currentFile.value, id: editingFile.value.id }
-        }
-        ElMessage.success('文件配置已更新')
-      } else {
-        fileTemplates.value.push({
-          ...currentFile.value,
-          id: Date.now()
-        })
-        ElMessage.success('文件配置已创建')
-      }
-      
-      showFileDialog.value = false
-      editingFile.value = null
-      currentFile.value = { name: '', type: 'image', source: 'local', required: false, extensions: 'jpg,png', description: '' }
+      ElMessage.success('元素已添加')
     }
 
-    const editFile = (file) => {
-      currentFile.value = { ...file }
-      editingFile.value = file
-      showFileDialog.value = true
-    }
-
-    const deleteFile = (file) => {
-      ElMessageBox.confirm(`确定要删除文件配置 "${file.name}" 吗？`, '删除确认', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const index = fileTemplates.value.findIndex(f => f.id === file.id)
-        if (index !== -1) {
-          fileTemplates.value.splice(index, 1)
-          ElMessage.success('文件配置已删除')
-        }
-      }).catch(() => {})
-    }
-
-    const getParamTypeTag = (type) => {
-      const types = { text: 'primary', number: 'success', files: 'warning', select: 'info', boolean: '' }
-      return types[type] || 'info'
-    }
-
-    const getFileIcon = (type) => {
-      const icons = { image: 'Picture', video: 'VideoCamera', document: 'Document' }
-      return icons[type] || 'Files'
-    }
-
-    const getStepColor = (action) => {
-      const colors = {
-        navigate: '#409eff',
-        click: '#67c23a',
-        input: '#e6a23c',
-        upload: '#f56c6c',
-        wait: '#909399',
-        if: '#9c27b0',
-        loop: '#ff5722',
-        subworkflow: '#00bcd4',
-        screenshot: '#795548'
-      }
-      return colors[action] || '#909399'
+    const editElement = (element) => {
+      ElMessage.info('编辑元素功能')
     }
 
     const getActionTagType = (action) => {
       const types = {
-        navigate: 'primary',
-        click: 'success',
-        input: 'warning',
-        upload: 'danger',
-        wait: 'info',
-        if: '',
-        loop: 'warning',
-        subworkflow: '',
-        screenshot: 'info'
+        navigate: 'primary', click: 'success', input: 'warning',
+        upload: 'danger', wait: 'info', if: '', loop: 'warning',
+        subworkflow: '', screenshot: 'info'
       }
       return types[action] || 'info'
     }
 
     const getActionName = (action) => {
       const names = {
-        navigate: '导航',
-        click: '点击',
-        input: '输入',
-        upload: '上传',
-        wait: '等待',
-        if: '条件',
-        loop: '循环',
-        subworkflow: '子工作流',
-        screenshot: '截图'
+        navigate: '导航', click: '点击', input: '输入',
+        upload: '上传', wait: '等待', if: '条件',
+        loop: '循环', subworkflow: '子工作流', screenshot: '截图'
       }
       return names[action] || action
+    }
+
+    const getStepColor = (action) => {
+      const colors = {
+        navigate: '#409eff', click: '#67c23a', input: '#e6a23c',
+        upload: '#f56c6c', wait: '#909399', if: '#9c27b0',
+        loop: '#ff5722', subworkflow: '#00bcd4', screenshot: '#795548'
+      }
+      return colors[action] || '#909399'
     }
 
     const formatJSON = (obj) => {
@@ -683,6 +1107,18 @@ export default {
     }
 
     const initSampleData = () => {
+      domElements.value = [
+        { id: 1, name: 'username_input', selector: "input[name='username']", selector_type: 'css', description: '用户名输入框', platform: 'douyin', page: 'login', status: 'active' },
+        { id: 2, name: 'password_input', selector: "input[name='password']", selector_type: 'css', description: '密码输入框', platform: 'douyin', page: 'login', status: 'active' },
+        { id: 3, name: 'login_button', selector: "//button[contains(text(),'登录')]", selector_type: 'xpath', description: '登录按钮', platform: 'douyin', page: 'login', status: 'active' },
+        { id: 4, name: 'product_title', selector: "//input[@id='title']", selector_type: 'xpath', description: '商品标题输入框', platform: 'douyin', page: 'publish', status: 'active' },
+        { id: 5, name: 'product_price', selector: "#price", selector_type: 'id', description: '商品价格输入框', platform: 'douyin', page: 'publish', status: 'active' },
+        { id: 6, name: 'image_upload', selector: ".upload-btn", selector_type: 'css', description: '图片上传按钮', platform: 'douyin', page: 'publish', status: 'active' },
+        { id: 7, name: 'submit_button', selector: ".submit-btn", selector_type: 'css', description: '提交按钮', platform: 'douyin', page: 'publish', status: 'active' },
+        { id: 8, name: 'review_list', selector: ".review-item", selector_type: 'css', description: '评价列表', platform: 'douyin', page: 'reviews', status: 'active' },
+        { id: 9, name: 'reply_input', selector: "textarea[name='reply']", selector_type: 'css', description: '回复输入框', platform: 'douyin', page: 'reply', status: 'active' }
+      ]
+
       workflowTemplates.value = [
         {
           id: 1,
@@ -696,13 +1132,17 @@ export default {
             { name: 'images', type: 'files', description: '商品图片', default: '' }
           ],
           steps: [
-            { name: '打开发布页', action: 'navigate', config: { url: 'https://creator.douyin.com/product/publish' }, description: '导航到商品发布页面' },
-            { name: '选择类目', action: 'click', config: { selectorType: 'css', selector: '.category-select' }, description: '点击类目选择器' },
-            { name: '输入标题', action: 'input', config: { selectorType: 'css', selector: '.product-title', value: '{title}' }, description: '填写商品标题' },
-            { name: '输入价格', action: 'input', config: { selectorType: 'css', selector: '.product-price', value: '{price}' }, description: '填写商品价格' },
-            { name: '输入描述', action: 'input', config: { selectorType: 'css', selector: '.product-desc', value: '{description}' }, description: '填写商品描述' },
-            { name: '上传图片', action: 'upload', config: { selectorType: 'css', selector: '.image-upload', paramName: 'images' }, description: '上传商品图片' },
-            { name: '提交审核', action: 'click', config: { selectorType: 'css', selector: '.submit-btn' }, description: '点击提交按钮' }
+            { id: 1, name: '打开登录页', action: 'navigate', page: 'login', config: { url: 'https://creator.douyin.com/', waitForLoad: true, onError: 'stop' }, description: '导航到抖音创作服务平台' },
+            { id: 2, name: '输入用户名', action: 'input', page: 'login', config: { selectorType: 'css', selector: "input[name='username']", elementName: 'username_input', value: '{username}', onError: 'retry', retryCount: 3 }, description: '填写用户名' },
+            { id: 3, name: '输入密码', action: 'input', page: 'login', config: { selectorType: 'css', selector: "input[name='password']", elementName: 'password_input', value: '{password}', onError: 'retry', retryCount: 3 }, description: '填写密码' },
+            { id: 4, name: '点击登录', action: 'click', page: 'login', config: { selectorType: 'xpath', selector: "//button[contains(text(),'登录')]", elementName: 'login_button', onError: 'stop' }, description: '提交登录' },
+            { id: 5, name: '打开发布页', action: 'navigate', page: 'publish', config: { url: 'https://creator.douyin.com/product/publish', waitForLoad: true, onError: 'stop' }, description: '导航到商品发布页面' },
+            { id: 6, name: '输入商品标题', action: 'input', page: 'publish', config: { selectorType: 'xpath', selector: "//input[@id='title']", elementName: 'product_title', value: '{title}', onError: 'retry', retryCount: 2 }, description: '填写商品标题' },
+            { id: 7, name: '输入商品价格', action: 'input', page: 'publish', config: { selectorType: 'id', selector: '#price', elementName: 'product_price', value: '{price}', onError: 'retry', retryCount: 2 }, description: '填写商品价格' },
+            { id: 8, name: '输入商品描述', action: 'input', page: 'publish', config: { selectorType: 'css', selector: '.product-desc', value: '{description}', onError: 'skip' }, description: '填写商品描述' },
+            { id: 9, name: '上传商品图片', action: 'upload', page: 'publish', config: { selectorType: 'css', selector: '.upload-btn', elementName: 'image_upload', paramName: 'images', onError: 'retry', retryCount: 2 }, description: '上传商品图片' },
+            { id: 10, name: '提交发布', action: 'click', page: 'publish', config: { selectorType: 'css', selector: '.submit-btn', elementName: 'submit_button', onError: 'stop' }, description: '点击提交按钮' },
+            { id: 11, name: '等待结果', action: 'wait', page: 'publish', config: { duration: 3000, waitFor: 'timeout' }, description: '等待发布结果' }
           ]
         },
         {
@@ -711,29 +1151,17 @@ export default {
           description: '自动回复店铺好评',
           platforms: ['抖音', '拼多多'],
           parameters: [
-            { name: 'reviewCount', type: 'number', description: '回复数量', default: '10' }
+            { name: 'reviewCount', type: 'number', description: '回复数量', default: '10' },
+            { name: 'replyTemplate', type: 'text', description: '回复模板', default: '感谢您的支持，欢迎再次光临！' }
           ],
           steps: [
-            { name: '打开评价页', action: 'navigate', config: { url: 'https://creator.douyin.com/review/list' }, description: '导航到评价页面' },
-            { name: '筛选好评', action: 'click', config: { selectorType: 'css', selector: '.filter-positive' }, description: '点击好评筛选' },
-            { name: '循环回复', action: 'loop', config: { items: '{reviewCount}' }, description: '循环处理好评' },
-            { name: '输入回复', action: 'input', config: { selectorType: 'css', selector: '.reply-input', value: '感谢您的支持，欢迎再次光临！' }, description: '填写回复内容' },
-            { name: '提交回复', action: 'click', config: { selectorType: 'css', selector: '.submit-reply' }, description: '提交回复' }
+            { id: 1, name: '打开评价页', action: 'navigate', page: 'reviews', config: { url: 'https://creator.douyin.com/review/list', waitForLoad: true }, description: '导航到评价页面' },
+            { id: 2, name: '筛选好评', action: 'click', page: 'reviews', config: { selectorType: 'css', selector: '.filter-positive', onError: 'skip' }, description: '点击好评筛选' },
+            { id: 3, name: '循环回复', action: 'loop', page: 'reviews', config: { items: '{reviewCount}', loopVar: 'review', onError: 'skip' }, description: '循环处理好评' },
+            { id: 4, name: '输入回复', action: 'input', page: 'reply', config: { selectorType: 'css', selector: "textarea[name='reply']", elementName: 'reply_input', value: '{replyTemplate}', onError: 'skip' }, description: '填写回复内容' },
+            { id: 5, name: '提交回复', action: 'click', page: 'reply', config: { selectorType: 'css', selector: '.send-btn', onError: 'skip' }, description: '提交回复' }
           ]
         }
-      ]
-
-      parameterTemplates.value = [
-        { id: 1, name: 'title', type: 'text', description: '商品标题', default: '' },
-        { id: 2, name: 'price', type: 'number', description: '商品价格', default: '' },
-        { id: 3, name: 'description', type: 'text', description: '商品描述', default: '' },
-        { id: 4, name: 'images', type: 'files', description: '商品图片列表', default: '' }
-      ]
-
-      fileTemplates.value = [
-        { id: 1, name: '商品主图', type: 'image', source: 'local', required: true, extensions: 'jpg,png', description: '商品主图，至少1张' },
-        { id: 2, name: '商品详情图', type: 'image', source: 'local', required: false, extensions: 'jpg,png', description: '商品详情图片' },
-        { id: 3, name: '商品视频', type: 'video', source: 'local', required: false, extensions: 'mp4', description: '商品展示视频' }
       ]
     }
 
@@ -744,42 +1172,55 @@ export default {
     return {
       icons,
       workflowTemplates,
-      parameterTemplates,
-      fileTemplates,
+      domElements,
       showCreateDialog,
       showPreviewDialog,
-      showParamDialog,
-      showFileDialog,
+      showElementDialog,
+      showAddElement,
       editingWorkflow,
-      editingParam,
-      editingFile,
       previewWorkflowData,
       currentWorkflow,
-      currentParam,
-      currentFile,
+      selectedPlatform,
+      isFullscreen,
+      expandedStepIndex,
+      saving,
+      testingSelector,
       executedCount,
+      platforms,
+      pageOptions,
+      elementFilter,
+      currentElement,
+      filteredWorkflows,
+      filteredElements,
+      filteredElementGroups,
       totalSteps,
+      isDragging,
+      getUniquePages,
+      getPageDistribution,
+      getPageLabel,
+      toggleStepExpand,
+      onDragEnd,
       onActionChange,
+      onElementSelect,
+      onPageChange,
+      insertParam,
+      testSelector,
+      validateWorkflow,
       addParam,
       removeParam,
       addStep,
       removeStep,
-      moveStep,
+      duplicateStep,
+      insertStepBelow,
       saveWorkflow,
       editWorkflow,
-      previewWorkflow,
+      duplicateWorkflow,
       deleteWorkflow,
-      saveParam,
-      editParam,
-      deleteParam,
-      saveFile,
-      editFile,
-      deleteFile,
-      getParamTypeTag,
-      getFileIcon,
-      getStepColor,
+      saveElement,
+      editElement,
       getActionTagType,
       getActionName,
+      getStepColor,
       formatJSON
     }
   }
@@ -800,28 +1241,69 @@ export default {
 .main-card { margin-top: 20px; }
 .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .card-header h3 { margin: 0; font-size: 18px; }
-.header-actions { display: flex; gap: 10px; }
+.header-actions { display: flex; align-items: center; }
 .template-name { display: flex; align-items: center; gap: 8px; }
-.workflow-editor { max-height: 70vh; overflow-y: auto; }
-.params-section { margin: 20px 0; }
-.param-item { display: flex; gap: 10px; margin-bottom: 10px; }
+.workflow-editor { max-height: 75vh; overflow-y: auto; padding-right: 10px; }
+.dialog-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.workflow-form { margin-bottom: 20px; }
+.params-section { margin: 20px 0; padding: 15px; background: #f5f7fa; border-radius: 8px; }
+.param-row { margin-bottom: 10px; }
 .steps-section { margin: 20px 0; }
-.step-config { display: flex; flex-direction: column; gap: 5px; }
-.param-preview { background: #f5f7fa; padding: 15px; border-radius: 8px; }
-.param-preview pre { margin: 0; font-size: 12px; }
+.steps-list { display: flex; flex-direction: column; gap: 10px; min-height: 100px; }
+.step-card {
+  border: 2px solid #dcdfe6;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.step-card:hover { border-color: #409eff; box-shadow: 0 2px 12px rgba(64, 158, 255, 0.2); }
+.step-card.active { border-color: #409eff; background: #ecf5ff; }
+.step-card.navigate-step { border-left: 4px solid #409eff; }
+.step-card.click-step { border-left: 4px solid #67c23a; }
+.step-card.input-step { border-left: 4px solid #e6a23c; }
+.step-card.upload-step { border-left: 4px solid #f56c6c; }
+.ghost-step { opacity: 0.5; background: #f56c6c; border: 2px dashed #f56c6c; }
+.step-header { display: flex; align-items: center; gap: 10px; }
+.drag-handle { cursor: move; color: #909399; font-size: 20px; }
+.step-number { 
+  width: 28px; height: 28px; border-radius: 50%; 
+  background: #409eff; color: white; 
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; font-size: 14px;
+}
+.step-action-tag { min-width: 70px; text-align: center; }
+.step-name-input { flex: 1; max-width: 200px; }
+.step-actions { display: flex; gap: 5px; margin-left: auto; }
+.expand-icon { transition: transform 0.3s; margin-left: 10px; }
+.expand-icon.expanded { transform: rotate(90deg); }
+.step-page-badge { margin-top: 8px; }
+.step-config { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #dcdfe6; }
+.element-option { display: flex; justify-content: space-between; width: 100%; }
+.element-name { font-weight: 500; }
+.element-selector { color: #909399; font-size: 12px; }
+.add-step-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+.steps-overview { margin-top: 20px; }
+.overview-chart { display: flex; flex-direction: column; gap: 15px; }
+.page-bar { display: flex; align-items: center; gap: 15px; }
+.page-name { width: 100px; font-weight: 500; }
+.page-count { width: 60px; text-align: right; color: #909399; }
+.dialog-footer { display: flex; gap: 10px; justify-content: flex-end; }
+.selector-code { background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #374151; }
+.element-manager { padding: 10px; }
+.toolbar { display: flex; gap: 10px; margin-bottom: 20px; }
 .workflow-preview { max-height: 70vh; overflow-y: auto; }
 .step-preview-card { margin-bottom: 10px; }
-.step-preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.step-number { font-weight: bold; color: #409eff; }
+.step-preview-header { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
 .step-preview-name { font-size: 16px; font-weight: 500; color: #303133; margin-bottom: 8px; }
+.step-preview-element { margin-bottom: 8px; }
 .step-preview-config { background: #f5f7fa; padding: 10px; border-radius: 4px; }
 .step-preview-config pre { margin: 0; font-size: 12px; }
-.param-card, .file-card { height: 100%; }
-.file-list { display: flex; flex-direction: column; gap: 10px; }
-.file-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f5f7fa; border-radius: 8px; }
-.file-info { display: flex; align-items: center; gap: 12px; }
-.file-details { display: flex; flex-direction: column; }
-.file-name { font-weight: 500; color: #303133; }
-.file-type { font-size: 12px; color: #909399; }
-.file-actions { display: flex; align-items: center; gap: 10px; }
+
+@media (max-width: 768px) {
+  .add-step-actions { flex-direction: column; }
+  .step-header { flex-wrap: wrap; }
+  .step-name-input { max-width: none; flex: 1; }
+}
 </style>
