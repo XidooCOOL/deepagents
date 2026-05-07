@@ -127,6 +127,10 @@ app.include_router(feishu_router)
 from backend.api.webhooks import router as webhooks_router
 app.include_router(webhooks_router)
 
+# 注册任务日志 API
+from backend.api.task_logs import router as task_logs_router
+app.include_router(task_logs_router)
+
 # 注册已发布商品 API
 from backend.api.published_products import router as published_products_router
 app.include_router(published_products_router)

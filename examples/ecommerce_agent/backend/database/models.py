@@ -45,27 +45,48 @@ class Store(Base):
 class Task(Base):
     """任务表"""
     __tablename__ = "tasks"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey("stores.id"), nullable=False)
     task_type = Column(String(50), nullable=False, comment="任务类型：publish/good_review/fetch_data/analyze")
     name = Column(String(100), comment="任务名称")
-    status = Column(String(20), default="pending", comment="状态：pending/running/completed/failed/paused")
+    status = Column(String(20), default="pending", comment="状态：pending/running/completed/failed/paused/retrying")
     progress = Column(Integer, default=0, comment="进度 0-100")
     current_step = Column(String(255), comment="当前步骤")
     total_steps = Column(Integer, default=0, comment="总步骤数")
     completed_steps = Column(Integer, default=0, comment="已完成步骤数")
     error_message = Column(Text, comment="错误信息")
+    retry_count = Column(Integer, default=0, comment="当前重试次数")
+    max_retries = Column(Integer, default=3, comment="最大重试次数")
+    retry_config = Column(JSON, comment="重试配置：延迟、退避策略等")
     started_at = Column(DateTime, comment="开始时间")
     completed_at = Column(DateTime, comment="完成时间")
     result = Column(JSON, comment="任务结果")
     checkpoint = Column(JSON, comment="断点续跑数据")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
+
     # 关系
     store = relationship("Store", back_populates="tasks")
     logs = relationship("OperationLog", back_populates="task")
+    execution_logs = relationship("TaskLog", back_populates="task")
+
+
+class TaskLog(Base):
+    """任务执行日志表"""
+    __tablename__ = "task_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("tasks.id"), nullable=False, index=True)
+    step_id = Column(Integer, comment="步骤 ID")
+    level = Column(String(20), comment="日志级别：debug/info/warning/error/success")
+    message = Column(Text, comment="日志消息")
+    data = Column(Text, comment="扩展数据 JSON")
+    screenshot = Column(String(500), comment="截图路径")
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+    # 关系
+    task = relationship("Task", back_populates="execution_logs")
 
 
 class ScheduledTask(Base):
