@@ -197,6 +197,41 @@ class AppConfig(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class WebhookConfig(Base):
+    """Webhook 配置表"""
+    __tablename__ = "webhook_configs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False, comment="Webhook 名称")
+    platform = Column(String(50), nullable=False, comment="平台：feishu/dingtalk/wecom/custom")
+    url = Column(String(500), nullable=False, comment="Webhook URL")
+    secret = Column(String(255), comment="签名密钥")
+    events = Column(JSON, comment="订阅的事件列表")
+    headers = Column(JSON, comment="自定义请求头")
+    retry_times = Column(Integer, default=3, comment="重试次数")
+    timeout = Column(Integer, default=10, comment="超时时间(秒)")
+    is_active = Column(Boolean, default=True, comment="是否启用")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class MessageTemplate(Base):
+    """消息模板表"""
+    __tablename__ = "message_templates"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False, comment="模板名称")
+    template_type = Column(String(50), nullable=False, comment="模板类型")
+    platform = Column(String(50), nullable=False, comment="目标平台")
+    title = Column(String(200), comment="消息标题")
+    content = Column(Text, comment="消息内容模板")
+    card_config = Column(JSON, comment="卡片配置")
+    variables = Column(JSON, comment="变量定义")
+    is_default = Column(Boolean, default=False, comment="是否为默认模板")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 def init_db():
     """初始化数据库"""
     Base.metadata.create_all(bind=engine)
