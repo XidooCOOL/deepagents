@@ -184,6 +184,19 @@ class BrowserTab(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class AppConfig(Base):
+    """应用配置表"""
+    __tablename__ = "app_configs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String(100), unique=True, nullable=False, comment="配置键")
+    value = Column(Text, comment="配置值 (JSON)")
+    description = Column(String(255), comment="描述")
+    is_encrypted = Column(Boolean, default=False, comment="是否加密存储")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 def init_db():
     """初始化数据库"""
     Base.metadata.create_all(bind=engine)

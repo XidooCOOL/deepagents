@@ -49,6 +49,10 @@
             <el-icon><component :is="icons.Cpu" /></el-icon>
             <span>模型配置</span>
           </el-menu-item>
+          <el-menu-item index="/feishu">
+            <el-icon><component :is="icons.Message" /></el-icon>
+            <span>飞书集成</span>
+          </el-menu-item>
         </div>
         
         <div class="menu-section">
@@ -250,7 +254,8 @@ const pageTitleMap: Record<string, string> = {
   '/product-library': '商品库',
   '/product-publish': '批量发布',
   '/published-products': '已发布商品',
-  '/llm-config': '模型配置'
+  '/llm-config': '模型配置',
+  '/feishu': '飞书集成'
 }
 
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')

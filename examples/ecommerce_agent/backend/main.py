@@ -119,6 +119,10 @@ app.include_router(product_library_router)
 app.include_router(realtime_router)
 app.include_router(status_router)
 
+# 注册飞书集成 API
+from backend.api.feishu import router as feishu_router
+app.include_router(feishu_router)
+
 # 注册已发布商品 API
 from backend.api.published_products import router as published_products_router
 app.include_router(published_products_router)

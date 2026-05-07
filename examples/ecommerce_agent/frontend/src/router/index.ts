@@ -85,6 +85,11 @@ const routes: RouteRecordRaw[] = [
     path: '/chat',
     name: 'ChatInterface',
     component: () => import('../views/ChatInterface.vue')
+  },
+  {
+    path: '/feishu',
+    name: 'Feishu',
+    component: () => import('../views/Feishu.vue')
   }
 ]
 
