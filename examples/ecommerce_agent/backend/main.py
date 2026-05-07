@@ -12,6 +12,7 @@ from backend.agent.core import ECommerceAgent
 from backend.scheduler.scheduler import get_task_scheduler
 from backend.browser.manager import get_browser_manager
 from backend.browser.elements import init_default_elements
+from backend.api import product_library
 
 
 # Pydantic Models for Request/Response
@@ -98,6 +99,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 注册商品库 API
+from backend.api.product_library import router as product_library_router
+app.include_router(product_library_router)
 
 
 @app.get("/")

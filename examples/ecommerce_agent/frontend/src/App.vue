@@ -73,6 +73,10 @@
             <el-icon><component :is="icons.Goods" /></el-icon>
             <span>商品管理</span>
           </el-menu-item>
+          <el-menu-item index="/product-library">
+            <el-icon><component :is="icons.Box" /></el-icon>
+            <span>商品库</span>
+          </el-menu-item>
           <el-menu-item index="/data">
             <el-icon><component :is="icons.DataAnalysis" /></el-icon>
             <span>数据分析</span>
@@ -235,6 +239,7 @@ const pageTitleMap: Record<string, string> = {
   '/data': '数据分析',
   '/orders': '订单管理',
   '/products': '商品管理',
+  '/product-library': '商品库',
   '/llm-config': '模型配置'
 }
 

@@ -62,6 +62,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/Products.vue')
   },
   {
+    path: '/product-library',
+    name: 'ProductLibrary',
+    component: () => import('../views/ProductLibrary.vue')
+  },
+  {
     path: '/llm-config',
     name: 'LLMConfig',
     component: () => import('../views/LLMConfig.vue')
