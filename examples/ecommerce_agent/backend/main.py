@@ -104,6 +104,10 @@ app.add_middleware(
 from backend.api.product_library import router as product_library_router
 app.include_router(product_library_router)
 
+# 注册已发布商品 API
+from backend.api.published_products import router as published_products_router
+app.include_router(published_products_router)
+
 
 @app.get("/")
 async def root():

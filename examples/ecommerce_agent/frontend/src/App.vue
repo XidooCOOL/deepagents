@@ -81,6 +81,10 @@
             <el-icon><component :is="icons.Upload" /></el-icon>
             <span>批量发布</span>
           </el-menu-item>
+          <el-menu-item index="/published-products">
+            <el-icon><component :is="icons.DocumentChecked" /></el-icon>
+            <span>已发布</span>
+          </el-menu-item>
           <el-menu-item index="/data">
             <el-icon><component :is="icons.DataAnalysis" /></el-icon>
             <span>数据分析</span>
@@ -245,6 +249,7 @@ const pageTitleMap: Record<string, string> = {
   '/products': '商品管理',
   '/product-library': '商品库',
   '/product-publish': '批量发布',
+  '/published-products': '已发布商品',
   '/llm-config': '模型配置'
 }
 
