@@ -108,6 +108,10 @@ app.include_router(product_library_router)
 from backend.api.published_products import router as published_products_router
 app.include_router(published_products_router)
 
+# 注册 DOM 元素提取 API
+from backend.api.extract_product import router as extract_router
+app.include_router(extract_router)
+
 
 @app.get("/")
 async def root():

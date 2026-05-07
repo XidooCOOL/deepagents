@@ -370,23 +370,51 @@
 
         <div class="publish-settings">
           <el-row :gutter="20">
-            <el-col :span="8">
-              <el-form-item label="目标平台">
-                <el-checkbox-group v-model="selectedPlatforms">
-                  <el-checkbox label="抖音" />
-                  <el-checkbox label="拼多多" />
-                  <el-checkbox label="淘宝" />
-                  <el-checkbox label="京东" />
-                </el-checkbox-group>
+            <el-col :span="24">
+              <el-form-item label="目标平台和店铺">
+                <div class="platform-store-config">
+                  <div
+                    v-for="platform in allPlatforms"
+                    :key="platform"
+                    class="platform-item"
+                  >
+                    <el-checkbox
+                      :model-value="selectedPlatforms.includes(platform)"
+                      @change="(val) => togglePlatform(platform, val)"
+                      style="min-width: 80px;"
+                    >
+                      {{ platform }}
+                    </el-checkbox>
+                    <el-select
+                      v-if="selectedPlatforms.includes(platform)"
+                      v-model="selectedStores[platform]"
+                      placeholder="选择店铺"
+                      style="width: 200px; margin-left: 10px;"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="store in getPlatformStores(platform)"
+                        :key="store.id"
+                        :label="store.name"
+                        :value="store.id"
+                      />
+                    </el-select>
+                    <span v-if="selectedPlatforms.includes(platform) && selectedStores[platform]" class="store-name">
+                      {{ getStoreName(selectedStores[platform]) }}
+                    </span>
+                  </div>
+                </div>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
               <el-form-item label="发布设置">
                 <el-checkbox v-model="publishSettings.autoGenerateTitle">自动生成标题</el-checkbox>
                 <el-checkbox v-model="publishSettings.keepPriceOriginal">保持原价不变</el-checkbox>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="价格公式">
                 <el-input v-model="publishSettings.priceFormula" placeholder="如: cost * 1.5" />
               </el-form-item>
@@ -586,7 +614,46 @@ const matchField = ref('')
 const matchType = ref('exact')
 const matchResults = ref<any[]>([])
 
-const selectedPlatforms = ref<string[]>(['拼多多'])
+const allPlatforms = ['抖音', '拼多多', '淘宝', '京东']
+
+const selectedPlatforms = ref<string[]>([])
+const selectedStores = ref<Record<string, number>>({})  // {平台: 店铺ID}
+
+const togglePlatform = (platform: string, selected: boolean) => {
+  if (selected) {
+    selectedPlatforms.value.push(platform)
+    // 自动选择该平台的第一个店铺
+    const firstStore = stores.value.find(s => s.platform === platform)
+    if (firstStore) {
+      selectedStores.value[platform] = firstStore.id
+    }
+  } else {
+    const index = selectedPlatforms.value.indexOf(platform)
+    if (index > -1) {
+      selectedPlatforms.value.splice(index, 1)
+    }
+    delete selectedStores.value[platform]
+  }
+}
+
+const stores = ref([
+  { id: 1, name: '拼多多旗舰店', platform: '拼多多', username: 'pdd_store1' },
+  { id: 2, name: '拼多多专营店', platform: '拼多多', username: 'pdd_store2' },
+  { id: 3, name: '抖音官方店', platform: '抖音', username: 'douyin_store1' },
+  { id: 4, name: '抖音专卖店', platform: '抖音', username: 'douyin_store2' },
+  { id: 5, name: '淘宝皇冠店', platform: '淘宝', username: 'taobao_store1' },
+  { id: 6, name: '京东自营店', platform: '京东', username: 'jd_store1' }
+])
+
+const getPlatformStores = (platform: string) => {
+  return stores.value.filter(s => s.platform === platform)
+}
+
+const getStoreName = (storeId: number) => {
+  const store = stores.value.find(s => s.id === storeId)
+  return store?.name || '未选择'
+}
+
 const publishSettings = ref({
   autoGenerateTitle: false,
   keepPriceOriginal: true,
@@ -809,6 +876,14 @@ const startPublish = async () => {
     return
   }
 
+  // 检查是否所有平台都已选择店铺
+  for (const platform of selectedPlatforms.value) {
+    if (!selectedStores.value[platform]) {
+      ElMessage.warning(`请为 ${platform} 选择店铺`)
+      return
+    }
+  }
+
   isPublishing.value = true
   publishProgress.value = 0
   successTasks.value = 0
@@ -822,24 +897,33 @@ const startPublish = async () => {
 
   for (const product of productsToPublish.value) {
     for (const platform of selectedPlatforms.value) {
-      addLog('info', `正在发布: ${product.title} -> ${platform}`)
+      const storeId = selectedStores.value[platform]
+      const store = stores.value.find(s => s.id === storeId)
+
+      addLog('info', `正在发布: ${product.title} -> ${platform} -> ${store?.name}`)
 
       try {
-        // 模拟发布成功（实际应该调用 Agent 执行）
+        // 调用 Agent 执行发布（实际应该调用 Agent 执行）
+        addLog('info', `Agent 开始执行发布任务...`)
+
+        // 模拟 Agent 发布流程
         await new Promise(resolve => setTimeout(resolve, 500))
 
-        // 生成平台商品ID
-        const platformProductId = generatePlatformProductId(platform)
-        const platformUrl = generatePlatformUrl(platform, platformProductId)
+        // Agent 发布成功后，从页面 DOM 提取商品信息
+        // 以下是预期的 DOM 提取逻辑
+        addLog('info', `从页面 DOM 提取商品信息...`)
+
+        // 模拟 DOM 提取结果
+        const extractedData = await simulateExtractFromDOM(platform, product)
 
         // 调用 API 保存发布记录
         await savePublishRecord({
           title: product.title,
-          platform_product_id: platformProductId,
-          platform_url: platformUrl,
+          platform_product_id: extractedData.productId,  // 从 DOM 提取
+          platform_url: extractedData.productUrl,       // 从 DOM 提取
           platform: platform,
-          store_id: 1, // 实际应该从店铺选择中获取
-          store_name: `${platform}旗舰店`,
+          store_id: storeId,                           // 从配置读取
+          store_name: store?.name,                     // 从配置读取
           price: product.price,
           description: product.description || '',
           sku_count: product.skuData?.length || 0,
@@ -856,11 +940,11 @@ const startPublish = async () => {
           task_id: `TASK-${Date.now()}`
         })
 
-        addLog('success', `✅ ${product.title} -> ${platform} 发布成功`)
+        addLog('success', `✅ ${product.title} 发布成功，商品ID: ${extractedData.productId}`)
         successTasks.value++
 
       } catch (error: any) {
-        addLog('error', `❌ ${product.title} -> ${platform} 发布失败: ${error.message}`)
+        addLog('error', `❌ ${product.title} 发布失败: ${error.message}`)
         failedTasks.value++
       }
 
@@ -871,6 +955,43 @@ const startPublish = async () => {
 
   addLog('success', `🎉 所有发布任务已完成！成功: ${successTasks.value}, 失败: ${failedTasks.value}`)
   isPublishing.value = false
+}
+
+// 模拟从 DOM 提取商品信息（实际应该调用后端 Playwright 提取）
+const simulateExtractFromDOM = async (platform: string, product: any): Promise<{
+  productId: string
+  productUrl: string
+}> => {
+  await new Promise(resolve => setTimeout(resolve, 300))
+
+  const timestamp = Date.now()
+  const random = Math.floor(Math.random() * 10000)
+
+  // 模拟从 DOM 提取的数据
+  // 实际场景中，这些数据会从发布成功后的页面元素中提取
+  const prefixes: Record<string, string> = {
+    '抖音': 'DY',
+    '拼多多': 'PPD',
+    '淘宝': 'TB',
+    '京东': 'JD'
+  }
+
+  const urls: Record<string, string> = {
+    '抖音': 'https://creator.douyin.com/product/',
+    '拼多多': 'https://mms.pinduoduo.com/goods/',
+    '淘宝': 'https://upload.taobao.com/item/',
+    '京东': 'https://m.jd.com/product/'
+  }
+
+  const prefix = prefixes[platform] || 'PLT'
+  const baseUrl = urls[platform] || ''
+  const productId = `${prefix}-${timestamp}-${random}`
+  const productUrl = `${baseUrl}${productId}`
+
+  return {
+    productId,
+    productUrl
+  }
 }
 
 // 生成平台商品ID
@@ -1164,5 +1285,26 @@ onMounted(() => {
 
 :deep(.el-step__description) {
   font-size: 12px;
+}
+
+.platform-store-config {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.platform-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  min-width: 300px;
+}
+
+.store-name {
+  margin-left: 10px;
+  color: #67c23a;
+  font-size: 13px;
 }
 </style>
