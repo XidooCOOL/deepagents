@@ -89,12 +89,14 @@
 
       <el-tab-pane label="页面调试" name="debug">
         <div class="debug-toolbar">
-          <el-button type="primary" @click="testConnection" :loading="testing" size="small">
-            🔌 测试连接
+          <el-button type="primary" @click="loadStores" :loading="loadingStores" size="small">
+            🔄 刷新店铺
           </el-button>
-          <el-button @click="closeBrowser" size="small">关闭浏览器</el-button>
-          <el-tag v-if="browserStatus" :type="browserStatus === 'ready' ? 'success' : 'warning'">
-            浏览器状态: {{ browserStatus === 'ready' ? '就绪' : '连接中' }}
+          <el-tag v-if="currentStore" type="success">
+            当前店铺: {{ currentStore.name }} ({{ getPlatformLabel(currentStore.platform) }})
+          </el-tag>
+          <el-tag v-if="browserInfo" type="info">
+            浏览器状态: {{ browserInfo.active_tabs }} 个活跃 Tab
           </el-tag>
         </div>
 
@@ -105,9 +107,17 @@
                 <span>🔍 Playwright 页面调试</span>
               </template>
               <el-form :model="debugConfig" label-width="100px" label-position="top">
-                <el-form-item label="目标平台">
-                  <el-select v-model="debugConfig.platform" style="width: 100%;">
-                    <el-option v-for="p in platforms" :key="p.value" :label="p.label" :value="p.value" />
+                <el-form-item label="选择店铺">
+                  <el-select v-model="debugConfig.storeId" placeholder="选择已登录店铺" style="width: 100%;" @change="onStoreChange">
+                    <el-option-group v-for="group in storeGroups" :key="group.label" :label="group.label">
+                      <el-option v-for="store in group.options" :key="store.id" :label="store.name" :value="store.id">
+                        <div class="store-option">
+                          <span>{{ store.name }}</span>
+                          <el-tag v-if="store.has_browser" size="small" type="success" style="margin-left: 8px;">已登录</el-tag>
+                          <el-tag v-else size="small" type="info" style="margin-left: 8px;">未启动</el-tag>
+                        </div>
+                      </el-option>
+                    </el-option-group>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="页面URL">
@@ -136,7 +146,7 @@
                   <el-input v-model="debugConfig.waitSelector" placeholder="等待元素出现" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="openDebugPage" :loading="openingPage" style="width: 100%;">
+                  <el-button type="primary" @click="openDebugPage" :loading="openingPage" style="width: 100%;" :disabled="!debugConfig.storeId">
                     <el-icon><Monitor /></el-icon>
                     打开页面
                   </el-button>
@@ -152,7 +162,7 @@
                 <el-form-item label="选择器">
                   <el-input v-model="selectorTest.selector" placeholder="输入 CSS/XPath 选择器">
                     <template #append>
-                      <el-button @click="testCurrentSelector" :loading="testing" type="primary">
+                      <el-button @click="testCurrentSelector" :loading="testing" type="primary" :disabled="!debugConfig.storeId">
                         测试
                       </el-button>
                     </template>
@@ -174,7 +184,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="highlightElement" :disabled="!pageOpened || !selectorTest.selector" type="warning" style="width: 100%;">
+                  <el-button @click="highlightElement" :disabled="!pageOpened || !selectorTest.selector || !debugConfig.storeId" type="warning" style="width: 100%;">
                     <el-icon><Aim /></el-icon>
                     高亮元素
                   </el-button>
@@ -211,10 +221,10 @@
                 <div class="preview-header">
                   <span>📷 页面预览</span>
                   <div>
-                    <el-button size="small" @click="takeScreenshot" :disabled="!pageOpened">
+                    <el-button size="small" @click="takeScreenshot" :disabled="!pageOpened || !debugConfig.storeId">
                       截图
                     </el-button>
-                    <el-button size="small" @click="refreshPage" :disabled="!pageOpened">
+                    <el-button size="small" @click="refreshPage" :disabled="!pageOpened || !debugConfig.storeId">
                       刷新
                     </el-button>
                   </div>
@@ -225,7 +235,7 @@
                 <div v-else class="no-preview">
                   <el-icon :size="48"><Picture /></el-icon>
                   <p>暂无截图</p>
-                  <p class="hint">请先打开页面</p>
+                  <p class="hint">请先选择店铺并打开页面</p>
                 </div>
               </div>
             </el-card>
@@ -288,14 +298,7 @@
               <template #header>
                 <span>📥 导入元素</span>
               </template>
-              <el-upload
-                drag
-                action="#"
-                :auto-upload="false"
-                :on-change="handleImportFile"
-                :limit="1"
-                accept=".json,.csv,.xlsx"
-              >
+              <el-upload drag action="#" :auto-upload="false" :on-change="handleImportFile" :limit="1" accept=".json,.csv,.xlsx">
                 <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
                 <div>拖拽文件或点击上传</div>
                 <template #tip>
@@ -343,9 +346,7 @@
               </template>
               <div class="template-desc">{{ template.description }}</div>
               <div class="template-platforms">
-                <el-tag v-for="p in template.platforms" :key="p" size="small" style="margin: 2px;">
-                  {{ p }}
-                </el-tag>
+                <el-tag v-for="p in template.platforms" :key="p" size="small" style="margin: 2px;">{{ p }}</el-tag>
               </div>
               <el-button type="primary" size="small" @click="applyTemplate(template)" style="margin-top: 15px; width: 100%;">
                 应用模板
@@ -406,37 +407,20 @@
               <el-input v-model="selector.value" :placeholder="getSelectorPlaceholder(selector.type)" />
             </el-col>
             <el-col :span="4">
-              <el-button
-                v-if="elementForm.selectors.length > 1"
-                type="danger"
-                icon="Delete"
-                circle
-                @click="removeSelector(index)"
-              />
-              <el-button
-                v-if="debugConfig.url"
-                type="success"
-                icon="View"
-                circle
-                @click="testSingleSelector(selector, index)"
-                :loading="testingSelectorIndex === index"
-              />
+              <el-button v-if="elementForm.selectors.length > 1" type="danger" icon="Delete" circle @click="removeSelector(index)" />
+              <el-button v-if="debugConfig.storeId && selector.value" type="success" icon="View" circle @click="testSingleSelector(selector, index)" :loading="testingSelectorIndex === index" />
             </el-col>
           </el-row>
         </div>
 
-        <el-button type="primary" plain @click="addSelector" icon="Plus">
-          添加备用选择器
-        </el-button>
+        <el-button type="primary" plain @click="addSelector" icon="Plus">添加备用选择器</el-button>
 
         <el-divider content-position="left">测试选择器</el-divider>
         <div class="selector-test-section">
-          <el-button @click="testFormSelector" :loading="testingFormSelector" type="primary">
+          <el-button @click="testFormSelector" :loading="testingFormSelector" type="primary" :disabled="!debugConfig.storeId">
             🧪 批量测试所有选择器
           </el-button>
-          <el-button @click="switchToDebug" type="warning">
-            🔍 打开调试面板
-          </el-button>
+          <el-button @click="switchToDebug" type="warning">🔍 打开调试面板</el-button>
         </div>
 
         <div v-if="selectorTestResults.length > 0" class="test-results-list">
@@ -459,9 +443,7 @@
 
       <template #footer>
         <el-button @click="showAddModal = false">取消</el-button>
-        <el-button @click="isFullscreen = !isFullscreen">
-          {{ isFullscreen ? '退出全屏' : '全屏编辑' }}
-        </el-button>
+        <el-button @click="isFullscreen = !isFullscreen">{{ isFullscreen ? '退出全屏' : '全屏编辑' }}</el-button>
         <el-button type="primary" @click="saveElement">保存</el-button>
       </template>
     </el-dialog>
@@ -474,14 +456,7 @@
           <li>导入会覆盖现有同名元素</li>
         </ul>
       </el-alert>
-      <el-upload
-        drag
-        action="#"
-        :auto-upload="false"
-        :on-change="handleImportFile"
-        accept=".json,.csv,.xlsx"
-        style="width: 100%;"
-      >
+      <el-upload drag action="#" :auto-upload="false" :on-change="handleImportFile" accept=".json,.csv,.xlsx" style="width: 100%;">
         <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
         <div>拖拽文件到此处或点击上传</div>
       </el-upload>
@@ -513,7 +488,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus, UploadFilled, Download, View, Edit, Delete, Monitor, Camera, Aim, Picture } from '@element-plus/icons-vue'
 import axios from 'axios'
@@ -534,7 +509,11 @@ const testingFormSelector = ref(false)
 const testingSelectorIndex = ref<number | null>(null)
 const selectorTestResults = ref<any[]>([])
 const importFile = ref<any>(null)
-const browserStatus = ref<string | null>(null)
+const loadingStores = ref(false)
+const browserInfo = ref<any>(null)
+
+const stores = ref<any[]>([])
+const currentStore = ref<any>(null)
 
 const platforms = [
   { value: 'pinduoduo', label: '拼多多' },
@@ -564,7 +543,7 @@ const elementForm = ref({
 })
 
 const debugConfig = ref({
-  platform: 'pinduoduo',
+  storeId: null as number | null,
   url: '',
   presetPage: '',
   waitSelector: ''
@@ -601,6 +580,16 @@ const templates = ref([
   { name: '发布成功提取', description: '提取商品ID、链接等信息', platforms: ['拼多多', '抖音'], count: 4 }
 ])
 
+const storeGroups = computed(() => {
+  const groups: Record<string, any[]> = {}
+  stores.value.forEach(store => {
+    const label = getPlatformLabel(store.platform) + '平台'
+    if (!groups[label]) groups[label] = []
+    groups[label].push(store)
+  })
+  return Object.entries(groups).map(([label, options]) => ({ label, options }))
+})
+
 const platformPageOptions = computed(() => {
   return platforms.map(p => ({
     label: p.label,
@@ -621,14 +610,13 @@ const getPlatformName = (platform: string) => {
   return platforms.find(p => p.value === platform)?.label || platform
 }
 
+const getPlatformLabel = (platform: string) => {
+  return platforms.find(p => p.value === platform)?.label || platform
+}
+
 const getActionLabel = (action: string) => {
   const labels: Record<string, string> = {
-    click: '点击',
-    input: '输入',
-    upload: '上传',
-    extract: '提取',
-    wait: '等待',
-    navigate: '导航'
+    click: '点击', input: '输入', upload: '上传', extract: '提取', wait: '等待', navigate: '导航'
   }
   return labels[action] || action
 }
@@ -654,12 +642,38 @@ const loadElements = () => {
     { id: 1, name: 'username_input', display_name: '用户名输入框', description: '登录用户名输入', selectors: [{ type: 'css', value: "input[name='username']" }, { type: 'xpath', value: "//input[@name='username']" }], selector_type: 'css', selector: "input[name='username']", action_type: 'input', page: 'login', platform: 'pinduoduo', version: 1, is_active: true },
     { id: 2, name: 'password_input', display_name: '密码输入框', description: '登录密码输入', selectors: [{ type: 'css', value: "input[name='password']" }], selector_type: 'css', selector: "input[name='password']", action_type: 'input', page: 'login', platform: 'pinduoduo', version: 1, is_active: true },
     { id: 3, name: 'login_button', display_name: '登录按钮', description: '登录确认按钮', selectors: [{ type: 'text', value: '登录' }, { type: 'css', value: 'button[type="submit"]' }], selector_type: 'text', selector: '登录', action_type: 'click', page: 'login', platform: 'pinduoduo', version: 2, is_active: true },
-    { id: 4, name: 'title_input', display_name: '商品标题输入', description: '商品标题输入框', selectors: [{ type: 'css', value: "input[placeholder*='商品名称']" }], selector_type: 'css', selector: "input[placeholder*='商品名称']", action_type: 'input', page: 'publish', platform: 'pinduoduo', version: 1, is_active: true },
-    { id: 5, name: 'price_input', display_name: '价格输入', description: '商品价格输入框', selectors: [{ type: 'css', value: "input[name='price']" }], selector_type: 'css', selector: "input[name='price']", action_type: 'input', page: 'publish', platform: 'pinduoduo', version: 1, is_active: true },
-    { id: 6, name: 'submit_button', display_name: '提交按钮', description: '发布商品提交', selectors: [{ type: 'text', value: '发布' }], selector_type: 'text', selector: '发布', action_type: 'click', page: 'publish', platform: 'pinduoduo', version: 1, is_active: true },
     { id: 7, name: 'product_id', display_name: '商品ID', description: '发布成功后的商品ID', selectors: [{ type: 'css', value: '#goods_id' }, { type: 'css', value: '[data-goods-id]' }, { type: 'css', value: '.goods-id' }], selector_type: 'css', selector: '#goods_id', action_type: 'extract', page: 'publish_success', platform: 'pinduoduo', version: 1, is_active: true },
     { id: 8, name: 'product_url', display_name: '商品链接', description: '商品详情页链接', selectors: [{ type: 'css', value: '.goods-link' }, { type: 'css', value: "a[href*='goods']" }], selector_type: 'css', selector: '.goods-link', action_type: 'extract', page: 'publish_success', platform: 'pinduoduo', version: 1, is_active: true }
   ]
+}
+
+const loadStores = async () => {
+  loadingStores.value = true
+  try {
+    const res = await axios.get(`${API_BASE}/stores`)
+    stores.value = res.data.stores
+    browserInfo.value = null
+
+    try {
+      const testRes = await axios.get(`${API_BASE}/test-connection`)
+      browserInfo.value = testRes.data
+    } catch {}
+
+    if (debugConfig.value.storeId) {
+      currentStore.value = stores.value.find(s => s.id === debugConfig.value.storeId)
+    }
+  } catch (e: any) {
+    ElMessage.error('获取店铺列表失败')
+  }
+  loadingStores.value = false
+}
+
+const onStoreChange = (storeId: number) => {
+  currentStore.value = stores.value.find(s => s.id === storeId)
+  pageOpened.value = false
+  screenshotUrl.value = ''
+  pageInfo.value = null
+  testResult.value = null
 }
 
 const onSelectionChange = (selection: any[]) => {
@@ -672,13 +686,7 @@ const clearSelection = () => {
 
 const openAddModal = () => {
   editingElement.value = null
-  elementForm.value = {
-    name: '',
-    display_name: '',
-    description: '',
-    action_type: 'click',
-    selectors: [{ type: 'css', value: '' }]
-  }
+  elementForm.value = { name: '', display_name: '', description: '', action_type: 'click', selectors: [{ type: 'css', value: '' }] }
   selectorTestResults.value = []
   showAddModal.value = true
 }
@@ -713,32 +721,16 @@ const saveElement = () => {
     ElMessage.warning('请输入元素名称')
     return
   }
-
   if (editingElement.value) {
     const index = elements.value.findIndex(e => e.id === editingElement.value.id)
     if (index !== -1) {
-      elements.value[index] = {
-        ...elements.value[index],
-        ...elementForm.value,
-        version: elements.value[index].version + 1,
-        updated_at: new Date().toISOString()
-      }
+      elements.value[index] = { ...elements.value[index], ...elementForm.value, version: elements.value[index].version + 1, updated_at: new Date().toISOString() }
     }
     ElMessage.success('元素已更新')
   } else {
-    elements.value.push({
-      id: Date.now(),
-      platform: selectedPlatform.value,
-      page: selectedPage.value,
-      ...elementForm.value,
-      version: 1,
-      is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    })
+    elements.value.push({ id: Date.now(), platform: selectedPlatform.value, page: selectedPage.value, ...elementForm.value, version: 1, is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() })
     ElMessage.success('元素已添加')
   }
-
   showAddModal.value = false
   editingElement.value = null
 }
@@ -749,37 +741,11 @@ const deleteElement = async (element: any) => {
   ElMessage.success('元素已删除')
 }
 
-const testConnection = async () => {
-  testing.value = true
-  try {
-    const res = await axios.get(`${API_BASE}/test-connection`)
-    browserStatus.value = res.data.status
-    if (res.data.success) {
-      ElMessage.success('Playwright 连接正常')
-    } else {
-      ElMessage.error(res.data.message)
-    }
-  } catch (e: any) {
-    ElMessage.error('连接失败: ' + (e.message || '未知错误'))
-    browserStatus.value = 'error'
-  }
-  testing.value = false
-}
-
-const closeBrowser = async () => {
-  try {
-    await axios.post(`${API_BASE}/close-browser`)
-    pageOpened.value = false
-    screenshotUrl.value = ''
-    pageInfo.value = null
-    browserStatus.value = null
-    ElMessage.success('浏览器已关闭')
-  } catch (e: any) {
-    ElMessage.error('关闭失败: ' + (e.message || '未知错误'))
-  }
-}
-
 const openDebugPage = async () => {
+  if (!debugConfig.value.storeId) {
+    ElMessage.warning('请先选择店铺')
+    return
+  }
   if (!debugConfig.value.url) {
     ElMessage.warning('请输入页面URL')
     return
@@ -788,7 +754,7 @@ const openDebugPage = async () => {
   openingPage.value = true
   try {
     const res = await axios.post(`${API_BASE}/open-page`, {
-      platform: debugConfig.value.platform,
+      store_id: debugConfig.value.storeId,
       url: debugConfig.value.url,
       wait_selector: debugConfig.value.waitSelector,
       wait_timeout: 5000
@@ -801,7 +767,7 @@ const openDebugPage = async () => {
 
       try {
         const infoRes = await axios.post(`${API_BASE}/get-page-info`, {
-          platform: debugConfig.value.platform,
+          store_id: debugConfig.value.storeId,
           url: debugConfig.value.url
         })
         pageInfo.value = infoRes.data
@@ -817,26 +783,20 @@ const openDebugPage = async () => {
 
 const loadPresetUrl = async () => {
   if (!debugConfig.value.presetPage) return
-
   try {
     const res = await axios.get(`${API_BASE}/platform-urls`)
-    const platformUrls = res.data[debugConfig.value.platform]
+    const platform = currentStore.value?.platform || 'pinduoduo'
+    const platformUrls = res.data[platform]
     if (platformUrls && platformUrls[debugConfig.value.presetPage]) {
       debugConfig.value.url = platformUrls[debugConfig.value.presetPage]
     }
   } catch {
     const urls: Record<string, Record<string, string>> = {
-      'pinduoduo': {
-        'login': 'https://mms.pinduoduo.com/login',
-        'publish': 'https://mms.pinduoduo.com/goods/create',
-        'publish_success': 'https://mms.pinduoduo.com/goods/success'
-      },
-      'douyin': {
-        'login': 'https://creator.douyin.com',
-        'publish': 'https://creator.douyin.com/product/publish'
-      }
+      'pinduoduo': { 'login': 'https://mms.pinduoduo.com/login', 'publish': 'https://mms.pinduoduo.com/goods/create', 'publish_success': 'https://mms.pinduoduo.com/goods/success' },
+      'douyin': { 'login': 'https://creator.douyin.com', 'publish': 'https://creator.douyin.com/product/publish' }
     }
-    const platformUrls = urls[debugConfig.value.platform]
+    const platform = currentStore.value?.platform || 'pinduoduo'
+    const platformUrls = urls[platform]
     if (platformUrls && debugConfig.value.presetPage) {
       debugConfig.value.url = platformUrls[debugConfig.value.presetPage] || ''
     }
@@ -845,10 +805,7 @@ const loadPresetUrl = async () => {
 
 const takeScreenshot = async () => {
   try {
-    const res = await axios.post(`${API_BASE}/open-page`, {
-      platform: debugConfig.value.platform,
-      url: debugConfig.value.url
-    })
+    const res = await axios.post(`${API_BASE}/take-screenshot`, { store_id: debugConfig.value.storeId })
     if (res.data.success) {
       screenshotUrl.value = res.data.screenshot + '?t=' + Date.now()
       ElMessage.success('截图已保存')
@@ -873,514 +830,163 @@ const handleImageError = () => {
 }
 
 const testSelector = async (element: any) => {
+  if (!debugConfig.value.storeId) {
+    ElMessage.warning('请先选择店铺')
+    return
+  }
   testing.value = true
   testResult.value = null
-
   try {
     const selectors = element.selectors || [{ type: element.selector_type || 'css', value: element.selector }]
     const results = []
-
     for (const sel of selectors) {
       try {
-        const res = await axios.post(`${API_BASE}/test-selector`, {
-          selector: sel.value,
-          selector_type: sel.type,
-          action_type: element.action_type || 'click'
-        }, {
-          params: {
-            platform: element.platform || 'pinduoduo',
-            url: debugConfig.value.url || 'about:blank'
-          }
-        })
+        const res = await axios.post(`${API_BASE}/test-selector`, { selector: sel.value, selector_type: sel.type, action_type: element.action_type || 'click' }, { params: { store_id: debugConfig.value.storeId, url: debugConfig.value.url || undefined } })
         results.push(res.data)
-      } catch {
-        results.push({ found: false, count: 0 })
-      }
+      } catch { results.push({ found: false, count: 0 }) }
     }
-
     const validResult = results.find(r => r.found)
     if (validResult) {
-      testResult.value = {
-        success: true,
-        found: true,
-        count: validResult.element_count,
-        message: `找到 ${validResult.element_count} 个元素`,
-        text: validResult.element_text,
-        boundingBox: validResult.bounding_box
-      }
+      testResult.value = { success: true, found: true, count: validResult.element_count, message: `找到 ${validResult.element_count} 个元素`, text: validResult.element_text, boundingBox: validResult.bounding_box }
       ElMessage.success('选择器测试成功')
     } else {
-      testResult.value = {
-        success: false,
-        found: false,
-        count: 0,
-        message: '所有选择器均未找到元素'
-      }
-      ElMessage.warning('未找到元素，尝试备用选择器')
+      testResult.value = { success: false, found: false, count: 0, message: '所有选择器均未找到元素' }
+      ElMessage.warning('未找到元素')
     }
   } catch (e: any) {
-    testResult.value = {
-      success: false,
-      found: false,
-      message: e.message || '测试失败'
-    }
+    testResult.value = { success: false, found: false, message: e.message || '测试失败' }
     ElMessage.error('测试失败')
   }
-
   testing.value = false
 }
 
 const debugWithPlaywright = (element: any) => {
   activeTab.value = 'debug'
-  debugConfig.value.platform = element.platform || 'pinduoduo'
+  if (element.platform) debugConfig.value.storeId = null
   selectorTest.value.selector = element.selectors?.[0]?.value || element.selector
   selectorTest.value.selectorType = element.selectors?.[0]?.type || element.selector_type || 'css'
-
   if (!debugConfig.value.url && element.page) {
-    const pageMap: Record<string, string> = {
-      'login': 'login',
-      'publish': 'publish',
-      'publish_success': 'publish_success'
-    }
+    const pageMap: Record<string, string> = { 'login': 'login', 'publish': 'publish', 'publish_success': 'publish_success' }
     debugConfig.value.presetPage = pageMap[element.page] || 'login'
     loadPresetUrl()
   }
-
-  ElMessage.info('已切换到调试面板，请先打开页面')
+  ElMessage.info('已切换到调试面板，请先选择店铺并打开页面')
 }
 
 const testCurrentSelector = async () => {
-  if (!selectorTest.value.selector) {
-    ElMessage.warning('请输入选择器')
-    return
-  }
-
+  if (!selectorTest.value.selector) { ElMessage.warning('请输入选择器'); return }
+  if (!debugConfig.value.storeId) { ElMessage.warning('请先选择店铺'); return }
   testing.value = true
   testResult.value = null
-
   try {
-    const res = await axios.post(`${API_BASE}/test-selector`, {
-      selector: selectorTest.value.selector,
-      selector_type: selectorTest.value.selectorType,
-      action_type: selectorTest.value.actionType
-    }, {
-      params: {
-        platform: debugConfig.value.platform,
-        url: debugConfig.value.url || 'about:blank'
-      }
-    })
-
+    const res = await axios.post(`${API_BASE}/test-selector`, { selector: selectorTest.value.selector, selector_type: selectorTest.value.selectorType, action_type: selectorTest.value.actionType }, { params: { store_id: debugConfig.value.storeId, url: debugConfig.value.url || undefined } })
     if (res.data.success) {
-      testResult.value = {
-        success: true,
-        found: res.data.found,
-        count: res.data.element_count,
-        message: res.data.found ? `找到 ${res.data.element_count} 个元素` : '未找到元素',
-        text: res.data.element_text,
-        boundingBox: res.data.bounding_box
-      }
-      if (res.data.found) {
-        ElMessage.success('选择器有效')
-      } else {
-        ElMessage.warning('未找到元素')
-      }
+      testResult.value = { success: true, found: res.data.found, count: res.data.element_count, message: res.data.found ? `找到 ${res.data.element_count} 个元素` : '未找到元素', text: res.data.element_text, boundingBox: res.data.bounding_box }
+      ElMessage.success(res.data.found ? '选择器有效' : '未找到元素')
     } else {
-      testResult.value = {
-        success: false,
-        found: false,
-        message: res.data.error || '测试失败'
-      }
+      testResult.value = { success: false, found: false, message: res.data.error || '测试失败' }
       ElMessage.error(res.data.error || '测试失败')
     }
   } catch (e: any) {
-    testResult.value = {
-      success: false,
-      found: false,
-      message: e.message || '测试失败'
-    }
+    testResult.value = { success: false, found: false, message: e.message || '测试失败' }
     ElMessage.error('测试失败: ' + (e.message || '未知错误'))
   }
-
   testing.value = false
 }
 
 const testSingleSelector = async (selector: any, index: number) => {
+  if (!debugConfig.value.storeId) { ElMessage.warning('请先选择店铺'); return }
   testingSelectorIndex.value = index
-
   try {
-    const res = await axios.post(`${API_BASE}/test-selector`, {
-      selector: selector.value,
-      selector_type: selector.type,
-      action_type: 'click'
-    }, {
-      params: {
-        platform: debugConfig.value.platform,
-        url: debugConfig.value.url || 'about:blank'
-      }
-    })
-
-    if (res.data.found) {
-      ElMessage.success(`选择器 ${index + 1} 有效`)
-    } else {
-      ElMessage.warning(`选择器 ${index + 1} 无效`)
-    }
-  } catch (e: any) {
-    ElMessage.error('测试失败')
-  }
-
+    const res = await axios.post(`${API_BASE}/test-selector`, { selector: selector.value, selector_type: selector.type, action_type: 'click' }, { params: { store_id: debugConfig.value.storeId, url: debugConfig.value.url || undefined } })
+    ElMessage.success(res.data.found ? `选择器 ${index + 1} 有效` : `选择器 ${index + 1} 无效`)
+  } catch { ElMessage.error('测试失败') }
   testingSelectorIndex.value = null
 }
 
 const testFormSelector = async () => {
-  if (!debugConfig.value.url) {
-    ElMessage.warning('请先在调试面板打开页面')
-    return
-  }
-
+  if (!debugConfig.value.storeId) { ElMessage.warning('请先选择店铺'); return }
+  if (!debugConfig.value.url) { ElMessage.warning('请先打开页面'); return }
   testingFormSelector.value = true
   selectorTestResults.value = []
-
   try {
     for (let i = 0; i < elementForm.value.selectors.length; i++) {
       const sel = elementForm.value.selectors[i]
       try {
-        const res = await axios.post(`${API_BASE}/test-selector`, {
-          selector: sel.value,
-          selector_type: sel.type,
-          action_type: 'click'
-        }, {
-          params: {
-            platform: debugConfig.value.platform,
-            url: debugConfig.value.url
-          }
-        })
-        selectorTestResults.value.push({
-          index: i + 1,
-          type: sel.type,
-          value: sel.value,
-          found: res.data.found,
-          count: res.data.element_count || 0
-        })
-      } catch {
-        selectorTestResults.value.push({
-          index: i + 1,
-          type: sel.type,
-          value: sel.value,
-          found: false,
-          count: 0
-        })
-      }
+        const res = await axios.post(`${API_BASE}/test-selector`, { selector: sel.value, selector_type: sel.type, action_type: 'click' }, { params: { store_id: debugConfig.value.storeId, url: debugConfig.value.url } })
+        selectorTestResults.value.push({ index: i + 1, type: sel.type, value: sel.value, found: res.data.found, count: res.data.element_count || 0 })
+      } catch { selectorTestResults.value.push({ index: i + 1, type: sel.type, value: sel.value, found: false, count: 0 }) }
     }
-
     const successCount = selectorTestResults.value.filter(r => r.found).length
     ElMessage.success(`测试完成: ${successCount}/${selectorTestResults.value.length} 个选择器有效`)
-  } catch (e: any) {
-    ElMessage.error('批量测试失败')
-  }
-
+  } catch { ElMessage.error('批量测试失败') }
   testingFormSelector.value = false
 }
 
 const highlightElement = async () => {
-  if (!selectorTest.value.selector) {
-    ElMessage.warning('请输入选择器')
-    return
-  }
-
+  if (!selectorTest.value.selector) { ElMessage.warning('请输入选择器'); return }
+  if (!debugConfig.value.storeId) { ElMessage.warning('请先选择店铺'); return }
   testing.value = true
-
   try {
-    const res = await axios.post(`${API_BASE}/highlight-element`, null, {
-      params: {
-        platform: debugConfig.value.platform,
-        url: debugConfig.value.url,
-        selector: selectorTest.value.selector,
-        selector_type: selectorTest.value.selectorType
-      }
-    })
-
+    const res = await axios.post(`${API_BASE}/highlight-element`, null, { params: { store_id: debugConfig.value.storeId, url: debugConfig.value.url || undefined, selector: selectorTest.value.selector, selector_type: selectorTest.value.selectorType } })
     if (res.data.success) {
       ElMessage.success(res.data.message)
       screenshotUrl.value = res.data.screenshot + '?t=' + Date.now()
     } else {
       ElMessage.error(res.data.error || '高亮失败')
     }
-  } catch (e: any) {
-    ElMessage.error('高亮失败: ' + (e.message || '未知错误'))
-  }
-
+  } catch (e: any) { ElMessage.error('高亮失败: ' + (e.message || '未知错误')) }
   testing.value = false
 }
 
 const switchToDebug = () => {
   activeTab.value = 'debug'
-  ElMessage.info('请先打开页面，然后测试选择器')
+  ElMessage.info('请先选择店铺，然后打开页面测试选择器')
 }
 
-const batchEnable = () => {
-  selectedElements.value.forEach(e => e.is_active = true)
-  ElMessage.success(`已启用 ${selectedElements.value.length} 个元素`)
-  clearSelection()
-}
+const batchEnable = () => { selectedElements.value.forEach(e => e.is_active = true); ElMessage.success(`已启用 ${selectedElements.value.length} 个元素`); clearSelection() }
+const batchDisable = () => { selectedElements.value.forEach(e => e.is_active = false); ElMessage.success(`已禁用 ${selectedElements.value.length} 个元素`); clearSelection() }
+const batchUpdatePage = () => { if (selectedElements.value.length === 0) { ElMessage.warning('请先选择元素'); return }; batchUpdateData.value = { platform: selectedElements.value[0].platform || 'pinduoduo', page: selectedElements.value[0].page || 'login' }; showBatchPageDialog.value = true }
+const confirmBatchUpdatePage = () => { selectedElements.value.forEach(e => { e.platform = batchUpdateData.value.platform; e.page = batchUpdateData.value.page }); ElMessage.success(`已修改 ${selectedElements.value.length} 个元素的页面配置`); showBatchPageDialog.value = false; clearSelection() }
+const batchDelete = async () => { await ElMessageBox.confirm(`确定删除选中的 ${selectedElements.value.length} 个元素吗？`, '批量删除', { type: 'warning' }); const ids = selectedElements.value.map(e => e.id); elements.value = elements.value.filter(e => !ids.includes(e.id)); ElMessage.success('批量删除完成'); clearSelection() }
+const handleImportFile = (file: any) => { importFile.value = file.raw }
+const doImport = () => { ElMessage.success('导入成功'); showImportDialog.value = false; importFile.value = null; loadElements() }
+const exportElements = () => { const data = JSON.stringify(filteredElements.value, null, 2); const blob = new Blob([data], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `elements_${selectedPlatform.value}_${selectedPage.value}.json`; a.click(); ElMessage.success('导出成功') }
+const doExport = () => { exportElements() }
+const rollbackVersion = (version: any) => { ElMessage.success(`已回滚到 v${version.version} 版本`) }
+const applyTemplate = (template: any) => { ElMessage.success(`已应用 "${template.name}" 模板`) }
 
-const batchDisable = () => {
-  selectedElements.value.forEach(e => e.is_active = false)
-  ElMessage.success(`已禁用 ${selectedElements.value.length} 个元素`)
-  clearSelection()
-}
-
-const batchUpdatePage = () => {
-  if (selectedElements.value.length === 0) {
-    ElMessage.warning('请先选择元素')
-    return
-  }
-  batchUpdateData.value = {
-    platform: selectedElements.value[0].platform || 'pinduoduo',
-    page: selectedElements.value[0].page || 'login'
-  }
-  showBatchPageDialog.value = true
-}
-
-const confirmBatchUpdatePage = () => {
-  selectedElements.value.forEach(e => {
-    e.platform = batchUpdateData.value.platform
-    e.page = batchUpdateData.value.page
-  })
-  ElMessage.success(`已修改 ${selectedElements.value.length} 个元素的页面配置`)
-  showBatchPageDialog.value = false
-  clearSelection()
-}
-
-const batchDelete = async () => {
-  await ElMessageBox.confirm(`确定删除选中的 ${selectedElements.value.length} 个元素吗？`, '批量删除', { type: 'warning' })
-  const ids = selectedElements.value.map(e => e.id)
-  elements.value = elements.value.filter(e => !ids.includes(e.id))
-  ElMessage.success('批量删除完成')
-  clearSelection()
-}
-
-const handleImportFile = (file: any) => {
-  importFile.value = file.raw
-}
-
-const doImport = () => {
-  ElMessage.success('导入成功')
-  showImportDialog.value = false
-  importFile.value = null
-  loadElements()
-}
-
-const exportElements = () => {
-  const data = JSON.stringify(filteredElements.value, null, 2)
-  const blob = new Blob([data], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `elements_${selectedPlatform.value}_${selectedPage.value}.json`
-  a.click()
-  ElMessage.success('导出成功')
-}
-
-const doExport = () => {
-  exportElements()
-}
-
-const rollbackVersion = (version: any) => {
-  ElMessage.success(`已回滚到 v${version.version} 版本`)
-}
-
-const applyTemplate = (template: any) => {
-  ElMessage.success(`已应用 "${template.name}" 模板`)
-}
-
-onMounted(() => {
-  loadElements()
-  testConnection()
-})
-
-onUnmounted(() => {
-  closeBrowser()
-})
+onMounted(() => { loadElements(); loadStores() })
 </script>
 
 <style scoped>
-.elements-manager {
-  padding: 20px;
-}
-
-.page-header {
-  margin-bottom: 30px;
-}
-
-.page-header h2 {
-  margin: 0 0 10px 0;
-  font-size: 28px;
-  color: #303133;
-}
-
-.subtitle {
-  color: #909399;
-  margin: 0;
-}
-
-.toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.debug-toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.batch-toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 15px;
-  padding: 10px 15px;
-  background: #ecf5ff;
-  border-radius: 8px;
-}
-
-.element-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.element-name {
-  font-weight: 500;
-}
-
-.element-desc {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 4px;
-}
-
-.selector-code {
-  background: #f3f4f6;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.backup-selectors {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.no-backup {
-  color: #c0c4cc;
-  font-size: 13px;
-}
-
-.debug-panel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.selector-item {
-  margin-bottom: 10px;
-  padding: 10px;
-  background: #f5f7fa;
-  border-radius: 8px;
-}
-
-.selector-test-section {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-top: 15px;
-}
-
-.test-result-inline {
-  margin-left: 15px;
-}
-
-.preview-container {
-  width: 100%;
-  min-height: 400px;
-  background: #f5f7fa;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.preview-image {
-  width: 100%;
-  height: auto;
-  max-height: 800px;
-  object-fit: contain;
-}
-
-.no-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #c0c4cc;
-}
-
-.no-preview p {
-  margin-top: 10px;
-}
-
-.no-preview .hint {
-  font-size: 12px;
-  color: #909399;
-}
-
-.preview-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.template-card {
-  margin-bottom: 20px;
-}
-
-.template-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.template-desc {
-  color: #606266;
-  font-size: 13px;
-  margin-bottom: 10px;
-}
-
-.template-platforms {
-  margin-top: 10px;
-}
-
-.page-preview {
-  grid-column: 1 / -1;
-}
-
-.test-result {
-  margin-top: 10px;
-}
-
-.test-results-list {
-  margin-top: 15px;
-}
-
-@media (max-width: 768px) {
-  .debug-panel {
-    grid-template-columns: 1fr;
-  }
-}
+.elements-manager { padding: 20px; }
+.page-header { margin-bottom: 30px; }
+.page-header h2 { margin: 0 0 10px 0; font-size: 28px; color: #303133; }
+.subtitle { color: #909399; margin: 0; }
+.toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+.debug-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
+.batch-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; padding: 10px 15px; background: #ecf5ff; border-radius: 8px; }
+.element-info { display: flex; flex-direction: column; }
+.element-name { font-weight: 500; }
+.element-desc { font-size: 12px; color: #909399; margin-top: 4px; }
+.selector-code { background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+.backup-selectors { display: flex; flex-wrap: wrap; gap: 4px; }
+.no-backup { color: #c0c4cc; font-size: 13px; }
+.selector-item { margin-bottom: 10px; padding: 10px; background: #f5f7fa; border-radius: 8px; }
+.selector-test-section { display: flex; align-items: center; gap: 15px; margin-top: 15px; }
+.preview-container { width: 100%; min-height: 400px; background: #f5f7fa; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.preview-image { width: 100%; height: auto; max-height: 800px; object-fit: contain; }
+.no-preview { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #c0c4cc; }
+.no-preview p { margin-top: 10px; }
+.no-preview .hint { font-size: 12px; color: #909399; }
+.preview-header { display: flex; justify-content: space-between; align-items: center; }
+.template-card { margin-bottom: 20px; }
+.template-header { display: flex; justify-content: space-between; align-items: center; }
+.template-desc { color: #606266; font-size: 13px; margin-bottom: 10px; }
+.template-platforms { margin-top: 10px; }
+.test-result { margin-top: 10px; }
+.test-results-list { margin-top: 15px; }
+.store-option { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+@media (max-width: 768px) { .debug-panel { grid-template-columns: 1fr; } }
 </style>
