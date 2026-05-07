@@ -336,45 +336,30 @@ onUnmounted(() => {
 
 <style scoped>
 .home {
-  padding: 20px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .connection-status {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding: 10px 15px;
-  background: #f5f7fa;
-  border-radius: 8px;
+  @apply flex items-center gap-4 mb-5 p-3 bg-white rounded-lg shadow-sm;
+  border-left: 3px solid var(--color-primary);
 }
 
 .connection-info {
-  color: #909399;
-  font-size: 12px;
+  @apply text-gray-400 text-xs;
 }
 
 .stat-card {
-  display: flex;
-  align-items: center;
-  padding: 20px;
+  @apply flex items-center gap-4 p-5;
 }
 
 .stat-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-right: 20px;
+  @apply w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-transform hover:scale-105;
 }
 
-.stat-icon.tasks { background-color: #dbeafe; color: #3b82f6; }
-.stat-icon.success { background-color: #dcfce7; color: #22c55e; }
-.stat-icon.stores { background-color: #fef3c7; color: #f59e0b; }
-.stat-icon.alerts { background-color: #fecaca; color: #ef4444; }
+.stat-icon.tasks { @apply bg-blue-100 text-blue-600; }
+.stat-icon.success { @apply bg-green-100 text-green-600; }
+.stat-icon.stores { @apply bg-amber-100 text-amber-600; }
+.stat-icon.alerts { @apply bg-red-100 text-red-600; }
 .stat-icon.alerts.has-alerts {
   animation: pulse 2s infinite;
 }
@@ -384,29 +369,22 @@ onUnmounted(() => {
   50% { opacity: 0.6; }
 }
 
-.stat-content { flex: 1; }
+.stat-content { @apply flex-1; }
 
 .stat-value {
-  font-size: 28px;
-  font-weight: bold;
-  color: #1f2937;
+  @apply text-3xl font-bold text-gray-800;
 }
 
 .stat-label {
-  font-size: 14px;
-  color: #6b7280;
+  @apply text-sm text-gray-500;
 }
 
 .stat-sub {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 4px;
+  @apply text-xs text-gray-400 mt-1;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .task-list-card,
@@ -414,112 +392,76 @@ onUnmounted(() => {
 .activity-card,
 .browser-card,
 .alerts-card {
-  height: auto;
-  min-height: 300px;
+  @apply rounded-xl;
 }
 
 .empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: #909399;
+  @apply flex flex-col items-center justify-center h-48 text-gray-400;
 }
 
-.empty-state p { margin-top: 10px; }
+.empty-state p { @apply mt-3; }
 
 .task-list {
-  max-height: 250px;
-  overflow-y: auto;
+  @apply max-h-64 overflow-y-auto;
 }
 
 .task-item {
-  padding: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  @apply p-3 border-b border-gray-100 last:border-0;
 }
 
-.task-item:last-child { border-bottom: none; }
-
 .task-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  @apply flex justify-between items-center mb-2;
 }
 
 .task-name {
-  font-weight: 600;
-  color: #303133;
+  @apply font-semibold text-gray-700;
 }
 
 .task-message {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 5px;
+  @apply text-xs text-gray-400 mt-1;
 }
 
 .resource-bars {
-  padding: 10px 0;
+  @apply py-3;
 }
 
 .resource-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  @apply flex items-center gap-3 mb-3;
 }
 
 .resource-label {
-  width: 40px;
-  font-size: 12px;
-  color: #606266;
+  @apply w-10 text-xs text-gray-500;
 }
 
 .resource-value {
-  width: 45px;
-  text-align: right;
-  font-size: 12px;
-  color: #606266;
+  @apply w-12 text-right text-xs text-gray-500;
 }
 
 .high-usage {
-  color: #f56c6c;
-  font-weight: bold;
+  @apply text-red-500 font-bold;
 }
 
 .log-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @apply flex items-center gap-2;
 }
 
 .browser-list {
-  max-height: 250px;
-  overflow-y: auto;
+  @apply max-h-64 overflow-y-auto;
 }
 
 .browser-item {
-  padding: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  @apply p-3 border-b border-gray-100 last:border-0;
 }
 
-.browser-item:last-child { border-bottom: none; }
-
 .browser-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .browser-name {
-  font-weight: 600;
-  color: #303133;
+  @apply font-semibold text-gray-700;
 }
 
 .browser-time {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 5px;
+  @apply text-xs text-gray-400 mt-1;
 }
 </style>
