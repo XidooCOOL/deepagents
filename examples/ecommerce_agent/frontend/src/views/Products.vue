@@ -350,49 +350,36 @@ const exportProducts = () => {
 
 <style scoped>
 .products {
-  padding: 10px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.toolbar :deep(.el-select) {
-  width: 150px;
+  @apply flex gap-3 items-center mb-5 flex-wrap;
 }
 
 .stat-card {
-  text-align: center;
-  padding: 15px;
+  @apply text-center p-5 rounded-xl;
 }
 
 .stat-card .stat-value {
-  font-size: 24px;
-  font-weight: bold;
-  color: #3b82f6;
+  @apply text-2xl font-bold text-blue-500;
 }
+
+.stat-card.success .stat-value { @apply text-green-500; }
+.stat-card.warning .stat-value { @apply text-yellow-500; }
+.stat-card.danger .stat-value { @apply text-red-500; }
+.stat-card.info .stat-value { @apply text-gray-500; }
+.stat-card.primary .stat-value { @apply text-blue-500; }
 
 .stat-card .stat-label {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 5px;
+  @apply text-gray-400 mt-1;
 }
 
-.stat-card.success .stat-value { color: #22c55e; }
-.stat-card.warning .stat-value { color: #f59e0b; }
-.stat-card.danger .stat-value { color: #ef4444; }
-.stat-card.info .stat-value { color: #06b6d4; }
-.stat-card.primary .stat-value { color: #8b5cf6; }
-
 .low-stock {
-  color: #ef4444;
-  font-weight: bold;
+  @apply text-red-500 font-bold;
 }
 
 .products-table-card {
-  margin-top: 20px;
+  @apply rounded-xl;
 }
 </style>

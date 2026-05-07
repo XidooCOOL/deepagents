@@ -1228,82 +1228,247 @@ export default {
 </script>
 
 <style scoped>
-.workflow-config { padding: 20px; }
-.page-header { margin-bottom: 30px; }
-.page-header h2 { margin: 0 0 10px 0; font-size: 28px; color: #303133; }
-.subtitle { color: #909399; margin: 0; }
-.stats-card { margin-bottom: 20px; }
-.stats-content { display: flex; align-items: center; gap: 15px; }
-.stats-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
-.stats-info { flex: 1; }
-.stats-value { font-size: 24px; font-weight: bold; color: #303133; }
-.stats-label { color: #909399; font-size: 14px; }
-.main-card { margin-top: 20px; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.card-header h3 { margin: 0; font-size: 18px; }
-.header-actions { display: flex; align-items: center; }
-.template-name { display: flex; align-items: center; gap: 8px; }
-.workflow-editor { max-height: 75vh; overflow-y: auto; padding-right: 10px; }
-.dialog-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-.workflow-form { margin-bottom: 20px; }
-.params-section { margin: 20px 0; padding: 15px; background: #f5f7fa; border-radius: 8px; }
-.param-row { margin-bottom: 10px; }
-.steps-section { margin: 20px 0; }
-.steps-list { display: flex; flex-direction: column; gap: 10px; min-height: 100px; }
+.workflow-config {
+  @apply p-6 bg-gray-50 min-h-screen;
+}
+
+.page-header {
+  @apply mb-8;
+}
+
+.page-header h2 {
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
+}
+
+.subtitle {
+  @apply text-gray-400 m-0;
+}
+
+.stats-card {
+  @apply mb-5 rounded-xl;
+}
+
+.stats-content {
+  @apply flex items-center gap-4;
+}
+
+.stats-icon {
+  @apply w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl;
+}
+
+.stats-info {
+  @apply flex-1;
+}
+
+.stats-value {
+  @apply text-2xl font-bold text-gray-800;
+}
+
+.stats-label {
+  @apply text-gray-400 text-sm;
+}
+
+.main-card {
+  @apply mt-5 rounded-xl;
+}
+
+.card-header {
+  @apply flex justify-between items-center mb-4;
+}
+
+.card-header h3 {
+  @apply m-0 text-lg;
+}
+
+.header-actions {
+  @apply flex items-center;
+}
+
+.template-name {
+  @apply flex items-center gap-2;
+}
+
+.workflow-editor {
+  @apply max-h-3xl overflow-y-auto pr-3;
+}
+
+.dialog-header {
+  @apply flex justify-between items-center w-full;
+}
+
+.workflow-form {
+  @apply mb-5;
+}
+
+.params-section {
+  @apply my-5 p-4 bg-gray-50 rounded-lg;
+}
+
+.param-row {
+  @apply mb-3;
+}
+
+.steps-section {
+  @apply my-5;
+}
+
+.steps-list {
+  @apply flex flex-col gap-3 min-h-24;
+}
+
 .step-card {
-  border: 2px solid #dcdfe6;
-  border-radius: 8px;
-  padding: 15px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s;
+  @apply border-2 border-gray-300 rounded-lg p-4 bg-white cursor-pointer transition-all duration-300;
 }
-.step-card:hover { border-color: #409eff; box-shadow: 0 2px 12px rgba(64, 158, 255, 0.2); }
-.step-card.active { border-color: #409eff; background: #ecf5ff; }
-.step-card.navigate-step { border-left: 4px solid #409eff; }
-.step-card.click-step { border-left: 4px solid #67c23a; }
-.step-card.input-step { border-left: 4px solid #e6a23c; }
-.step-card.upload-step { border-left: 4px solid #f56c6c; }
-.ghost-step { opacity: 0.5; background: #f56c6c; border: 2px dashed #f56c6c; }
-.step-header { display: flex; align-items: center; gap: 10px; }
-.drag-handle { cursor: move; color: #909399; font-size: 20px; }
-.step-number { 
-  width: 28px; height: 28px; border-radius: 50%; 
-  background: #409eff; color: white; 
-  display: flex; align-items: center; justify-content: center;
-  font-weight: bold; font-size: 14px;
+
+.step-card:hover {
+  @apply border-blue-500;
+  box-shadow: 0 2px 12px rgba(64, 158, 255, 0.2);
 }
-.step-action-tag { min-width: 70px; text-align: center; }
-.step-name-input { flex: 1; max-width: 200px; }
-.step-actions { display: flex; gap: 5px; margin-left: auto; }
-.expand-icon { transition: transform 0.3s; margin-left: 10px; }
-.expand-icon.expanded { transform: rotate(90deg); }
-.step-page-badge { margin-top: 8px; }
-.step-config { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #dcdfe6; }
-.element-option { display: flex; justify-content: space-between; width: 100%; }
-.element-name { font-weight: 500; }
-.element-selector { color: #909399; font-size: 12px; }
-.add-step-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-.steps-overview { margin-top: 20px; }
-.overview-chart { display: flex; flex-direction: column; gap: 15px; }
-.page-bar { display: flex; align-items: center; gap: 15px; }
-.page-name { width: 100px; font-weight: 500; }
-.page-count { width: 60px; text-align: right; color: #909399; }
-.dialog-footer { display: flex; gap: 10px; justify-content: flex-end; }
-.selector-code { background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #374151; }
-.element-manager { padding: 10px; }
-.toolbar { display: flex; gap: 10px; margin-bottom: 20px; }
-.workflow-preview { max-height: 70vh; overflow-y: auto; }
-.step-preview-card { margin-bottom: 10px; }
-.step-preview-header { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
-.step-preview-name { font-size: 16px; font-weight: 500; color: #303133; margin-bottom: 8px; }
-.step-preview-element { margin-bottom: 8px; }
-.step-preview-config { background: #f5f7fa; padding: 10px; border-radius: 4px; }
-.step-preview-config pre { margin: 0; font-size: 12px; }
+
+.step-card.active {
+  @apply border-blue-500 bg-blue-50;
+}
+
+.step-card.navigate-step { @apply border-l-4 border-l-blue-500; }
+.step-card.click-step { @apply border-l-4 border-l-green-500; }
+.step-card.input-step { @apply border-l-4 border-l-yellow-500; }
+.step-card.upload-step { @apply border-l-4 border-l-red-500; }
+
+.ghost-step {
+  @apply opacity-50 bg-red-500 border-2 border-dashed border-red-500;
+}
+
+.step-header {
+  @apply flex items-center gap-3;
+}
+
+.drag-handle {
+  @apply cursor-move text-gray-400 text-xl;
+}
+
+.step-number {
+  @apply w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm;
+}
+
+.step-action-tag {
+  @apply min-w-16 text-center;
+}
+
+.step-name-input {
+  @apply flex-1 max-w-48;
+}
+
+.step-actions {
+  @apply flex gap-1 ml-auto;
+}
+
+.expand-icon {
+  @apply transition-transform duration-300 ml-3;
+}
+
+.expand-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.step-page-badge {
+  @apply mt-2;
+}
+
+.step-config {
+  @apply mt-4 pt-4 border-t border-dashed border-gray-300;
+}
+
+.element-option {
+  @apply flex justify-between w-full;
+}
+
+.element-name {
+  @apply font-medium;
+}
+
+.element-selector {
+  @apply text-gray-400 text-xs;
+}
+
+.add-step-actions {
+  @apply flex gap-3 mt-4 flex-wrap;
+}
+
+.steps-overview {
+  @apply mt-5;
+}
+
+.overview-chart {
+  @apply flex flex-col gap-4;
+}
+
+.page-bar {
+  @apply flex items-center gap-4;
+}
+
+.page-name {
+  @apply w-24 font-medium;
+}
+
+.page-count {
+  @apply w-16 text-right text-gray-400;
+}
+
+.dialog-footer {
+  @apply flex gap-3 justify-end;
+}
+
+.selector-code {
+  @apply bg-gray-100 px-2 py-1 rounded text-xs text-gray-600;
+}
+
+.element-manager {
+  @apply p-3;
+}
+
+.toolbar {
+  @apply flex gap-3 mb-5;
+}
+
+.workflow-preview {
+  @apply max-h-70vh overflow-y-auto;
+}
+
+.step-preview-card {
+  @apply mb-3;
+}
+
+.step-preview-header {
+  @apply flex gap-3 items-center mb-2;
+}
+
+.step-preview-name {
+  @apply text-base font-medium text-gray-800 mb-2;
+}
+
+.step-preview-element {
+  @apply mb-2;
+}
+
+.step-preview-config {
+  @apply bg-gray-50 p-3 rounded;
+}
+
+.step-preview-config pre {
+  @apply m-0 text-xs;
+}
 
 @media (max-width: 768px) {
-  .add-step-actions { flex-direction: column; }
-  .step-header { flex-wrap: wrap; }
-  .step-name-input { max-width: none; flex: 1; }
+  .add-step-actions {
+    @apply flex-col;
+  }
+
+  .step-header {
+    @apply flex-wrap;
+  }
+
+  .step-name-input {
+    @apply max-w-none flex-1;
+  }
 }
 </style>

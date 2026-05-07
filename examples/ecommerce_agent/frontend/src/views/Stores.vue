@@ -375,105 +375,83 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.stores-page { padding: 20px; }
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.stores-page {
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
-.page-header h2 { margin: 0; }
-.header-actions { display: flex; gap: 10px; }
+.page-header {
+  @apply flex justify-between items-center mb-5;
+}
+
+.page-header h2 {
+  @apply m-0 text-xl font-semibold text-gray-800;
+}
+
+.header-actions {
+  @apply flex gap-3;
+}
 
 .store-card {
-  margin-bottom: 20px;
-  transition: all 0.3s;
+  @apply mb-5 rounded-xl;
+  @apply transition-all duration-300;
 }
 
 .store-card.active-store {
-  border-left: 3px solid #67c23a;
+  @apply border-l-4 border-green-500;
 }
 
 .store-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  @apply shadow-lg;
 }
 
 .store-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  @apply flex justify-between items-center mb-3;
 }
 
 .platform-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  color: white;
+  @apply px-3 py-1 rounded-full text-xs text-white font-medium;
 }
 
-.platform-badge.douyin { background-color: #ff2c55; }
-.platform-badge.pinduoduo { background-color: #ff4d4f; }
-.platform-badge.taobao { background-color: #ff4400; }
-.platform-badge.jingdong { background-color: #ef3e36; }
-.platform-badge.xiaohongshu { background-color: #ff6b6b; }
+.platform-badge.douyin { @apply bg-pink-500; }
+.platform-badge.pinduoduo { @apply bg-red-500; }
+.platform-badge.taobao { @apply bg-orange-500; }
+.platform-badge.jingdong { @apply bg-red-600; }
+.platform-badge.xiaohongshu { @apply bg-red-400; }
 
 .store-name {
-  margin: 0 0 10px 0;
-  font-size: 16px;
-  color: #1f2937;
+  @apply m-0 mb-2 text-base text-gray-800;
 }
 
 .store-info {
-  font-size: 12px;
-  color: #6b7280;
+  @apply text-xs text-gray-500;
 }
 
 .info-item {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 4px;
+  @apply flex gap-1 mb-1;
 }
 
-.info-item .label { color: #909399; }
+.info-item .label {
+  @apply text-gray-400;
+}
 
 .browser-status {
-  background: #f5f7fa;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 15px;
+  @apply bg-gray-50 rounded-lg p-3 mb-4;
 }
 
 .status-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 12px;
-  color: #606266;
+  @apply flex justify-between items-center mb-2 text-xs text-gray-500;
 }
 
 .browser-info, .browser-error, .browser-recovering {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #606266;
+  @apply flex items-center gap-2 text-xs text-gray-500;
 }
 
 .browser-url {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 150px;
+  @apply truncate max-w-36;
 }
 
 .last-used {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #909399;
+  @apply mt-2 text-xs text-gray-400;
 }
 
 .pulse-tag {
@@ -486,20 +464,14 @@ onUnmounted(() => {
 }
 
 .store-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  @apply flex flex-wrap gap-2;
 }
 
 .quick-actions {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #ebeef5;
+  @apply mt-3 pt-3 border-t border-gray-100;
 }
 
 .url-text {
-  word-break: break-all;
-  font-size: 12px;
-  color: #409eff;
+  @apply break-all text-xs text-blue-500;
 }
 </style>

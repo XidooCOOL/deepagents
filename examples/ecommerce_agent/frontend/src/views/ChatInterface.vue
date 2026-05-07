@@ -524,87 +524,56 @@ export default {
 <style scoped>
 .chat-interface {
   height: calc(100vh - 120px);
-  display: flex;
-  flex-direction: column;
-  background: #f5f7fa;
-  padding: 20px;
+  @apply flex flex-col bg-gray-50 p-5;
 }
 
 .chat-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: white;
-  border-radius: 12px;
+  @apply flex-1 flex flex-col bg-white rounded-xl;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 }
 
 .chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid #ebeef5;
-  background: white;
+  @apply flex justify-between items-center p-5 border-b border-gray-100 bg-white;
 }
 
 .header-info h2 {
-  margin: 0 0 5px 0;
-  font-size: 20px;
-  color: #303133;
+  @apply m-0 mb-1 text-xl text-gray-800;
 }
 
 .subtitle {
-  margin: 0;
-  font-size: 13px;
-  color: #909399;
+  @apply m-0 text-sm text-gray-400;
 }
 
 .header-actions {
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
 }
 
 .chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  background: #f5f7fa;
+  @apply flex-1 overflow-y-auto p-5 bg-gray-50;
 }
 
 .empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: #909399;
+  @apply text-center p-16 text-gray-400;
 }
 
 .empty-icon {
-  margin-bottom: 20px;
-  color: #dcdfe6;
+  @apply mb-5 text-gray-300;
 }
 
 .empty-state h3 {
-  margin: 0 0 10px 0;
-  color: #606266;
+  @apply m-0 mb-2 text-gray-500;
 }
 
 .empty-state p {
-  margin: 0 0 30px 0;
+  @apply m-0 mb-8;
 }
 
 .quick-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  @apply flex flex-wrap gap-2 justify-center;
 }
 
 .quick-action {
-  cursor: pointer;
-  padding: 10px 20px;
-  font-size: 14px;
-  transition: all 0.3s;
+  @apply cursor-pointer px-5 py-2 text-sm transition-all duration-300;
 }
 
 .quick-action:hover {
@@ -612,101 +581,81 @@ export default {
 }
 
 .message {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+  @apply flex gap-4 mb-5;
 }
 
 .message.user {
-  flex-direction: row-reverse;
+  @apply flex-row-reverse;
 }
 
 .message-content {
-  max-width: 70%;
+  @apply max-w-3xl;
 }
 
 .message-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 5px;
+  @apply flex items-center gap-2 mb-1;
 }
 
 .message.user .message-header {
-  flex-direction: row-reverse;
+  @apply flex-row-reverse;
 }
 
 .message-sender {
-  font-weight: 500;
-  color: #303133;
-  font-size: 14px;
+  @apply font-medium text-gray-700 text-sm;
 }
 
 .message-time {
-  font-size: 12px;
-  color: #c0c4cc;
+  @apply text-xs text-gray-300;
 }
 
 .message-bubble {
-  padding: 15px 20px;
-  border-radius: 12px;
-  line-height: 1.6;
+  @apply p-4 rounded-2xl leading-relaxed;
 }
 
 .message.user .message-bubble {
-  background: #409eff;
-  color: white;
-  border-bottom-right-radius: 4px;
+  @apply bg-blue-500 text-white rounded-br-sm;
 }
 
 .message.assistant .message-bubble {
-  background: white;
-  color: #303133;
-  border-bottom-left-radius: 4px;
+  @apply bg-white text-gray-800 rounded-bl-sm;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
 .task-analysis {
-  min-width: 400px;
+  @apply min-w-96;
 }
 
 .task-analysis h4 {
-  margin: 0 0 15px 0;
-  color: #303133;
+  @apply m-0 mb-4 text-gray-800;
 }
 
 .task-analysis h5 {
-  margin: 15px 0 10px 0;
-  color: #606266;
+  @apply my-4 text-gray-500;
 }
 
 .sub-tasks {
-  margin-top: 15px;
+  @apply mt-4;
 }
 
 .execution-status {
-  min-width: 300px;
+  @apply min-w-72;
 }
 
 .status-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 15px;
-  font-weight: 500;
+  @apply flex items-center gap-2 mb-4 font-medium;
 }
 
 .status-header .running {
-  color: #409eff;
+  @apply text-blue-500;
   animation: spin 1s linear infinite;
 }
 
 .status-header .completed {
-  color: #67c23a;
+  @apply text-green-500;
 }
 
 .status-header .failed {
-  color: #f56c6c;
+  @apply text-red-500;
 }
 
 @keyframes spin {
@@ -715,79 +664,55 @@ export default {
 }
 
 .progress-section {
-  margin-bottom: 15px;
+  @apply mb-4;
 }
 
 .step-info {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #909399;
+  @apply mt-2 text-sm text-gray-400;
 }
 
 .execution-logs {
-  background: #f5f7fa;
-  padding: 10px;
-  border-radius: 6px;
-  max-height: 150px;
-  overflow-y: auto;
+  @apply bg-gray-50 p-3 rounded-lg max-h-36 overflow-y-auto;
 }
 
 .log-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 0;
-  font-size: 13px;
+  @apply flex items-center gap-2 py-1 text-sm;
 }
 
 .log-time {
-  color: #c0c4cc;
-  font-size: 11px;
+  @apply text-gray-300 text-xs;
 }
 
 .log-message {
-  color: #606266;
+  @apply text-gray-500;
 }
 
 .task-result {
-  min-width: 300px;
+  @apply min-w-72;
 }
 
 .result-details {
-  margin-top: 15px;
+  @apply mt-4;
 }
 
 .result-details h5 {
-  margin: 10px 0;
-  color: #606266;
+  @apply my-3 text-gray-500;
 }
 
 .result-details pre {
-  background: #f5f7fa;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  max-height: 200px;
-  overflow-y: auto;
+  @apply bg-gray-50 p-3 rounded text-xs max-h-48 overflow-y-auto;
 }
 
 .result-actions {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
+  @apply mt-4 flex gap-3;
 }
 
 .typing-indicator {
-  display: flex;
-  gap: 6px;
-  padding: 15px 20px;
+  @apply flex gap-1.5 p-5;
 }
 
 .typing-indicator span {
-  width: 8px;
-  height: 8px;
-  background: #909399;
-  border-radius: 50%;
+  @apply w-2 h-2 bg-gray-400 rounded-full;
   animation: typing 1.4s infinite ease-in-out both;
 }
 
@@ -800,41 +725,31 @@ export default {
 }
 
 .chat-input {
-  padding: 20px;
-  border-top: 1px solid #ebeef5;
-  background: white;
+  @apply p-5 border-t border-gray-100 bg-white;
 }
 
 .input-wrapper {
-  margin-bottom: 15px;
+  @apply mb-4;
 }
 
 .input-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
-.left-actions,
-.right-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.left-actions, .right-actions {
+  @apply flex items-center gap-3;
 }
 
 .shortcut-hint {
-  font-size: 12px;
-  color: #c0c4cc;
+  @apply text-xs text-gray-300;
 }
 
 .template-list {
-  padding: 10px;
+  @apply p-3;
 }
 
 .template-card {
-  margin-bottom: 15px;
-  cursor: pointer;
-  transition: all 0.3s;
+  @apply mb-4 cursor-pointer transition-all duration-300;
 }
 
 .template-card:hover {
@@ -842,19 +757,14 @@ export default {
 }
 
 .template-card h4 {
-  margin: 0 0 8px 0;
-  color: #303133;
+  @apply m-0 mb-2 text-gray-800;
 }
 
 .template-card p {
-  margin: 0 0 10px 0;
-  font-size: 13px;
-  color: #909399;
+  @apply m-0 mb-3 text-sm text-gray-400;
 }
 
 .template-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  @apply flex flex-wrap gap-1;
 }
 </style>

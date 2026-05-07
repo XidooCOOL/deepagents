@@ -266,56 +266,46 @@ const exportOrders = () => {
 
 <style scoped>
 .orders {
-  padding: 10px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
+  @apply flex gap-3 items-center mb-5;
 }
 
 .toolbar :deep(.el-select) {
-  width: 150px;
+  @apply w-36;
 }
 
 .stat-card {
-  text-align: center;
-  padding: 15px;
+  @apply text-center p-5 rounded-xl;
 }
 
 .stat-card .stat-value {
-  font-size: 24px;
-  font-weight: bold;
-  color: #3b82f6;
+  @apply text-2xl font-bold text-blue-500;
 }
 
 .stat-card .stat-label {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 5px;
+  @apply text-sm text-gray-400 mt-1;
 }
 
-.stat-card.success .stat-value { color: #22c55e; }
-.stat-card.warning .stat-value { color: #f59e0b; }
-.stat-card.danger .stat-value { color: #ef4444; }
-.stat-card.info .stat-value { color: #06b6d4; }
-.stat-card.primary .stat-value { color: #8b5cf6; }
+.stat-card.success .stat-value { @apply text-green-500; }
+.stat-card.warning .stat-value { @apply text-yellow-500; }
+.stat-card.danger .stat-value { @apply text-red-500; }
+.stat-card.info .stat-value { @apply text-gray-500; }
+.stat-card.primary .stat-value { @apply text-blue-500; }
 
 .platform-tag {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
+  @apply px-3 py-1 rounded text-xs;
 }
 
-.platform-tag.douyin { background-color: #ff2c55; color: white; }
-.platform-tag.pinduoduo { background-color: #ff4d4f; color: white; }
-.platform-tag.taobao { background-color: #ff4400; color: white; }
-.platform-tag.jingdong { background-color: #ef3e36; color: white; }
-.platform-tag.xiaohongshu { background-color: #ff6b6b; color: white; }
+.platform-tag.douyin { @apply bg-pink-500 text-white; }
+.platform-tag.pinduoduo { @apply bg-red-500 text-white; }
+.platform-tag.taobao { @apply bg-orange-500 text-white; }
+.platform-tag.jingdong { @apply bg-red-600 text-white; }
+.platform-tag.xiaohongshu { @apply bg-red-400 text-white; }
 
 .orders-table-card {
-  margin-top: 20px;
+  @apply mt-5 rounded-xl;
 }
 </style>

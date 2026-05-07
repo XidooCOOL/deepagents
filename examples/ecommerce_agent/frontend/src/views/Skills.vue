@@ -518,168 +518,124 @@ export default {
 
 <style scoped>
 .skills-view {
-  padding: 20px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .page-header {
-  margin-bottom: 30px;
+  @apply mb-8;
 }
 
 .page-header h2 {
-  margin: 0 0 10px 0;
-  font-size: 28px;
-  color: #303133;
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
 }
 
 .subtitle {
-  color: #909399;
-  margin: 0;
+  @apply text-gray-400 m-0;
 }
 
 .stats-card {
-  margin-bottom: 20px;
+  @apply mb-5 rounded-xl;
 }
 
 .stats-content {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  @apply flex items-center gap-4;
 }
 
 .stats-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 28px;
+  @apply w-14 h-14 rounded-lg flex items-center justify-center text-white text-3xl;
 }
 
 .stats-info {
-  flex: 1;
+  @apply flex-1;
 }
 
 .stats-value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #303133;
-  line-height: 1;
+  @apply text-3xl font-bold text-gray-800 leading-none;
 }
 
 .stats-label {
-  color: #909399;
-  font-size: 14px;
-  margin-top: 5px;
+  @apply text-gray-400 text-sm mt-1;
 }
 
 .skills-card {
-  margin: 20px 0;
+  @apply my-5 rounded-xl;
 }
 
 .skills-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  @apply flex justify-between items-center mb-5;
 }
 
 .header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  @apply flex items-center gap-4;
 }
 
 .header-left h3 {
-  margin: 0;
-  font-size: 20px;
+  @apply m-0 text-lg;
 }
 
 .skill-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @apply flex items-center gap-2;
 }
 
 .skill-description {
-  color: #606266;
-  line-height: 1.5;
+  @apply text-gray-500 leading-relaxed;
 }
 
 .platform-tags {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
+  @apply flex gap-1 flex-wrap;
 }
 
 .skill-detail {
-  padding: 10px;
+  @apply p-3;
 }
 
 .skill-content-section {
-  margin-top: 20px;
+  @apply mt-5;
 }
 
 .skill-content-section h4 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #303133;
+  @apply mb-3 text-base text-gray-800;
 }
 
 .skill-content-card {
-  max-height: 400px;
-  overflow-y: auto;
+  @apply max-h-100 overflow-y-auto;
 }
 
 .skill-content {
-  background: #f5f7fa;
-  padding: 15px;
-  border-radius: 4px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  margin: 0;
+  @apply bg-gray-50 p-4 rounded whitespace-pre-wrap break-all;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  @apply text-sm leading-relaxed m-0;
 }
 
 .guide-card {
-  padding: 10px;
+  @apply p-3;
 }
 
 .guide-content {
-  margin-top: 30px;
+  @apply mt-8;
 }
 
 .guide-content h4 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: #303133;
+  @apply mt-5 mb-3 text-gray-800;
 }
 
 .guide-content ul {
-  padding-left: 20px;
+  @apply pl-5;
 }
 
 .guide-content li {
-  margin: 8px 0;
-  color: #606266;
+  @apply my-2 text-gray-500;
 }
 
 .info-card {
-  margin-top: 20px;
+  @apply mt-5;
 }
 
 .info-card p {
-  margin: 8px 0;
-  line-height: 1.8;
+  @apply my-2 leading-loose;
 }
 
 .info-card code {
-  background: #f5f7fa;
-  padding: 2px 6px;
-  border-radius: 3px;
-  color: #409eff;
+  @apply bg-gray-50 px-1.5 py-0.5 rounded text-blue-500;
 }
 </style>

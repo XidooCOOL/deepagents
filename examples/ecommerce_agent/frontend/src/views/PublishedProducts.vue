@@ -489,122 +489,86 @@ onMounted(() => {
 
 <style scoped>
 .published-products {
-  padding: 20px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .page-header {
-  margin-bottom: 30px;
+  @apply mb-8;
 }
 
 .page-header h2 {
-  margin: 0 0 10px 0;
-  font-size: 28px;
-  color: #303133;
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
 }
 
 .subtitle {
-  color: #909399;
-  margin: 0;
+  @apply text-gray-400 m-0;
 }
 
 .stats-row {
-  margin-bottom: 20px;
+  @apply mb-5;
 }
 
 .stat-card {
-  text-align: center;
-  padding: 20px;
+  @apply text-center p-5 rounded-xl;
 }
 
 .stat-card .stat-value {
-  font-size: 28px;
-  font-weight: bold;
-  color: #409eff;
+  @apply text-3xl font-bold text-blue-500;
 }
 
 .stat-card .stat-label {
-  color: #909399;
-  margin-top: 5px;
+  @apply text-gray-400 mt-1;
 }
 
-.stat-card.published .stat-value {
-  color: #67c23a;
-}
-
-.stat-card.offline .stat-value {
-  color: #e6a23c;
-}
+.stat-card.published .stat-value { @apply text-green-500; }
+.stat-card.offline .stat-value { @apply text-yellow-500; }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+  @apply flex gap-3 items-center;
 }
 
 .product-info {
-  display: flex;
-  gap: 10px;
+  @apply flex gap-3;
 }
 
 .product-details {
-  flex: 1;
+  @apply flex-1;
 }
 
 .product-title {
-  font-weight: 500;
-  margin-bottom: 4px;
+  @apply font-medium mb-1;
 }
 
 .product-id {
-  font-size: 12px;
-  color: #909399;
-  margin-bottom: 5px;
+  @apply text-xs text-gray-400 mb-1;
 }
 
 .no-image {
-  width: 60px;
-  height: 60px;
-  background: #f5f7fa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  color: #909399;
-  font-size: 12px;
+  @apply w-14 h-14 bg-gray-100 flex items-center justify-center rounded text-gray-400 text-xs;
 }
 
 .price {
-  font-weight: bold;
-  color: #f56c6c;
-  font-size: 16px;
+  @apply font-bold text-red-500 text-lg;
 }
 
 .original-price {
-  text-decoration: line-through;
-  color: #909399;
-  font-size: 12px;
+  @apply line-through text-gray-400 text-xs;
 }
 
 .platform-id {
-  font-family: monospace;
-  font-size: 13px;
-  color: #606266;
-  margin-bottom: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  @apply text-sm text-gray-500 mb-1;
 }
 
 .product-detail {
-  padding: 10px;
+  @apply p-3;
 }
 
 .images-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  @apply flex flex-wrap gap-3;
 }
 </style>

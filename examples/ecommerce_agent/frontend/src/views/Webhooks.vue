@@ -531,14 +531,43 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.webhook-page { padding: 20px; }
-.page-header { margin-bottom: 30px; }
-.page-header h2 { margin: 0 0 10px 0; font-size: 28px; color: #303133; }
-.subtitle { color: #909399; margin: 0; }
-.toolbar { display: flex; gap: 10px; margin-bottom: 20px; }
-.form-tip { font-size: 12px; color: #909399; margin-top: 5px; }
-.form-tip code { background: #f5f7fa; padding: 2px 6px; border-radius: 4px; }
-.variable-item { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-.preview-result { padding: 15px; background: #f5f7fa; border-radius: 8px; }
-.preview-result h4 { margin: 10px 0 5px; color: #606266; }
+.webhook-page {
+  @apply p-6 bg-gray-50 min-h-screen;
+}
+
+.page-header {
+  @apply mb-8;
+}
+
+.page-header h2 {
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
+}
+
+.subtitle {
+  @apply text-gray-400 m-0;
+}
+
+.toolbar {
+  @apply flex gap-3 mb-5;
+}
+
+.form-tip {
+  @apply text-xs text-gray-400 mt-1;
+}
+
+.form-tip code {
+  @apply bg-gray-100 px-1.5 py-0.5 rounded text-xs;
+}
+
+.variable-item {
+  @apply flex gap-3 mb-3 items-center;
+}
+
+.preview-result {
+  @apply p-4 bg-gray-50 rounded-lg;
+}
+
+.preview-result h4 {
+  @apply text-sm text-gray-500 mt-3 mb-1 first:mt-0;
+}
 </style>

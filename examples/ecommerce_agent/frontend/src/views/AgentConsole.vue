@@ -1123,88 +1123,326 @@ export default {
 </script>
 
 <style scoped>
-.agent-console { padding: 20px; }
-.page-header { margin-bottom: 30px; }
-.page-header h2 { margin: 0 0 10px 0; font-size: 28px; color: #303133; }
-.subtitle { color: #909399; margin: 0; font-size: 14px; }
-.status-card, .stats-card { margin-bottom: 20px; }
-.status-content, .stats-content { display: flex; align-items: center; gap: 15px; }
-.status-indicator { position: relative; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.status-indicator.idle { background: #67c23a; }
-.status-indicator.running { background: #409eff; }
-.status-indicator.analyzing { background: #e6a23c; }
-.status-indicator.completed { background: #909399; }
-.pulse { position: absolute; width: 100%; height: 100%; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } }
-.status-info, .stats-info { flex: 1; }
-.status-label, .stats-label { font-size: 14px; color: #909399; }
-.status-value, .stats-value { font-size: 24px; font-weight: bold; color: #303133; }
-.stats-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
-.stats-value { font-size: 20px; }
-.input-card, .analysis-card, .execution-card, .logs-card, .summary-card { margin-bottom: 20px; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.card-header h3 { margin: 0; font-size: 18px; }
-.header-actions { display: flex; gap: 10px; }
-.input-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-.input-tips { display: flex; gap: 10px; }
-.input-buttons { display: flex; gap: 10px; }
-.execution-list { max-height: 500px; overflow-y: auto; }
-.execution-item { background: #f5f7fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-.execution-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.execution-info { display: flex; align-items: center; gap: 10px; }
-.execution-details { display: flex; flex-direction: column; }
-.execution-name { font-weight: bold; color: #303133; }
-.execution-platform { font-size: 12px; color: #909399; }
-.execution-abilities { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
-.execution-progress { margin-bottom: 10px; }
-.execution-steps { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; }
-.step-item { display: flex; align-items: center; gap: 6px; min-width: 100px; padding: 6px 8px; background: white; border-radius: 4px; transition: all 0.3s; }
-.step-item.active { background: #ecf5ff; border: 2px solid #409eff; }
-.step-item.completed { background: #f0f9ff; }
-.step-indicator { width: 20px; height: 20px; border-radius: 50%; background: #dcdfe6; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: white; flex-shrink: 0; }
-.step-item.active .step-indicator { background: #409eff; }
-.step-item.completed .step-indicator { background: #67c23a; }
-.step-content { flex: 1; min-width: 0; }
-.step-name { font-size: 12px; color: #303133; font-weight: 500; }
-.logs-list { max-height: 400px; overflow-y: auto; padding: 10px; background: #f5f7fa; border-radius: 4px; }
-.log-item { display: flex; gap: 10px; padding: 8px; background: white; border-radius: 4px; margin-bottom: 8px; }
-.log-time { font-size: 12px; color: #909399; white-space: nowrap; }
-.log-type { white-space: nowrap; }
-.log-content { flex: 1; }
-.log-message { font-size: 14px; color: #303133; }
-.log-details { font-size: 12px; color: #606266; margin-top: 3px; }
-.platform-card { margin-bottom: 15px; }
-.platform-header { display: flex; align-items: center; gap: 10px; }
-.platform-badge { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
-.platform-info { flex: 1; }
-.platform-name { font-weight: bold; color: #303133; }
-.platform-count { font-size: 12px; color: #909399; }
-.agent-list { margin-top: 10px; }
-.agent-item { display: flex; align-items: center; gap: 10px; padding: 8px; background: #f5f7fa; border-radius: 6px; margin-bottom: 8px; }
-.agent-info { flex: 1; }
-.agent-name { font-weight: 500; color: #303133; font-size: 14px; }
-.agent-abilities { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-.agent-config-card { margin-bottom: 15px; }
-.agent-config-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #f0f0f0; }
-.agent-config-info { flex: 1; }
-.agent-config-name { font-weight: 500; color: #303133; }
-.agent-config-status { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-.ability-card { margin-bottom: 15px; }
-.ability-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.ability-info { flex: 1; }
-.ability-name { font-weight: bold; color: #303133; }
-.ability-desc { font-size: 12px; color: #909399; margin-top: 4px; }
-.ability-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.ability-section-card { height: 100%; }
-.section-header { display: flex; justify-content: space-between; align-items: center; }
-.ability-list { display: flex; flex-wrap: wrap; gap: 8px; min-height: 100px; padding: 10px; background: #f5f7fa; border-radius: 8px; }
-.ability-option { padding: 10px; border-bottom: 1px solid #f0f0f0; }
-.ability-option:last-child { border-bottom: none; }
-.ability-option-content { display: inline-block; }
-.ability-option-desc { font-size: 12px; color: #909399; margin-top: 4px; }
-.example-card { margin-bottom: 15px; }
-.example-content { margin-bottom: 10px; }
-.example-title { font-weight: bold; color: #303133; margin-bottom: 5px; }
-.example-desc { font-size: 14px; color: #606266; margin-bottom: 10px; }
-.example-agents { display: flex; flex-wrap: wrap; gap: 5px; }
+.agent-console {
+  @apply p-6 bg-gray-50 min-h-screen;
+}
+
+.page-header {
+  @apply mb-8;
+}
+
+.page-header h2 {
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
+}
+
+.subtitle {
+  @apply text-gray-400 m-0 text-sm;
+}
+
+.status-card, .stats-card {
+  @apply mb-5 rounded-xl;
+}
+
+.status-content, .stats-content {
+  @apply flex items-center gap-4;
+}
+
+.status-indicator {
+  @apply relative w-12 h-12 rounded-full flex items-center justify-center;
+}
+
+.status-indicator.idle { @apply bg-green-500; }
+.status-indicator.running { @apply bg-blue-500; }
+.status-indicator.analyzing { @apply bg-yellow-500; }
+.status-indicator.completed { @apply bg-gray-400; }
+
+.pulse {
+  @apply absolute w-full h-full rounded-full;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+}
+
+.status-info, .stats-info {
+  @apply flex-1;
+}
+
+.status-label, .stats-label {
+  @apply text-sm text-gray-400;
+}
+
+.status-value, .stats-value {
+  @apply text-2xl font-bold text-gray-800;
+}
+
+.stats-icon {
+  @apply w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl;
+}
+
+.stats-value {
+  @apply text-xl;
+}
+
+.input-card, .analysis-card, .execution-card, .logs-card, .summary-card {
+  @apply mb-5 rounded-xl;
+}
+
+.card-header {
+  @apply flex justify-between items-center mb-4;
+}
+
+.card-header h3 {
+  @apply m-0 text-lg;
+}
+
+.header-actions {
+  @apply flex gap-3;
+}
+
+.input-actions {
+  @apply flex justify-between items-center mt-4;
+}
+
+.input-tips, .input-buttons {
+  @apply flex gap-3;
+}
+
+.execution-list {
+  @apply max-h-128 overflow-y-auto;
+}
+
+.execution-item {
+  @apply bg-gray-50 p-4 rounded-lg mb-4;
+}
+
+.execution-header {
+  @apply flex justify-between items-center mb-3;
+}
+
+.execution-info {
+  @apply flex items-center gap-3;
+}
+
+.execution-details {
+  @apply flex flex-col;
+}
+
+.execution-name {
+  @apply font-bold text-gray-700;
+}
+
+.execution-platform {
+  @apply text-xs text-gray-400;
+}
+
+.execution-abilities {
+  @apply flex flex-wrap gap-1 mb-3;
+}
+
+.execution-progress {
+  @apply mb-3;
+}
+
+.execution-steps {
+  @apply flex gap-2 overflow-x-auto py-3;
+}
+
+.step-item {
+  @apply flex items-center gap-1.5 min-w-24 p-1.5 bg-white rounded transition-all duration-300;
+}
+
+.step-item.active {
+  @apply bg-blue-50 border-2 border-blue-500;
+}
+
+.step-item.completed {
+  @apply bg-blue-50;
+}
+
+.step-indicator {
+  @apply w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold text-white flex-shrink-0;
+}
+
+.step-item.active .step-indicator {
+  @apply bg-blue-500;
+}
+
+.step-item.completed .step-indicator {
+  @apply bg-green-500;
+}
+
+.step-content {
+  @apply flex-1 min-w-0;
+}
+
+.step-name {
+  @apply text-xs text-gray-700 font-medium;
+}
+
+.logs-list {
+  @apply max-h-100 overflow-y-auto p-3 bg-gray-50 rounded;
+}
+
+.log-item {
+  @apply flex gap-3 p-2 bg-white rounded mb-2;
+}
+
+.log-time {
+  @apply text-xs text-gray-400 whitespace-nowrap;
+}
+
+.log-type {
+  @apply whitespace-nowrap;
+}
+
+.log-content {
+  @apply flex-1;
+}
+
+.log-message {
+  @apply text-sm text-gray-700;
+}
+
+.log-details {
+  @apply text-xs text-gray-500 mt-1;
+}
+
+.platform-card {
+  @apply mb-4 rounded-xl;
+}
+
+.platform-header {
+  @apply flex items-center gap-3;
+}
+
+.platform-badge {
+  @apply w-8 h-8 rounded flex items-center justify-center text-white font-bold;
+}
+
+.platform-info {
+  @apply flex-1;
+}
+
+.platform-name {
+  @apply font-bold text-gray-700;
+}
+
+.platform-count {
+  @apply text-xs text-gray-400;
+}
+
+.agent-list {
+  @apply mt-3;
+}
+
+.agent-item {
+  @apply flex items-center gap-3 p-2 bg-gray-50 rounded-lg mb-2;
+}
+
+.agent-info {
+  @apply flex-1;
+}
+
+.agent-name {
+  @apply font-medium text-gray-700 text-sm;
+}
+
+.agent-abilities {
+  @apply flex flex-wrap gap-1 mt-1;
+}
+
+.agent-config-card {
+  @apply mb-4 rounded-xl;
+}
+
+.agent-config-item {
+  @apply flex items-center gap-3 p-3 border-b border-gray-100;
+}
+
+.agent-config-info {
+  @apply flex-1;
+}
+
+.agent-config-name {
+  @apply font-medium text-gray-700;
+}
+
+.agent-config-status {
+  @apply flex items-center gap-2 mt-1;
+}
+
+.ability-card {
+  @apply mb-4 rounded-xl;
+}
+
+.ability-header {
+  @apply flex items-center gap-3 mb-3;
+}
+
+.ability-info {
+  @apply flex-1;
+}
+
+.ability-name {
+  @apply font-bold text-gray-700;
+}
+
+.ability-desc {
+  @apply text-xs text-gray-400 mt-1;
+}
+
+.ability-tags {
+  @apply flex flex-wrap gap-1;
+}
+
+.ability-section-card {
+  @apply h-full rounded-xl;
+}
+
+.section-header {
+  @apply flex justify-between items-center;
+}
+
+.ability-list {
+  @apply flex flex-wrap gap-2 min-h-24 p-3 bg-gray-50 rounded-lg;
+}
+
+.ability-option {
+  @apply p-3 border-b border-gray-100 last:border-0;
+}
+
+.ability-option:last-child {
+  @apply border-0;
+}
+
+.ability-option-content {
+  @apply inline-block;
+}
+
+.ability-option-desc {
+  @apply text-xs text-gray-400 mt-1;
+}
+
+.example-card {
+  @apply mb-4 rounded-xl;
+}
+
+.example-content {
+  @apply mb-3;
+}
+
+.example-title {
+  @apply font-bold text-gray-700 mb-1;
+}
+
+.example-desc {
+  @apply text-sm text-gray-500 mb-3;
+}
+
+.example-agents {
+  @apply flex flex-wrap gap-1;
+}
 </style>

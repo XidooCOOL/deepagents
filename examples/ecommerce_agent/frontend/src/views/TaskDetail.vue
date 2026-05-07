@@ -376,92 +376,109 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.task-detail-page { padding: 20px; }
-
-.page-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
+.task-detail-page {
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
-.page-header h2 { margin: 0; flex: 1; }
+.page-header {
+  @apply flex items-center gap-5 mb-5;
+}
 
-.header-actions { display: flex; gap: 10px; align-items: center; }
+.page-header h2 {
+  @apply m-0 flex-1 text-xl font-semibold text-gray-800;
+}
 
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.header-actions {
+  @apply flex gap-3 items-center;
+}
 
-.step-item { padding: 5px 0; }
+.card-header {
+  @apply flex justify-between items-center;
+}
 
-.step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.step-item {
+  @apply py-1;
+}
 
-.step-meta { font-size: 12px; color: #909399; display: flex; gap: 15px; }
+.step-header {
+  @apply flex justify-between items-center mb-1;
+}
 
-.step-error { font-size: 12px; color: #f56c6c; margin-top: 5px; }
+.step-meta {
+  @apply text-xs text-gray-400 flex gap-4;
+}
+
+.step-error {
+  @apply text-xs text-red-500 mt-1;
+}
 
 .logs-container {
-  max-height: 500px;
-  overflow-y: auto;
-  background: #f5f7fa;
-  border-radius: 4px;
-  padding: 10px;
+  @apply max-h-128 overflow-y-auto bg-gray-50 rounded p-3;
 }
 
 .loading-logs, .empty-logs, .empty-steps, .empty-timeline {
-  text-align: center;
-  padding: 40px;
-  color: #909399;
+  @apply text-center py-10 text-gray-400;
 }
 
-.log-list { display: flex; flex-direction: column; gap: 8px; }
+.log-list {
+  @apply flex flex-col gap-2;
+}
 
 .log-item {
-  background: white;
-  border-radius: 4px;
-  padding: 8px 12px;
-  cursor: pointer;
+  @apply bg-white rounded p-3 cursor-pointer;
   border-left: 3px solid transparent;
+  @apply transition-colors;
 }
 
-.log-item:hover { background: #ecf5ff; }
+.log-item:hover {
+  @apply bg-blue-50;
+}
 
-.log-error { border-left-color: #f56c6c; }
-.log-warning { border-left-color: #e6a23c; }
-.log-success { border-left-color: #67c23a; }
+.log-error {
+  @apply border-l-red-500;
+}
 
-.log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.log-warning {
+  @apply border-l-yellow-500;
+}
 
-.log-time { font-size: 11px; color: #909399; }
+.log-success {
+  @apply border-l-green-500;
+}
 
-.log-message { font-size: 13px; color: #303133; word-break: break-all; }
+.log-header {
+  @apply flex justify-between items-center mb-1;
+}
 
-.log-screenshot { margin-top: 4px; }
+.log-time {
+  @apply text-xs text-gray-400;
+}
+
+.log-message {
+  @apply text-sm text-gray-700 break-all;
+}
+
+.log-screenshot {
+  @apply mt-1;
+}
 
 .logs-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #ebeef5;
+  @apply flex justify-between items-center mt-3 pt-3 border-t border-gray-100;
 }
 
 .data-pre {
-  background: #f5f7fa;
-  padding: 10px;
-  border-radius: 4px;
-  max-height: 200px;
-  overflow: auto;
-  font-size: 12px;
+  @apply bg-gray-50 p-3 rounded max-h-48 overflow-auto text-xs;
 }
 
 .screenshot-container {
-  max-height: 70vh;
-  overflow: auto;
-  text-align: center;
+  @apply max-h-70vh overflow-auto text-center;
 }
 
-.screenshot-container img { max-width: 100%; }
+.screenshot-container img {
+  @apply max-w-full;
+}
 
-.no-screenshot { padding: 60px; color: #909399; }
+.no-screenshot {
+  @apply py-16 text-gray-400;
+}
 </style>

@@ -281,26 +281,22 @@ const deleteTask = (task: ScheduledTask) => {
 
 <style scoped>
 .scheduled-tasks {
-  padding: 10px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
+  @apply flex gap-3 items-center mb-5;
 }
 
 .toolbar :deep(.el-select) {
-  width: 150px;
+  @apply w-36;
 }
 
 .task-list-card {
-  margin-top: 20px;
+  @apply mt-5 rounded-xl;
 }
 
 .cron-display {
-  font-size: 13px;
-  color: #374151;
+  @apply text-sm text-gray-700;
 }
 </style>

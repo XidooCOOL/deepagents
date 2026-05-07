@@ -307,77 +307,76 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.tasks-page { padding: 20px; }
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.tasks-page {
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
-.page-header h2 { margin: 0; }
+.page-header {
+  @apply flex justify-between items-center mb-5;
+}
 
-.header-actions { display: flex; gap: 10px; align-items: center; }
+.page-header h2 {
+  @apply m-0 text-xl font-semibold text-gray-800;
+}
 
-.stats-row { margin-bottom: 20px; }
+.header-actions {
+  @apply flex gap-3 items-center;
+}
+
+.stats-row {
+  @apply mb-5;
+}
 
 .stat-card {
-  text-align: center;
-  padding: 10px;
+  @apply text-center p-4 rounded-xl;
 }
 
 .stat-value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #303133;
+  @apply text-3xl font-bold text-gray-800;
 }
 
 .stat-label {
-  font-size: 14px;
-  color: #909399;
-  margin-top: 5px;
+  @apply text-sm text-gray-500 mt-1;
 }
 
-.stat-card.running .stat-value { color: #409eff; }
-.stat-card.failed .stat-value { color: #f56c6c; }
+.stat-card.running .stat-value { @apply text-blue-600; }
+.stat-card.failed .stat-value { @apply text-red-500; }
 
 .task-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  @apply flex flex-col gap-1;
 }
 
 .current-step {
-  font-size: 12px;
-  color: #606266;
+  @apply text-xs text-gray-500;
 }
 
-.no-step { color: #c0c4cc; }
+.no-step { @apply text-gray-300; }
 
 .progress-text {
-  font-size: 11px;
-  color: #909399;
-  margin-top: 3px;
+  @apply text-xs text-gray-400 mt-1;
 }
 
 .time-info {
-  font-size: 12px;
-  color: #606266;
+  @apply text-xs text-gray-500;
 }
 
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.card-header {
+  @apply flex justify-between items-center;
+}
 
-.failed-task-item { width: 100%; margin-bottom: 10px; }
+.failed-task-item {
+  @apply w-full mb-3;
+}
 
-.failed-task-item :deep(.el-checkbox__label) { width: 100%; }
+.failed-task-item :deep(.el-checkbox__label) {
+  @apply w-full;
+}
 
-.failed-task-info strong { display: block; margin-bottom: 5px; }
+.failed-task-info strong {
+  @apply block mb-1;
+}
 
 .failed-task-meta {
-  display: flex;
-  flex-direction: column;
-  font-size: 11px;
-  color: #909399;
+  @apply flex flex-col text-xs text-gray-400;
 }
 </style>

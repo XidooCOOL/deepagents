@@ -551,140 +551,98 @@ export default {
 
 <style scoped>
 .llm-config {
-  padding: 20px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .page-header {
-  margin-bottom: 30px;
+  @apply mb-8;
 }
 
 .page-header h2 {
-  margin: 0 0 10px 0;
-  font-size: 28px;
-  color: #303133;
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
 }
 
 .subtitle {
-  color: #909399;
-  margin: 0;
+  @apply text-gray-400 m-0;
 }
 
 .config-card {
-  margin-bottom: 20px;
+  @apply mb-5 rounded-xl;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .card-header h3 {
-  margin: 0;
+  @apply m-0;
 }
 
 .form-tip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-  font-size: 13px;
+  @apply flex items-center gap-2 mt-2 text-sm;
 }
 
 .form-tip .success {
-  color: #67c23a;
+  @apply text-green-500;
 }
 
 .form-tip .warning {
-  color: #e6a23c;
+  @apply text-yellow-500;
 }
 
 .test-card {
-  margin-top: 20px;
+  @apply mt-5 rounded-xl;
 }
 
 .test-response {
-  margin-top: 15px;
+  @apply mt-4;
 }
 
 .test-response h4 {
-  margin-bottom: 10px;
-  color: #303133;
+  @apply text-sm text-gray-700 mb-2;
 }
 
 .test-response pre {
-  background: #f5f7fa;
-  padding: 15px;
-  border-radius: 4px;
-  white-space: pre-wrap;
-  font-size: 13px;
-  max-height: 200px;
-  overflow-y: auto;
+  @apply bg-gray-50 p-4 rounded text-sm whitespace-pre-wrap max-h-48 overflow-y-auto;
 }
 
-.info-card {
-  margin-bottom: 20px;
+.info-card, .models-card, .status-card {
+  @apply mb-5 rounded-xl;
 }
 
 .info-content h4 {
-  margin: 15px 0 8px 0;
-  color: #409eff;
+  @apply text-blue-500 mt-4 mb-2 first:mt-0;
 }
 
 .info-content p {
-  margin: 5px 0;
-  color: #606266;
-  font-size: 13px;
-}
-
-.models-card {
-  margin-bottom: 20px;
+  @apply text-gray-500 text-sm my-1;
 }
 
 .model-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background: #f5f7fa;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  @apply flex justify-between items-center p-3 bg-gray-50 rounded-lg mb-3;
 }
 
 .model-info {
-  flex: 1;
+  @apply flex-1;
 }
 
 .model-name {
-  font-weight: 500;
-  color: #303133;
+  @apply font-medium text-gray-700;
 }
 
 .model-size {
-  font-size: 12px;
-  color: #909399;
+  @apply text-xs text-gray-400;
 }
 
 .model-desc {
-  font-size: 11px;
-  color: #c0c4cc;
-  margin-top: 2px;
+  @apply text-xs text-gray-300 mt-0.5;
 }
 
 .model-tag {
-  margin-left: 8px;
-  padding: 2px 6px;
-  background: #409eff;
-  color: white;
-  border-radius: 3px;
-  font-size: 11px;
-}
-
-.status-card {
-  margin-bottom: 20px;
+  @apply ml-2 px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs;
 }
 
 :deep(.el-slider__marks-text) {
-  font-size: 12px;
+  @apply text-xs;
 }
 </style>

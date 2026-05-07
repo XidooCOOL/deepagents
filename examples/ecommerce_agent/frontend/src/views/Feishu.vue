@@ -452,51 +452,38 @@ onMounted(async () => {
 
 <style scoped>
 .feishu-page {
-  padding: 20px;
+  @apply p-6 bg-gray-50 min-h-screen;
 }
 
 .page-header {
-  margin-bottom: 30px;
+  @apply mb-8;
 }
 
 .page-header h2 {
-  margin: 0 0 10px 0;
-  font-size: 28px;
-  color: #303133;
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
 }
 
 .subtitle {
-  color: #909399;
-  margin: 0;
+  @apply text-gray-400 m-0;
 }
 
 .form-tip {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 5px;
+  @apply text-xs text-gray-400 mt-1;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .template-item {
-  padding: 10px;
-  border: 1px solid #ebeef5;
-  border-radius: 4px;
-  margin-bottom: 10px;
+  @apply p-3 border border-gray-200 rounded-lg mb-3;
 }
 
 .template-name {
-  font-weight: 600;
-  color: #303133;
-  margin-bottom: 5px;
+  @apply font-semibold text-gray-700 mb-1;
 }
 
 .template-desc {
-  font-size: 12px;
-  color: #909399;
+  @apply text-xs text-gray-400;
 }
 </style>
