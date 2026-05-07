@@ -75,7 +75,13 @@ async def lifespan(app: FastAPI):
     scheduler = get_task_scheduler(db)
     scheduler.start()
     
+    # 启动实时监控系统
+    await realtime_manager.start()
+    
     yield
+    
+    # 关闭实时监控系统
+    await realtime_manager.stop()
     
     # 关闭调度器
     scheduler.shutdown()
@@ -102,7 +108,16 @@ app.add_middleware(
 
 # 注册商品库 API
 from backend.api.product_library import router as product_library_router
+from backend.api.realtime import router as realtime_router
+from backend.api.status import router as status_router
+from backend.utils.realtime_manager import realtime_manager
+
+# 注册商品库 API
 app.include_router(product_library_router)
+
+# 注册实时监控 API
+app.include_router(realtime_router)
+app.include_router(status_router)
 
 # 注册已发布商品 API
 from backend.api.published_products import router as published_products_router
