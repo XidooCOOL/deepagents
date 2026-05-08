@@ -100,6 +100,11 @@ const routes: RouteRecordRaw[] = [
     path: '/tasks/:id',
     name: 'TaskDetail',
     component: () => import('../views/TaskDetail.vue')
+  },
+  {
+    path: '/ai-assistant',
+    name: 'AIAssistant',
+    component: () => import('../views/AIAssistant.vue')
   }
 ]
 

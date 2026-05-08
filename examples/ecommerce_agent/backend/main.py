@@ -139,6 +139,10 @@ app.include_router(published_products_router)
 from backend.api.extract_product import router as extract_router
 app.include_router(extract_router)
 
+# 注册 AI 智能 API
+from backend.api.ai_intelligent import router as ai_intelligent_router
+app.include_router(ai_intelligent_router)
+
 
 @app.get("/")
 async def root():

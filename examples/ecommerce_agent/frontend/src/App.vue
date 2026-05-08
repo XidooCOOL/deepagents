@@ -17,6 +17,10 @@
         
         <div class="menu-section">
           <div class="menu-title">🤖 AI Agent</div>
+          <el-menu-item index="/ai-assistant">
+            <el-icon><component :is="icons.MagicStick" /></el-icon>
+            <span>智能助手</span>
+          </el-menu-item>
           <el-menu-item index="/agent">
             <el-icon><component :is="icons.Robot" /></el-icon>
             <span>Agent工作台</span>
@@ -261,6 +265,7 @@ const pageTitleMap: Record<string, string> = {
   '/llm-config': '模型配置',
   '/feishu': '飞书集成',
   '/webhooks': 'Webhook管理',
+  '/ai-assistant': '智能助手',
   '/tasks/:id': '任务详情'
 }
 
