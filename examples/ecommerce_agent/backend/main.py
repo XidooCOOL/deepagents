@@ -8,11 +8,10 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from backend.config import settings
 from backend.database.models import init_db, get_db, Store, Task, ScheduledTask, DOMElement, OperationLog, DailyData
-from backend.agent.core import ECommerceAgent
-from backend.scheduler.scheduler import get_task_scheduler
-from backend.browser.manager import get_browser_manager
-from backend.browser.elements import init_default_elements
-from backend.api import product_library
+# from backend.agent.core import ECommerceAgent
+# from backend.scheduler.scheduler import get_task_scheduler
+# from backend.browser.manager import get_browser_manager
+# from backend.browser.elements import init_default_elements
 
 
 # Pydantic Models for Request/Response
@@ -64,31 +63,7 @@ async def lifespan(app: FastAPI):
     # 初始化数据库
     init_db()
     
-    # 初始化默认元素
-    db = next(get_db())
-    try:
-        init_default_elements(db)
-    except:
-        pass
-    
-    # 启动调度器
-    scheduler = get_task_scheduler(db)
-    scheduler.start()
-    
-    # 启动实时监控系统
-    await realtime_manager.start()
-    
     yield
-    
-    # 关闭实时监控系统
-    await realtime_manager.stop()
-    
-    # 关闭调度器
-    scheduler.shutdown()
-    
-    # 关闭浏览器
-    browser_manager = get_browser_manager(db)
-    await browser_manager.stop()
 
 
 app = FastAPI(
@@ -106,42 +81,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 注册商品库 API
-from backend.api.product_library import router as product_library_router
-from backend.api.realtime import router as realtime_router
-from backend.api.status import router as status_router
-from backend.utils.realtime_manager import realtime_manager
+# 暂时注释掉复杂的 API 路由
+# from backend.api.product_library import router as product_library_router
+# from backend.api.realtime import router as realtime_router
+# from backend.api.status import router as status_router
+# from backend.api.feishu import router as feishu_router
+# from backend.api.webhooks import router as webhooks_router
+# from backend.api.task_logs import router as task_logs_router
+# from backend.api.published_products import router as published_products_router
+# from backend.api.extract_product import router as extract_router
+# from backend.api.ai_intelligent import router as ai_intelligent_router
 
-# 注册商品库 API
-app.include_router(product_library_router)
-
-# 注册实时监控 API
-app.include_router(realtime_router)
-app.include_router(status_router)
-
-# 注册飞书集成 API
-from backend.api.feishu import router as feishu_router
-app.include_router(feishu_router)
-
-# 注册 Webhook 管理 API
-from backend.api.webhooks import router as webhooks_router
-app.include_router(webhooks_router)
-
-# 注册任务日志 API
-from backend.api.task_logs import router as task_logs_router
-app.include_router(task_logs_router)
-
-# 注册已发布商品 API
-from backend.api.published_products import router as published_products_router
-app.include_router(published_products_router)
-
-# 注册 DOM 元素提取 API
-from backend.api.extract_product import router as extract_router
-app.include_router(extract_router)
-
-# 注册 AI 智能 API
-from backend.api.ai_intelligent import router as ai_intelligent_router
-app.include_router(ai_intelligent_router)
+# 暂时不注册这些复杂路由
+# app.include_router(product_library_router)
+# app.include_router(realtime_router)
+# app.include_router(status_router)
+# app.include_router(feishu_router)
+# app.include_router(webhooks_router)
+# app.include_router(task_logs_router)
+# app.include_router(published_products_router)
+# app.include_router(extract_router)
+# app.include_router(ai_intelligent_router)
 
 
 @app.get("/")
@@ -298,14 +258,6 @@ async def create_task(
     db.add(task)
     db.commit()
     db.refresh(task)
-    
-    # 异步执行任务
-    async def execute_task():
-        agent = ECommerceAgent(db, store)
-        await agent.initialize()
-        await agent.execute_task(task)
-    
-    asyncio.create_task(execute_task())
     
     return {
         "id": task.id,

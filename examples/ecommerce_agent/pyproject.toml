@@ -2,7 +2,7 @@
 name = "ecommerce_agent"
 version = "0.1.0"
 description = "多平台电商Agent系统 - 基于DeepAgents"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "deepagents>=0.3.5,<0.4.0",
     "fastapi>=0.115.0,<0.116.0",
