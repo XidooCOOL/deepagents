@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
 
-from .database import Base
+from .models import Base
 
 
 class ProductStatus(enum.Enum):

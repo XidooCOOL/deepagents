@@ -4,7 +4,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 import json
 
-from .intelligent_agent import (
+from backend.ai.intelligent_agent import (
     AIIntentRecognizer,
     IntelligentTaskDecomposer,
     IntelligentRecommender,

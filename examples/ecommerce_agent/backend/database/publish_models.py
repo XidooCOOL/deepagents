@@ -5,7 +5,7 @@
 from sqlalchemy import Column, Integer, String, Float, Text, Boolean, DateTime, JSON, ForeignKey
 from datetime import datetime
 
-from .database import Base
+from .models import Base
 
 
 class PublishedProduct(Base):

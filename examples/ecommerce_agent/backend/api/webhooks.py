@@ -8,7 +8,7 @@ from typing import Optional, Dict, Any, List
 from datetime import datetime
 
 from sqlalchemy.orm import Session
-from backend.database.session import get_db
+from backend.database.models import get_db
 from backend.utils.webhook_manager import (
     get_webhook_manager,
     get_template_manager,

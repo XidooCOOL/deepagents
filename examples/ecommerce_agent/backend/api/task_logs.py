@@ -8,7 +8,7 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 from sqlalchemy.orm import Session
-from backend.database.session import get_db
+from backend.database.models import get_db
 from backend.database.models import Task, TaskLog
 
 router = APIRouter(prefix="/api/tasks", tags=["任务日志"])

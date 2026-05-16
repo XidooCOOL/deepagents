@@ -7,8 +7,8 @@ from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
-from backend.database.session import get_db
-from backend.database.models import Task, Store, AgentSession
+from backend.database.models import get_db
+from backend.database.models import Task, Store
 from backend.utils.resource_monitor import ResourceMonitor
 
 router = APIRouter(prefix="/api/status", tags=["状态监控"])
@@ -28,10 +28,7 @@ async def get_dashboard_status(db: Session = Depends(get_db)):
     failed_tasks = db.query(Task).filter(Task.status == 'failed').count()
 
     total_stores = db.query(Store).filter(Store.is_active == True).count()
-    active_stores = db.query(Store).filter(
-        Store.is_active == True,
-        Store.last_login_at >= today_start
-    ).count()
+    active_stores = db.query(Store).filter(Store.is_active == True).count()
 
     resource_monitor = ResourceMonitor()
     resource_usage = resource_monitor.get_current_usage()

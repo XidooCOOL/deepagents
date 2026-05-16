@@ -11,7 +11,7 @@ import os
 import uuid
 
 from sqlalchemy.orm import Session
-from backend.database.session import get_db
+from backend.database.models import get_db
 from backend.database.models import Store
 from backend.browser.manager import get_browser_manager, BrowserManager
 

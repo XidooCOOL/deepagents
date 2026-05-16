@@ -10,7 +10,7 @@ import json
 import asyncio
 
 from sqlalchemy.orm import Session
-from backend.database.session import get_db
+from backend.database.models import get_db
 from backend.database.models import AppConfig
 from backend.utils.feishu_client import (
     FeishuIntegration,

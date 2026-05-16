@@ -81,27 +81,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 暂时注释掉复杂的 API 路由
-# from backend.api.product_library import router as product_library_router
-# from backend.api.realtime import router as realtime_router
-# from backend.api.status import router as status_router
-# from backend.api.feishu import router as feishu_router
-# from backend.api.webhooks import router as webhooks_router
-# from backend.api.task_logs import router as task_logs_router
-# from backend.api.published_products import router as published_products_router
-# from backend.api.extract_product import router as extract_router
-# from backend.api.ai_intelligent import router as ai_intelligent_router
+# 注册商品库 API
+from backend.api.product_library import router as product_library_router
+from backend.api.realtime import router as realtime_router
+from backend.api.status import router as status_router
 
-# 暂时不注册这些复杂路由
-# app.include_router(product_library_router)
-# app.include_router(realtime_router)
-# app.include_router(status_router)
-# app.include_router(feishu_router)
-# app.include_router(webhooks_router)
-# app.include_router(task_logs_router)
-# app.include_router(published_products_router)
-# app.include_router(extract_router)
-# app.include_router(ai_intelligent_router)
+# 注册飞书集成 API
+from backend.api.feishu import router as feishu_router
+
+# 注册 Webhook 管理 API
+from backend.api.webhooks import router as webhooks_router
+
+# 注册任务日志 API
+from backend.api.task_logs import router as task_logs_router
+
+# 注册已发布商品 API
+from backend.api.published_products import router as published_products_router
+
+# 注册 DOM 元素提取 API
+from backend.api.extract_product import router as extract_router
+
+# 注册 AI 智能 API
+from backend.api.ai_intelligent import router as ai_intelligent_router
+
+# 注册 API 路由
+app.include_router(product_library_router)
+app.include_router(realtime_router)
+app.include_router(status_router)
+app.include_router(feishu_router)
+app.include_router(webhooks_router)
+app.include_router(task_logs_router)
+app.include_router(published_products_router)
+app.include_router(extract_router)
+app.include_router(ai_intelligent_router)
 
 
 @app.get("/")
