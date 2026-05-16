@@ -1,18 +1,42 @@
-# 电商助手 - 页面截图
+# 页面截图保存标准
 
-## 截图说明
+## 保存位置
 
-| 序号 | 文件 | 页面名称 | 说明 |
-|-----|------|---------|------|
-| 1 | 01-home.png | 控制台首页 | 数据概览和系统状态 |
-| 2 | 02-stores.png | 店铺管理 | 抖音、拼多多、淘宝等店铺管理 |
-| 3 | 03-tasks.png | 任务管理 | 商品发布、好评处理等任务列表 |
-| 4 | 04-workflow.png | 工作流页面 | **步骤可视化 - 第一步到第五步的执行状态 |
-| 5 | 05-elements.png | DOM元素管理 | CSS、XPath、ID等选择器配置 |
-| 6 | 06-scheduled-tasks.png | 定时任务 | Cron表达式定时任务管理 |
-| 7 | 07-orders.png | 订单管理 | 订单列表、状态筛选、导出 |
-| 8 | 08-products.png | 商品管理 | 商品列表、库存管理 |
-| 9 | 09-data-analysis.png | 数据分析 | 商品销售排行榜 |
+### 1. 项目目录备份
+- 位置：`/workspace/examples/ecommerce_agent/screenshots/`
+- 用途：本地备份和归档
 
-## 文件夹路径
-所有截图保存在 `/workspace/examples/ecommerce_agent/screenshots/ 目录下
+### 2. 前端静态资源目录（可公开访问）
+- 位置：`/workspace/examples/ecommerce_agent/frontend/public/screenshots/`
+- 用途：通过前端服务（http://localhost:5173/）公开访问
+
+## 文件命名规范
+
+使用数字前缀 + 描述性名称的格式：
+- `01-home-page.png` - 首页
+- `02-ai-assistant.png` - AI 智能助手
+- `03-store-management.png` - 店铺管理
+- `04-task-management.png` - 任务管理
+- `05-product-management.png` - 商品管理
+- `06-data-analysis.png` - 数据分析
+- `07-agent-workbench.png` - Agent 工作台
+- `08-workflow-config.png` - 工作流配置
+- `09-product-library.png` - 商品库
+
+## 访问方式
+
+### 本地文件访问
+直接在项目目录中查看：
+- `screenshots/01-home-page.png`
+
+### 云端访问
+通过前端服务访问：
+- `http://localhost:5173/screenshots/01-home-page.png`
+
+## 保存流程
+
+1. 使用浏览器工具访问页面
+2. 截图保存到临时位置
+3. 复制到项目备份目录：`screenshots/`
+4. 复制到前端静态目录：`frontend/public/screenshots/`
+5. 确保文件命名规范统一
