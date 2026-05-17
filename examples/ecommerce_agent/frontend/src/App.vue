@@ -1,114 +1,115 @@
 <template>
   <el-container class="app-container">
-    <el-aside width="220px" class="sidebar">
+    <el-aside :width="isCollapsed ? '64px' : '240px'" class="sidebar" :class="{ collapsed: isCollapsed }">
       <div class="logo">
-        <el-icon :size="32" color="#409eff"><component :is="icons.ShoppingCart" /></el-icon>
-        <h2>电商助手</h2>
+        <el-icon :size="isCollapsed ? 32 : 28" color="#409eff"><component :is="icons.ShoppingCart" /></el-icon>
+        <h2 v-show="!isCollapsed">电商助手</h2>
       </div>
       
-      <el-menu :default-active="activeMenu" class="sidebar-menu" router>
+      <el-menu :default-active="activeMenu" class="sidebar-menu" router :collapse="isCollapsed">
         <div class="menu-section">
-          <div class="menu-title">🖥️ 核心功能</div>
+          <div class="menu-title" v-show="!isCollapsed">🖥️ 核心功能</div>
           <el-menu-item index="/">
             <el-icon><component :is="icons.HomeFilled" /></el-icon>
-            <span>控制台</span>
+            <template #title>控制台</template>
           </el-menu-item>
         </div>
         
         <div class="menu-section">
-          <div class="menu-title">🤖 AI Agent</div>
+          <div class="menu-title" v-show="!isCollapsed">🤖 AI Agent</div>
           <el-menu-item index="/ai-assistant">
             <el-icon><component :is="icons.MagicStick" /></el-icon>
-            <span>智能助手</span>
+            <template #title>智能助手</template>
           </el-menu-item>
           <el-menu-item index="/agent">
             <el-icon><component :is="icons.Robot" /></el-icon>
-            <span>Agent工作台</span>
+            <template #title>Agent工作台</template>
           </el-menu-item>
           <el-menu-item index="/chat">
             <el-icon><component :is="icons.ChatDotRound" /></el-icon>
-            <span>任务对话</span>
+            <template #title>任务对话</template>
           </el-menu-item>
           <el-menu-item index="/workflow-config">
             <el-icon><component :is="icons.Setting" /></el-icon>
-            <span>工作流配置</span>
+            <template #title>工作流配置</template>
           </el-menu-item>
         </div>
         
         <div class="menu-section">
-          <div class="menu-title">⚙️ 配置管理</div>
+          <div class="menu-title" v-show="!isCollapsed">⚙️ 配置管理</div>
           <el-menu-item index="/stores">
             <el-icon><component :is="icons.OfficeBuilding" /></el-icon>
-            <span>店铺管理</span>
+            <template #title>店铺管理</template>
           </el-menu-item>
           <el-menu-item index="/elements">
             <el-icon><component :is="icons.Document" /></el-icon>
-            <span>元素管理</span>
+            <template #title>元素管理</template>
           </el-menu-item>
           <el-menu-item index="/skills">
             <el-icon><component :is="icons.Tools" /></el-icon>
-            <span>技能管理</span>
+            <template #title>技能管理</template>
           </el-menu-item>
           <el-menu-item index="/llm-config">
             <el-icon><component :is="icons.Cpu" /></el-icon>
-            <span>模型配置</span>
+            <template #title>模型配置</template>
           </el-menu-item>
           <el-menu-item index="/feishu">
             <el-icon><component :is="icons.Message" /></el-icon>
-            <span>飞书集成</span>
+            <template #title>飞书集成</template>
           </el-menu-item>
           <el-menu-item index="/webhooks">
             <el-icon><component :is="icons.Bell" /></el-icon>
-            <span>Webhook管理</span>
+            <template #title>Webhook管理</template>
           </el-menu-item>
         </div>
         
         <div class="menu-section">
-          <div class="menu-title">📋 任务中心</div>
+          <div class="menu-title" v-show="!isCollapsed">📋 任务中心</div>
           <el-menu-item index="/tasks">
             <el-icon><component :is="icons.List" /></el-icon>
-            <span>任务管理</span>
+            <template #title>任务管理</template>
           </el-menu-item>
           <el-menu-item index="/scheduled-tasks">
             <el-icon><component :is="icons.Clock" /></el-icon>
-            <span>定时任务</span>
+            <template #title>定时任务</template>
           </el-menu-item>
         </div>
         
         <div class="menu-section">
-          <div class="menu-title">📊 数据中心</div>
+          <div class="menu-title" v-show="!isCollapsed">📊 数据中心</div>
           <el-menu-item index="/orders">
             <el-icon><component :is="icons.ShoppingCart" /></el-icon>
-            <span>订单管理</span>
+            <template #title>订单管理</template>
           </el-menu-item>
           <el-menu-item index="/products">
             <el-icon><component :is="icons.Goods" /></el-icon>
-            <span>商品管理</span>
+            <template #title>商品管理</template>
           </el-menu-item>
           <el-menu-item index="/product-library">
             <el-icon><component :is="icons.Box" /></el-icon>
-            <span>商品库</span>
+            <template #title>商品库</template>
           </el-menu-item>
           <el-menu-item index="/product-publish">
             <el-icon><component :is="icons.Upload" /></el-icon>
-            <span>批量发布</span>
+            <template #title>批量发布</template>
           </el-menu-item>
           <el-menu-item index="/published-products">
             <el-icon><component :is="icons.DocumentChecked" /></el-icon>
-            <span>已发布</span>
+            <template #title>已发布</template>
           </el-menu-item>
           <el-menu-item index="/data">
             <el-icon><component :is="icons.DataAnalysis" /></el-icon>
-            <span>数据分析</span>
+            <template #title>数据分析</template>
           </el-menu-item>
         </div>
       </el-menu>
       
       <div class="sidebar-footer">
-        <div class="version-info">
+        <div class="version-info" v-show="!isCollapsed">
           <el-tag size="small" type="success">v1.0.0</el-tag>
           <span>DeepAgents</span>
         </div>
+        <el-button class="collapse-btn" @click="toggleSidebar" :icon="isCollapsed ? icons.ArrowRight : icons.ArrowLeft" circle size="small" />
       </div>
     </el-aside>
     
@@ -123,12 +124,25 @@
         </div>
         <div class="header-right">
           <el-button-group>
-            <el-button @click="refreshData" icon="Refresh" size="default">刷新</el-button>
-            <el-button @click="showHelp" icon="QuestionFilled" size="default">帮助</el-button>
+            <el-button @click="refreshData" :icon="icons.Refresh" size="default">刷新</el-button>
+            <el-button @click="showQuickAction = true" :icon="icons.Lightning" size="default" type="primary">快捷操作</el-button>
+            <el-button @click="showHelp" :icon="icons.QuestionFilled" size="default">帮助</el-button>
           </el-button-group>
           <el-badge :value="3" class="notification-badge">
-            <el-button icon="Bell" circle size="default" />
+            <el-button :icon="icons.Bell" circle size="default" />
           </el-badge>
+          <el-dropdown>
+            <div class="user-avatar">
+              <el-avatar :size="36" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item :icon="icons.User">个人中心</el-dropdown-item>
+                <el-dropdown-item :icon="icons.Setting">设置</el-dropdown-item>
+                <el-dropdown-item divided :icon="icons.SwitchButton">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </el-header>
       
@@ -226,7 +240,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import * as icons from '@element-plus/icons-vue'
@@ -236,12 +250,14 @@ const route = useRoute()
 const activeMenu = computed(() => route.path)
 const showQuickAction = ref(false)
 const showHelpDialog = ref(false)
+const isCollapsed = ref(false)
 
 const shortcuts = [
   { key: 'Ctrl + N', action: '创建新任务' },
   { key: 'Ctrl + S', action: '保存当前配置' },
   { key: 'Ctrl + R', action: '刷新页面' },
   { key: 'Ctrl + Q', action: '打开快捷操作' },
+  { key: 'Ctrl + B', action: '切换侧边栏' },
   { key: 'Esc', action: '关闭弹窗' }
 ]
 
@@ -271,6 +287,10 @@ const pageTitleMap: Record<string, string> = {
 
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')
 
+const toggleSidebar = () => {
+  isCollapsed.value = !isCollapsed.value
+}
+
 const refreshData = () => {
   ElMessage.success('数据已刷新')
   window.location.reload()
@@ -279,48 +299,80 @@ const refreshData = () => {
 const showHelp = () => {
   showHelpDialog.value = true
 }
+
+const handleKeyDown = (e: KeyboardEvent) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'q') {
+    e.preventDefault()
+    showQuickAction.value = true
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+    e.preventDefault()
+    toggleSidebar()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 </script>
 
 <style scoped>
 .app-container {
   height: 100vh;
-  background: #f5f7fa;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
 }
 
 .sidebar {
-  background: white;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
 }
 
 .logo {
-  padding: 20px;
+  padding: 24px 20px;
   display: flex;
   align-items: center;
   gap: 12px;
   border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
+  transition: all 0.3s ease;
 }
 
 .logo h2 {
   margin: 0;
   font-size: 18px;
-  color: #303133;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .sidebar-menu {
   border-right: none;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 200px);
   overflow-y: auto;
+  padding: 10px 0;
 }
 
 .menu-section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .menu-title {
-  padding: 10px 20px;
-  font-size: 12px;
+  padding: 12px 20px 8px;
+  font-size: 11px;
   color: #909399;
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -330,9 +382,12 @@ const showHelp = () => {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 15px;
+  padding: 16px;
   border-top: 1px solid #f0f0f0;
   background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .version-info {
@@ -343,33 +398,61 @@ const showHelp = () => {
   color: #909399;
 }
 
+.collapse-btn {
+  background: #f5f7fa;
+  border: 1px solid #e4e7ed;
+  transition: all 0.3s ease;
+}
+
+.collapse-btn:hover {
+  background: #409eff;
+  border-color: #409eff;
+  color: white;
+  transform: scale(1.1);
+}
+
 .header {
   background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0 32px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .header-left h1 {
-  margin: 0 0 5px 0;
-  font-size: 24px;
+  margin: 0 0 6px 0;
+  font-size: 26px;
   color: #303133;
+  font-weight: 600;
+  background: linear-gradient(135deg, #303133 0%, #409eff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .notification-badge {
-  margin-left: 10px;
+  margin-left: 8px;
+}
+
+.user-avatar {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.1);
 }
 
 .main {
-  padding: 20px 30px;
+  padding: 24px 32px;
   overflow-y: auto;
 }
 
@@ -390,36 +473,46 @@ const showHelp = () => {
 }
 
 .quick-actions {
-  padding: 20px;
+  padding: 24px;
 }
 
 .action-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .action-section h4 {
-  margin: 0 0 15px 0;
+  margin: 0 0 16px 0;
   font-size: 16px;
   color: #303133;
+  font-weight: 600;
 }
 
 :deep(.el-menu-item) {
-  height: 45px;
-  line-height: 45px;
-  margin: 2px 10px;
-  border-radius: 6px;
+  height: 48px;
+  line-height: 48px;
+  margin: 4px 12px;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 :deep(.el-menu-item:hover) {
-  background: #ecf5ff;
+  background: linear-gradient(135deg, #ecf5ff 0%, #d9ecff 100%);
+  transform: translateX(4px);
 }
 
 :deep(.el-menu-item.is-active) {
-  background: #409eff;
+  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
 }
 
 :deep(.el-menu-item.is-active .el-icon) {
   color: white;
+}
+
+:deep(.el-menu--collapse .el-menu-item) {
+  margin: 4px 8px;
 }
 </style>

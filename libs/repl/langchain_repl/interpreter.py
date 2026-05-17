@@ -497,6 +497,15 @@ class _ProgramCompiler:
         if value == "parallel":
             self._emit(OpCode.LOAD_CONST, _PARALLEL_SENTINEL)
             return
+        if value == "max":
+            self._emit(OpCode.LOAD_CONST, _MAX_SENTINEL)
+            return
+        if value == "min":
+            self._emit(OpCode.LOAD_CONST, _MIN_SENTINEL)
+            return
+        if value == "sum":
+            self._emit(OpCode.LOAD_CONST, _SUM_SENTINEL)
+            return
         if value == "defer":
             self._expect("(")
             self._compile_task_invocation()
@@ -962,6 +971,12 @@ class Interpreter:
         target, args = self._pop_call(state.stack, int(instruction.arg))
         if target is _PARALLEL_SENTINEL:
             result = self._run_parallel_sync(args, print_callback=print_callback)
+        elif target is _MAX_SENTINEL:
+            result = self._eval_max(args)
+        elif target is _MIN_SENTINEL:
+            result = self._eval_min(args)
+        elif target is _SUM_SENTINEL:
+            result = self._eval_sum(args)
         else:
             result = self._call_sync(target, args, print_callback=print_callback)
         state.stack.append(result)
@@ -976,13 +991,54 @@ class Interpreter:
         target, args = self._pop_call(state.stack, int(instruction.arg))
         if target is _PARALLEL_SENTINEL:
             result = await self._run_parallel_async(args, print_callback=print_callback)
+        elif target is _MAX_SENTINEL:
+            result = self._eval_max(args)
+        elif target is _MIN_SENTINEL:
+            result = self._eval_min(args)
+        elif target is _SUM_SENTINEL:
+            result = self._eval_sum(args)
         else:
             result = await self._call_async(target, args, print_callback=print_callback)
         state.stack.append(result)
 
+    def _eval_max(self, args: tuple[Any, ...]) -> Any:
+        if not args:
+            raise TypeError("max() takes at least one argument")
+        if len(args) == 1:
+            iterable = args[0]
+            if isinstance(iterable, list):
+                return max(iterable)
+            if isinstance(iterable, dict):
+                return max(iterable.keys())
+            raise TypeError("max() arg is not iterable")
+        return max(args)
+
+    def _eval_min(self, args: tuple[Any, ...]) -> Any:
+        if not args:
+            raise TypeError("min() takes at least one argument")
+        if len(args) == 1:
+            iterable = args[0]
+            if isinstance(iterable, list):
+                return min(iterable)
+            if isinstance(iterable, dict):
+                return min(iterable.keys())
+            raise TypeError("min() arg is not iterable")
+        return min(args)
+
+    def _eval_sum(self, args: tuple[Any, ...]) -> Any:
+        if not args:
+            raise TypeError("sum() takes at least one argument")
+        if len(args) > 2:
+            raise TypeError("sum() takes at most two arguments")
+        iterable = args[0]
+        start = args[1] if len(args) == 2 else 0
+        if isinstance(iterable, list):
+            return sum(iterable, start)
+        raise TypeError("sum() arg is not iterable")
+
     def _build_task(self, stack: list[Any], arg_count: int) -> Task:
         target, args = self._pop_call(stack, arg_count)
-        if target is _PRINT_SENTINEL or target is _PARALLEL_SENTINEL:
+        if target in (_PRINT_SENTINEL, _PARALLEL_SENTINEL, _MAX_SENTINEL, _MIN_SENTINEL, _SUM_SENTINEL):
             msg = "defer expects exactly one callable invocation"
             raise ValueError(msg)
         return Task(target=target, args=args)
@@ -1191,6 +1247,9 @@ class Interpreter:
 
 _PRINT_SENTINEL = object()
 _PARALLEL_SENTINEL = object()
+_MAX_SENTINEL = object()
+_MIN_SENTINEL = object()
+_SUM_SENTINEL = object()
 
 
 __all__ = ["ForeignObjectInterface", "Interpreter", "OpCode", "ParseError"]
