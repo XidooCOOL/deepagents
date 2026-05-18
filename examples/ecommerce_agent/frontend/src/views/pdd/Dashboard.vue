@@ -242,98 +242,78 @@ onMounted(() => {
 
 <style scoped>
 .pdd-dashboard {
-  padding: 20px;
+  @apply p-5 bg-gray-50 dark:bg-neutral-900 min-h-screen;
 }
 
 .header-card {
-  margin-bottom: 20px;
+  @apply mb-5 rounded-xl;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  @apply flex items-center gap-3;
 }
 
 .title h2 {
-  margin: 0;
-  font-size: 24px;
-  color: #303133;
+  @apply m-0 text-2xl font-bold text-gray-800 dark:text-neutral-100;
 }
 
 .actions {
-  display: flex;
-  gap: 10px;
+  @apply flex gap-2;
 }
 
 .stats-row {
-  margin-bottom: 20px;
+  @apply mb-5;
 }
 
 .stat-card {
-  transition: transform 0.3s;
+  @apply transition-transform duration-300 rounded-xl;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+  @apply -translate-y-1;
 }
 
 .stat-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 10px;
+  @apply flex items-center gap-5 p-2;
 }
 
 .stat-info {
-  flex: 1;
+  @apply flex-1;
 }
 
 .stat-value {
-  font-size: 28px;
-  font-weight: bold;
-  color: #303133;
-  margin-bottom: 5px;
+  @apply text-3xl font-bold text-gray-800 dark:text-neutral-100 mb-1;
 }
 
 .stat-label {
-  font-size: 14px;
-  color: #909399;
+  @apply text-sm text-gray-400 dark:text-neutral-400;
 }
 
 .charts-row {
-  margin-bottom: 20px;
+  @apply mb-5;
 }
 
 .chart-card {
-  height: 350px;
+  @apply h-[350px] rounded-xl;
 }
 
 .chart-header {
-  font-weight: 600;
-  font-size: 16px;
+  @apply font-semibold text-base;
 }
 
 .chart-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 250px;
+  @apply flex items-center justify-center h-[250px];
 }
 
 .data-table-card {
-  margin-bottom: 20px;
+  @apply mb-5 rounded-xl;
 }
 
 .table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 </style>

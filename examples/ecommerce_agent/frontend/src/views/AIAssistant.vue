@@ -641,7 +641,7 @@ onMounted(() => {
 
 <style scoped>
 .ai-assistant {
-  @apply p-6 bg-gray-50 min-h-screen;
+  @apply p-6 bg-gray-50 dark:bg-neutral-900 min-h-screen;
 }
 
 .page-header {
@@ -649,11 +649,11 @@ onMounted(() => {
 }
 
 .page-header h2 {
-  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800 dark:text-neutral-100;
 }
 
 .subtitle {
-  @apply text-gray-400 m-0;
+  @apply text-gray-400 dark:text-neutral-400 m-0;
 }
 
 .chat-card {
@@ -668,15 +668,15 @@ onMounted(() => {
 }
 
 .chat-messages {
-  @apply flex-1 overflow-y-auto p-4 bg-gray-50;
+  @apply flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-neutral-800;
 }
 
 .empty-state {
-  @apply flex flex-col items-center justify-center h-full text-center text-gray-400;
+  @apply flex flex-col items-center justify-center h-full text-center text-gray-400 dark:text-neutral-400;
 }
 
 .empty-state h3 {
-  @apply m-0 mb-2 text-gray-600;
+  @apply m-0 mb-2 text-gray-600 dark:text-neutral-300;
 }
 
 .empty-state p {
@@ -696,15 +696,15 @@ onMounted(() => {
 }
 
 .message-avatar {
-  @apply w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-xl flex-shrink-0;
+  @apply w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-xl flex-shrink-0;
 }
 
 .message.user .message-avatar {
-  @apply bg-blue-100;
+  @apply bg-blue-100 dark:bg-blue-900;
 }
 
 .message.assistant .message-avatar {
-  @apply bg-green-100;
+  @apply bg-green-100 dark:bg-green-900;
 }
 
 .message-content {
@@ -720,15 +720,15 @@ onMounted(() => {
 }
 
 .sender {
-  @apply font-medium text-sm text-gray-700;
+  @apply font-medium text-sm text-gray-700 dark:text-neutral-200;
 }
 
 .time {
-  @apply text-xs text-gray-400;
+  @apply text-xs text-gray-400 dark:text-neutral-500;
 }
 
 .message-bubble {
-  @apply bg-white p-3 rounded-lg shadow-sm;
+  @apply bg-white dark:bg-neutral-800 p-3 rounded-lg shadow-sm;
 }
 
 .message.user .message-bubble {
@@ -736,11 +736,11 @@ onMounted(() => {
 }
 
 .ai-response {
-  @apply bg-white p-4 rounded-xl shadow-sm;
+  @apply bg-white dark:bg-neutral-800 p-4 rounded-xl shadow-sm;
 }
 
 .intent-result {
-  @apply p-3 bg-blue-50 rounded-lg;
+  @apply p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg;
 }
 
 .intent-header {
@@ -748,7 +748,7 @@ onMounted(() => {
 }
 
 .confidence {
-  @apply text-xs text-gray-500 ml-auto;
+  @apply text-xs text-gray-500 dark:text-neutral-400 ml-auto;
 }
 
 .platforms, .suggestions {
@@ -756,7 +756,7 @@ onMounted(() => {
 }
 
 .plan-result {
-  @apply p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl;
+  @apply p-4 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 rounded-xl;
 }
 
 .plan-header {
@@ -772,7 +772,7 @@ onMounted(() => {
 }
 
 .step-icon {
-  @apply w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs font-bold;
+  @apply w-6 h-6 rounded-full bg-gray-300 dark:bg-neutral-600 text-white flex items-center justify-center text-xs font-bold;
 }
 
 .step-icon.active {
@@ -788,7 +788,7 @@ onMounted(() => {
 }
 
 .chat-input {
-  @apply p-4 border-t border-gray-100 bg-white;
+  @apply p-4 border-t border-gray-100 dark:border-neutral-700 bg-white dark:bg-neutral-800;
 }
 
 .recommend-card, .learning-card {
@@ -800,7 +800,7 @@ onMounted(() => {
 }
 
 .result {
-  @apply p-3 bg-gray-50 rounded-lg;
+  @apply p-3 bg-gray-50 dark:bg-neutral-800 rounded-lg;
 }
 
 .result-item {
@@ -808,19 +808,19 @@ onMounted(() => {
 }
 
 .result-item .label {
-  @apply text-gray-500;
+  @apply text-gray-500 dark:text-neutral-400;
 }
 
 .platform-item {
-  @apply flex items-center gap-3 p-3 bg-gray-50 rounded-lg mb-2;
+  @apply flex items-center gap-3 p-3 bg-gray-50 dark:bg-neutral-800 rounded-lg mb-2;
 }
 
 .platform-item.top {
-  @apply bg-yellow-50 border border-yellow-200;
+  @apply bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800;
 }
 
 .platform-rank {
-  @apply w-8 h-8 rounded-full bg-white flex items-center justify-center font-bold text-sm;
+  @apply w-8 h-8 rounded-full bg-white dark:bg-neutral-700 flex items-center justify-center font-bold text-sm;
 }
 
 .crown {
@@ -832,7 +832,7 @@ onMounted(() => {
 }
 
 .platform-info .name {
-  @apply font-medium text-sm mb-1 block;
+  @apply font-bold text-gray-700 dark:text-neutral-200;
 }
 
 .score-bar {
@@ -856,7 +856,7 @@ onMounted(() => {
 }
 
 .stat-label {
-  @apply text-xs text-gray-400;
+  @apply text-xs text-gray-400 dark:text-neutral-500;
 }
 
 .insights-list {
@@ -872,7 +872,7 @@ onMounted(() => {
 }
 
 .insight-item .text {
-  @apply text-gray-600;
+  @apply text-gray-600 dark:text-neutral-300;
 }
 
 .price-result {
@@ -884,6 +884,6 @@ onMounted(() => {
 }
 
 .price-range {
-  @apply text-center text-xs text-gray-500;
+  @apply text-center text-xs text-gray-500 dark:text-neutral-400;
 }
 </style>

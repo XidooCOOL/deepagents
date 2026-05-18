@@ -270,94 +270,70 @@ onMounted(() => {
 
 <style scoped>
 .pdd-stores {
-  padding: 20px;
+  @apply p-5 bg-gray-50 dark:bg-neutral-900 min-h-screen;
 }
 
 .header-card {
-  margin-bottom: 20px;
+  @apply mb-5 rounded-xl;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  @apply flex items-center gap-3;
 }
 
 .title h2 {
-  margin: 0;
-  font-size: 24px;
-  color: #303133;
+  @apply m-0 text-2xl font-bold text-gray-800 dark:text-neutral-100;
 }
 
 .actions {
-  display: flex;
-  gap: 10px;
+  @apply flex gap-2;
 }
 
 .stores-grid {
-  margin-top: 20px;
+  @apply mt-5;
 }
 
 .store-card {
-  margin-bottom: 20px;
-  transition: transform 0.3s;
+  @apply mb-5 rounded-xl transition-transform duration-300;
 }
 
 .store-card:hover {
-  transform: translateY(-5px);
+  @apply -translate-y-1;
 }
 
 .store-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .store-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  font-size: 16px;
+  @apply flex items-center gap-2 font-semibold text-base;
 }
 
 .store-info {
-  margin: 20px 0;
+  @apply my-5;
 }
 
 .info-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  @apply flex justify-between mb-2;
 }
 
 .info-item .label {
-  color: #909399;
+  @apply text-gray-400 dark:text-neutral-400;
 }
 
 .info-item .value {
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .store-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  @apply flex gap-2 flex-wrap;
 }
 
 .health-output {
-  background: #f5f7fa;
-  padding: 20px;
-  border-radius: 8px;
-  font-family: monospace;
-  white-space: pre-wrap;
-  max-height: 500px;
-  overflow-y: auto;
+  @apply bg-gray-100 dark:bg-neutral-800 p-5 rounded font-mono whitespace-pre-wrap max-h-[500px] overflow-y-auto;
 }
 </style>

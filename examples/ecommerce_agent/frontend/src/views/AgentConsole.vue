@@ -1124,7 +1124,7 @@ export default {
 
 <style scoped>
 .agent-console {
-  @apply p-6 bg-gray-50 min-h-screen;
+  @apply p-6 bg-gray-50 dark:bg-neutral-900 min-h-screen;
 }
 
 .page-header {
@@ -1132,11 +1132,11 @@ export default {
 }
 
 .page-header h2 {
-  @apply m-0 mb-2 text-2xl font-bold text-gray-800;
+  @apply m-0 mb-2 text-2xl font-bold text-gray-800 dark:text-neutral-100;
 }
 
 .subtitle {
-  @apply text-gray-400 m-0 text-sm;
+  @apply text-gray-400 dark:text-neutral-400 m-0 text-sm;
 }
 
 .status-card, .stats-card {
@@ -1154,7 +1154,7 @@ export default {
 .status-indicator.idle { @apply bg-green-500; }
 .status-indicator.running { @apply bg-blue-500; }
 .status-indicator.analyzing { @apply bg-yellow-500; }
-.status-indicator.completed { @apply bg-gray-400; }
+.status-indicator.completed { @apply bg-gray-400 dark:bg-neutral-600; }
 
 .pulse {
   @apply absolute w-full h-full rounded-full;
@@ -1171,11 +1171,11 @@ export default {
 }
 
 .status-label, .stats-label {
-  @apply text-sm text-gray-400;
+  @apply text-sm text-gray-400 dark:text-neutral-400;
 }
 
 .status-value, .stats-value {
-  @apply text-2xl font-bold text-gray-800;
+  @apply text-2xl font-bold text-gray-800 dark:text-neutral-100;
 }
 
 .stats-icon {
@@ -1215,7 +1215,7 @@ export default {
 }
 
 .execution-item {
-  @apply bg-gray-50 p-4 rounded-lg mb-4;
+  @apply bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg mb-4;
 }
 
 .execution-header {
@@ -1231,11 +1231,11 @@ export default {
 }
 
 .execution-name {
-  @apply font-bold text-gray-700;
+  @apply font-bold text-gray-700 dark:text-neutral-200;
 }
 
 .execution-platform {
-  @apply text-xs text-gray-400;
+  @apply text-xs text-gray-400 dark:text-neutral-400;
 }
 
 .execution-abilities {
@@ -1251,19 +1251,19 @@ export default {
 }
 
 .step-item {
-  @apply flex items-center gap-1.5 min-w-24 p-1.5 bg-white rounded transition-all duration-300;
+  @apply flex items-center gap-1.5 min-w-24 p-1.5 bg-white dark:bg-neutral-700 rounded transition-all duration-300;
 }
 
 .step-item.active {
-  @apply bg-blue-50 border-2 border-blue-500;
+  @apply bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500;
 }
 
 .step-item.completed {
-  @apply bg-blue-50;
+  @apply bg-blue-50 dark:bg-blue-900/20;
 }
 
 .step-indicator {
-  @apply w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold text-white flex-shrink-0;
+  @apply w-5 h-5 rounded-full bg-gray-300 dark:bg-neutral-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0;
 }
 
 .step-item.active .step-indicator {
@@ -1279,19 +1279,19 @@ export default {
 }
 
 .step-name {
-  @apply text-xs text-gray-700 font-medium;
+  @apply text-xs text-gray-700 dark:text-neutral-200 font-medium;
 }
 
 .logs-list {
-  @apply max-h-100 overflow-y-auto p-3 bg-gray-50 rounded;
+  @apply max-h-100 overflow-y-auto p-3 bg-gray-50 dark:bg-neutral-800 rounded;
 }
 
 .log-item {
-  @apply flex gap-3 p-2 bg-white rounded mb-2;
+  @apply flex gap-3 p-2 bg-white dark:bg-neutral-700 rounded mb-2;
 }
 
 .log-time {
-  @apply text-xs text-gray-400 whitespace-nowrap;
+  @apply text-xs text-gray-400 dark:text-neutral-400 whitespace-nowrap;
 }
 
 .log-type {
@@ -1303,11 +1303,11 @@ export default {
 }
 
 .log-message {
-  @apply text-sm text-gray-700;
+  @apply text-sm text-gray-700 dark:text-neutral-200;
 }
 
 .log-details {
-  @apply text-xs text-gray-500 mt-1;
+  @apply text-xs text-gray-500 dark:text-neutral-400 mt-1;
 }
 
 .platform-card {
@@ -1327,11 +1327,11 @@ export default {
 }
 
 .platform-name {
-  @apply font-bold text-gray-700;
+  @apply font-bold text-gray-700 dark:text-neutral-200;
 }
 
 .platform-count {
-  @apply text-xs text-gray-400;
+  @apply text-xs text-gray-400 dark:text-neutral-400;
 }
 
 .agent-list {
@@ -1339,7 +1339,7 @@ export default {
 }
 
 .agent-item {
-  @apply flex items-center gap-3 p-2 bg-gray-50 rounded-lg mb-2;
+  @apply flex items-center gap-3 p-2 bg-gray-50 dark:bg-neutral-800 rounded-lg mb-2;
 }
 
 .agent-info {
@@ -1347,7 +1347,7 @@ export default {
 }
 
 .agent-name {
-  @apply font-medium text-gray-700 text-sm;
+  @apply font-medium text-gray-700 dark:text-neutral-200 text-sm;
 }
 
 .agent-abilities {
@@ -1359,7 +1359,7 @@ export default {
 }
 
 .agent-config-item {
-  @apply flex items-center gap-3 p-3 border-b border-gray-100;
+  @apply flex items-center gap-3 p-3 border-b border-gray-100 dark:border-neutral-700;
 }
 
 .agent-config-info {
@@ -1367,7 +1367,7 @@ export default {
 }
 
 .agent-config-name {
-  @apply font-medium text-gray-700;
+  @apply font-medium text-gray-700 dark:text-neutral-200;
 }
 
 .agent-config-status {
@@ -1387,11 +1387,11 @@ export default {
 }
 
 .ability-name {
-  @apply font-bold text-gray-700;
+  @apply font-bold text-gray-700 dark:text-neutral-200;
 }
 
 .ability-desc {
-  @apply text-xs text-gray-400 mt-1;
+  @apply text-xs text-gray-400 dark:text-neutral-400 mt-1;
 }
 
 .ability-tags {
@@ -1407,11 +1407,11 @@ export default {
 }
 
 .ability-list {
-  @apply flex flex-wrap gap-2 min-h-24 p-3 bg-gray-50 rounded-lg;
+  @apply flex flex-wrap gap-2 min-h-24 p-3 bg-gray-50 dark:bg-neutral-800 rounded-lg;
 }
 
 .ability-option {
-  @apply p-3 border-b border-gray-100 last:border-0;
+  @apply p-3 border-b border-gray-100 dark:border-neutral-700 last:border-0;
 }
 
 .ability-option:last-child {
@@ -1423,7 +1423,7 @@ export default {
 }
 
 .ability-option-desc {
-  @apply text-xs text-gray-400 mt-1;
+  @apply text-xs text-gray-400 dark:text-neutral-400 mt-1;
 }
 
 .example-card {
@@ -1435,11 +1435,11 @@ export default {
 }
 
 .example-title {
-  @apply font-bold text-gray-700 mb-1;
+  @apply font-bold text-gray-700 dark:text-neutral-200 mb-1;
 }
 
 .example-desc {
-  @apply text-sm text-gray-500 mb-3;
+  @apply text-sm text-gray-500 dark:text-neutral-400 mb-3;
 }
 
 .example-agents {
