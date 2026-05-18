@@ -150,15 +150,13 @@
     
     <!-- 原有内容区域 -->
     <div class="existing-content mt-12">
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-card class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-            <template #header>
-              <div class="flex justify-between items-center">
-                <span class="font-medium text-neutral-900 dark:text-neutral-100">运行中任务</span>
-                <el-tag type="info" size="small">{{ activeTasks.length }} 个</el-tag>
-              </div>
-            </template>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg">
+          <div class="flex justify-between items-center px-5 py-4 border-b border-neutral-200 dark:border-neutral-800">
+            <span class="font-medium text-neutral-900 dark:text-neutral-100">运行中任务</span>
+            <el-tag type="info" size="small">{{ activeTasks.length }} 个</el-tag>
+          </div>
+          <div class="p-5">
             <div v-if="activeTasks.length === 0" class="flex flex-col items-center justify-center h-48 text-neutral-400">
               <el-icon :size="48"><Finished /></el-icon>
               <p class="mt-3">暂无运行中的任务</p>
@@ -173,38 +171,39 @@
                 <div class="text-xs text-neutral-400 mt-1">{{ task.message || '处理中...' }}</div>
               </div>
             </div>
-          </el-card>
-        </el-col>
-        <el-col :span="12">
-          <el-card class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-            <template #header>
-              <div class="flex justify-between items-center">
-                <span class="font-medium text-neutral-900 dark:text-neutral-100">系统状态</span>
-                <el-button size="small" @click="refreshStatus" :loading="loadingStatus">刷新</el-button>
-              </div>
-            </template>
-            <el-table :data="systemStatus" border size="small">
-              <el-table-column prop="name" label="服务" width="120" />
-              <el-table-column prop="status" label="状态" width="100">
-                <template #default="scope">
-                  <el-tag :type="scope.row.status === '运行中' ? 'success' : 'danger'" size="small">
-                    {{ scope.row.status }}
-                  </el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column prop="cpu" label="CPU" width="80">
-                <template #default="scope">
-                  <span :class="{ 'text-red-500 font-bold': parseFloat(scope.row.cpu) > 80 }">
-                    {{ scope.row.cpu }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="memory" label="内存" />
-            </el-table>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg">
+          <div class="flex justify-between items-center px-5 py-4 border-b border-neutral-200 dark:border-neutral-800">
+            <span class="font-medium text-neutral-900 dark:text-neutral-100">系统状态</span>
+            <el-button size="small" @click="refreshStatus" :loading="loadingStatus">刷新</el-button>
+          </div>
+          <div class="p-5">
+            <div class="overflow-x-auto">
+              <el-table :data="systemStatus" border size="small">
+                <el-table-column prop="name" label="服务" min-width="100" />
+                <el-table-column prop="status" label="状态" min-width="80">
+                  <template #default="scope">
+                    <el-tag :type="scope.row.status === '运行中' ? 'success' : 'danger'" size="small">
+                      {{ scope.row.status }}
+                    </el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="cpu" label="CPU" min-width="60">
+                  <template #default="scope">
+                    <span :class="{ 'text-red-500 font-bold': parseFloat(scope.row.cpu) > 80 }">
+                      {{ scope.row.cpu }}
+                    </span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="memory" label="内存" min-width="100" />
+              </el-table>
+            </div>
 
             <el-divider>实时资源</el-divider>
             <div class="py-3">
-              <div class="flex items-center gap-2 text-xs">
+              <div class="flex flex-wrap items-center gap-2 text-xs">
                 <span class="text-neutral-500">CPU</span>
                 <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ resourceUsage?.cpu?.percent || 0 }}%</span>
                 <span class="text-neutral-300">·</span>
@@ -215,9 +214,9 @@
                 <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ resourceUsage?.memory?.percent || 0 }}%</span>
               </div>
             </div>
-          </el-card>
-        </el-col>
-      </el-row>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
