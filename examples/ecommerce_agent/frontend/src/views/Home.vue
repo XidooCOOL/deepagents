@@ -83,37 +83,8 @@
       </div>
     </div>
     
-    <!-- 数据库面板（绝对定位） -->
-    <div class="database-panel absolute top-24 right-8 z-10">
-      <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 shadow-lg">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center">
-            <el-icon :size="18" class="text-white"><Connection /></el-icon>
-          </div>
-          <div class="flex-1">
-            <div class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Primary Database</div>
-            <div class="text-xs text-neutral-500">Northeast Asia (Tokyo)</div>
-            <div class="text-xs text-neutral-500">ap-northeast-1 · t4g.nano</div>
-          </div>
-          <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-        </div>
-        <div class="flex items-center gap-2 text-xs">
-          <span class="text-neutral-500">CPU</span>
-          <span class="font-medium text-neutral-900 dark:text-neutral-100">0%</span>
-          <span class="text-neutral-300">·</span>
-          <span class="text-neutral-500">Disk</span>
-          <span class="font-medium text-neutral-900 dark:text-neutral-100">16%</span>
-          <span class="text-neutral-300">·</span>
-          <span class="text-neutral-500">RAM</span>
-          <span class="font-medium text-neutral-900 dark:text-neutral-100">69%</span>
-          <span class="text-neutral-300">·</span>
-          <span class="text-neutral-500">3/60 conns</span>
-        </div>
-      </div>
-    </div>
-    
     <!-- 数据看板区域 -->
-    <div class="dashboard-section mt-20">
+    <div class="dashboard-section mt-6">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
           <el-icon :size="18" class="text-neutral-500"><List /></el-icon>
@@ -233,23 +204,15 @@
 
             <el-divider>实时资源</el-divider>
             <div class="py-3">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="w-10 text-xs text-neutral-500">CPU</span>
-                <el-progress :percentage="resourceUsage?.cpu?.percent || 0" :stroke-width="10"
-                  :color="getResourceColor(resourceUsage?.cpu?.percent)" />
-                <span class="w-12 text-right text-xs text-neutral-500">{{ resourceUsage?.cpu?.percent || 0 }}%</span>
-              </div>
-              <div class="flex items-center gap-3 mb-3">
-                <span class="w-10 text-xs text-neutral-500">内存</span>
-                <el-progress :percentage="resourceUsage?.memory?.percent || 0" :stroke-width="10"
-                  :color="getResourceColor(resourceUsage?.memory?.percent)" />
-                <span class="w-12 text-right text-xs text-neutral-500">{{ resourceUsage?.memory?.percent || 0 }}%</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="w-10 text-xs text-neutral-500">磁盘</span>
-                <el-progress :percentage="resourceUsage?.disk?.percent || 0" :stroke-width="10"
-                  :color="getResourceColor(resourceUsage?.disk?.percent)" />
-                <span class="w-12 text-right text-xs text-neutral-500">{{ resourceUsage?.disk?.percent || 0 }}%</span>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-neutral-500">CPU</span>
+                <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ resourceUsage?.cpu?.percent || 0 }}%</span>
+                <span class="text-neutral-300">·</span>
+                <span class="text-neutral-500">磁盘</span>
+                <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ resourceUsage?.disk?.percent || 0 }}%</span>
+                <span class="text-neutral-300">·</span>
+                <span class="text-neutral-500">内存</span>
+                <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ resourceUsage?.memory?.percent || 0 }}%</span>
               </div>
             </div>
           </el-card>
