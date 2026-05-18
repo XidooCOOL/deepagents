@@ -174,6 +174,11 @@
         
         <!-- 右侧操作区 -->
         <div class="flex items-center gap-3">
+          <el-button size="small" @click="toggleTheme" class="gap-2">
+            <el-icon><component :is="isDark ? icons.Sunny : icons.Moon" /></el-icon>
+            <span class="hidden sm:inline">{{ isDark ? '亮色' : '暗色' }}</span>
+          </el-button>
+          
           <el-button size="small" @click="showQuickAction = true" class="gap-2">
             <el-icon><component :is="icons.Lightning" /></el-icon>
             <span class="hidden sm:inline">快捷操作</span>
@@ -254,6 +259,7 @@ import * as icons from '@element-plus/icons-vue'
 const route = useRoute()
 const showQuickAction = ref(false)
 const isCollapsed = ref(false)
+const isDark = ref(false)
 
 const pageTitleMap: Record<string, string> = {
   '/': '控制台',
@@ -292,10 +298,36 @@ const refreshData = () => {
   window.location.reload()
 }
 
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  if (isDark.value) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
 onMounted(() => {
   const savedCollapsed = localStorage.getItem('sidebarCollapsed')
   if (savedCollapsed !== null) {
     isCollapsed.value = savedCollapsed === 'true'
+  }
+  
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme === 'dark') {
+    isDark.value = true
+    document.documentElement.classList.add('dark')
+  } else if (savedTheme === 'light') {
+    isDark.value = false
+    document.documentElement.classList.remove('dark')
+  } else {
+    // 自动检测系统主题
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    isDark.value = prefersDark
+    if (prefersDark) {
+      document.documentElement.classList.add('dark')
+    }
   }
 })
 </script>
