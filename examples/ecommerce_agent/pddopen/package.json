@@ -1,0 +1,14 @@
+{
+  "name": "pdd-open",
+  "version": "8.0.0",
+  "description": "拼多多商家后台多账号管理 + 数据自动提取",
+  "main": "scripts/pdd-open.js",
+  "scripts": {
+    "start": "node scripts/pdd-open.js",
+    "test": "node scripts/pdd-open.js"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "xlsx": "^0.18.5"
+  }
+}

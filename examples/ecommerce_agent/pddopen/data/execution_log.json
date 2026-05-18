@@ -1,0 +1,3459 @@
+[
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-21",
+    "status": "failed",
+    "startTime": "2026-04-22T10:39:21.600Z",
+    "endTime": "2026-04-22T10:39:21.601Z",
+    "duration": 1,
+    "error": "销售: Cannot read properties of null (reading 'url')",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-15",
+    "status": "failed",
+    "startTime": "2026-04-22T10:41:52.917Z",
+    "endTime": "2026-04-22T10:41:52.919Z",
+    "duration": 1,
+    "error": "销售: Cannot read properties of null (reading 'url')",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-15",
+    "status": "failed",
+    "startTime": "2026-04-22T10:41:52.917Z",
+    "endTime": "2026-04-22T10:41:52.919Z",
+    "duration": 2,
+    "error": "推广: extractPromotionData is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-15",
+    "status": "failed",
+    "startTime": "2026-04-22T10:47:35.188Z",
+    "endTime": "2026-04-22T10:47:35.189Z",
+    "duration": 1,
+    "error": "销售: Cannot read properties of null (reading 'url')",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-15",
+    "status": "success",
+    "startTime": "2026-04-22T10:54:26.697Z",
+    "endTime": "2026-04-22T10:55:44.554Z",
+    "duration": 77857,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "2140.89",
+        "成交订单数": "241",
+        "成交买家数": "229",
+        "成交转化率": "11.24%",
+        "客单价": "9.35",
+        "成交老买家占比": "14.41%",
+        "店铺关注用户数": "2",
+        "退款金额": "381.25",
+        "退款单数": "47",
+        "平均访客价值": "1.05"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T10:59:32.888Z",
+    "endTime": "2026-04-22T10:59:32.889Z",
+    "duration": 0,
+    "error": "客服: extractCustomerPerformancePlaywright is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:02:47.238Z",
+    "endTime": "2026-04-22T11:02:47.239Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:06:07.499Z",
+    "endTime": "2026-04-22T11:06:07.501Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:09:42.700Z",
+    "endTime": "2026-04-22T11:09:42.702Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:26:15.098Z",
+    "endTime": "2026-04-22T11:26:15.099Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:28:54.425Z",
+    "endTime": "2026-04-22T11:28:54.427Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-15",
+    "status": "failed",
+    "startTime": "2026-04-22T11:30:36.191Z",
+    "endTime": "2026-04-22T11:30:58.026Z",
+    "duration": 21835,
+    "error": "销售: 统计时间不一致！期望: 2026-04-15, 实际: null",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-15",
+    "status": "failed",
+    "startTime": "2026-04-22T11:30:36.191Z",
+    "endTime": "2026-04-22T11:31:39.603Z",
+    "duration": 63411,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-15",
+    "status": "success",
+    "startTime": "2026-04-22T11:35:54.192Z",
+    "endTime": "2026-04-22T11:37:05.194Z",
+    "duration": 71002,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "2140.89",
+        "成交订单数": "241",
+        "成交买家数": "229",
+        "成交转化率": "11.24%",
+        "客单价": "9.35",
+        "成交老买家占比": "14.41%",
+        "店铺关注用户数": "2",
+        "退款金额": "381.25",
+        "退款单数": "47",
+        "平均访客价值": "1.05"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:38:59.242Z",
+    "endTime": "2026-04-22T11:38:59.243Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:42:24.171Z",
+    "endTime": "2026-04-22T11:42:24.173Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:43:41.546Z",
+    "endTime": "2026-04-22T11:43:41.548Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:47:36.646Z",
+    "endTime": "2026-04-22T11:47:36.648Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:50:57.225Z",
+    "endTime": "2026-04-22T11:50:57.227Z",
+    "duration": 2,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:52:39.670Z",
+    "endTime": "2026-04-22T11:52:39.672Z",
+    "duration": 2,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T11:53:42.782Z",
+    "endTime": "2026-04-22T11:53:42.784Z",
+    "duration": 1,
+    "error": "客服: page.goto is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T12:00:16.861Z",
+    "endTime": "2026-04-22T12:00:16.862Z",
+    "duration": 1,
+    "error": "客服: extractCustomerPerformancePlaywright is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T12:04:14.827Z",
+    "endTime": "2026-04-22T12:04:34.270Z",
+    "duration": 19442,
+    "error": "客服: tryClickSelector is not defined",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T12:09:28.133Z",
+    "endTime": "2026-04-22T12:09:54.526Z",
+    "duration": 26393,
+    "error": "客服: Cannot read properties of undefined (reading 'match')",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T12:30:09.651Z",
+    "endTime": "2026-04-22T12:30:38.622Z",
+    "duration": 28971,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T12:33:34.458Z",
+    "endTime": "2026-04-22T12:34:02.977Z",
+    "duration": 28519,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T12:37:02.575Z",
+    "endTime": "2026-04-22T12:37:10.261Z",
+    "duration": 7685,
+    "error": "客服: page.evaluate: Target page, context or browser has been closed",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T12:39:10.404Z",
+    "endTime": "2026-04-22T12:39:39.320Z",
+    "duration": 28915,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T12:41:33.884Z",
+    "endTime": "2026-04-22T12:42:04.728Z",
+    "duration": 30844,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T12:51:45.965Z",
+    "endTime": "2026-04-22T12:52:17.993Z",
+    "duration": 32027,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T12:57:12.240Z",
+    "endTime": "2026-04-22T12:57:47.851Z",
+    "duration": 35611,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:02:20.166Z",
+    "endTime": "2026-04-22T13:02:45.228Z",
+    "duration": 25062,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:06:09.180Z",
+    "endTime": "2026-04-22T13:06:43.373Z",
+    "duration": 34192,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:08:41.682Z",
+    "endTime": "2026-04-22T13:09:30.202Z",
+    "duration": 48519,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:11:45.190Z",
+    "endTime": "2026-04-22T13:12:24.258Z",
+    "duration": 39068,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:14:06.592Z",
+    "endTime": "2026-04-22T13:14:45.543Z",
+    "duration": 38951,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:34:39.130Z",
+    "endTime": "2026-04-22T13:35:17.807Z",
+    "duration": 38676,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:37:16.733Z",
+    "endTime": "2026-04-22T13:37:55.467Z",
+    "duration": 38734,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:39:26.503Z",
+    "endTime": "2026-04-22T13:40:04.805Z",
+    "duration": 38302,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T13:41:55.048Z",
+    "endTime": "2026-04-22T13:42:33.127Z",
+    "duration": 38078,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T13:46:24.262Z",
+    "endTime": "2026-04-22T13:47:02.548Z",
+    "duration": 38285,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T13:50:20.532Z",
+    "endTime": "2026-04-22T13:50:59.213Z",
+    "duration": 38680,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T13:54:17.338Z",
+    "endTime": "2026-04-22T13:54:55.386Z",
+    "duration": 38048,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T13:57:03.831Z",
+    "endTime": "2026-04-22T13:57:46.137Z",
+    "duration": 42306,
+    "error": null,
+    "metrics": {
+      "service": "2026-03-30~2026-04-05"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T14:16:12.590Z",
+    "endTime": "2026-04-22T14:16:51.104Z",
+    "duration": 38514,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T14:26:08.747Z",
+    "endTime": "2026-04-22T14:26:53.536Z",
+    "duration": 44788,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-21",
+    "status": "success",
+    "startTime": "2026-04-22T14:41:36.728Z",
+    "endTime": "2026-04-22T14:42:20.268Z",
+    "duration": 43540,
+    "error": null,
+    "metrics": {
+      "service": "2026-04-21"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T14:45:14.805Z",
+    "endTime": "2026-04-22T14:45:54.330Z",
+    "duration": 39525,
+    "error": null,
+    "metrics": {
+      "service": "2026-03-30~2026-04-05"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T14:48:22.802Z",
+    "endTime": "2026-04-22T14:49:07.032Z",
+    "duration": 44230,
+    "error": null,
+    "metrics": {
+      "service": "2026-03"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-21",
+    "status": "success",
+    "startTime": "2026-04-22T14:51:46.825Z",
+    "endTime": "2026-04-22T14:53:06.436Z",
+    "duration": 79610,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "3228.38",
+        "成交订单数": "375",
+        "成交买家数": "365",
+        "成交转化率": "12.29%",
+        "客单价": "8.84",
+        "成交老买家占比": "10.41%",
+        "店铺关注用户数": "1",
+        "退款金额": "380.16",
+        "退款单数": "43",
+        "平均访客价值": "1.09"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-21",
+    "status": "success",
+    "startTime": "2026-04-22T14:56:06.756Z",
+    "endTime": "2026-04-22T14:57:16.152Z",
+    "duration": 69396,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "3228.38",
+        "成交订单数": "375",
+        "成交买家数": "365",
+        "成交转化率": "12.29%",
+        "客单价": "8.84",
+        "成交老买家占比": "10.41%",
+        "店铺关注用户数": "1",
+        "退款金额": "380.16",
+        "退款单数": "43",
+        "平均访客价值": "1.09"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-21",
+    "status": "success",
+    "startTime": "2026-04-22T14:56:06.756Z",
+    "endTime": "2026-04-22T14:58:03.441Z",
+    "duration": 116685,
+    "error": null,
+    "metrics": {
+      "service": "2026-04-21"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-21",
+    "status": "success",
+    "startTime": "2026-04-22T15:06:11.298Z",
+    "endTime": "2026-04-22T15:07:28.181Z",
+    "duration": 76883,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "3228.38",
+        "成交订单数": "375",
+        "成交买家数": "365",
+        "成交转化率": "12.29%",
+        "客单价": "8.84",
+        "成交老买家占比": "10.41%",
+        "店铺关注用户数": "1",
+        "退款金额": "380.16",
+        "退款单数": "43",
+        "平均访客价值": "1.09"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "failed",
+    "startTime": "2026-04-22T15:09:57.459Z",
+    "endTime": "2026-04-22T15:10:42.989Z",
+    "duration": 45530,
+    "error": "销售: 统计时间不一致！期望: 2026-03-30, 实际: 2026-04-21",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T15:18:42.045Z",
+    "endTime": "2026-04-22T15:19:36.223Z",
+    "duration": 54178,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "2390.18",
+        "成交订单数": "285",
+        "成交买家数": "276",
+        "成交转化率": "12.25%",
+        "客单价": "8.66",
+        "成交老买家占比": "14.13%",
+        "店铺关注用户数": "5",
+        "退款金额": "357.48",
+        "退款单数": "48",
+        "平均访客价值": "1.06"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T15:20:55.309Z",
+    "endTime": "2026-04-22T15:21:41.970Z",
+    "duration": 46661,
+    "error": "销售: 统计时间不一致！期望: 2026-03, 实际: 2026-04-22",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T15:26:38.290Z",
+    "endTime": "2026-04-22T15:27:32.083Z",
+    "duration": 53792,
+    "error": "销售: 统计时间不一致！期望: 2026-03, 实际: 2026-04-22",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T15:29:32.541Z",
+    "endTime": "2026-04-22T15:30:20.068Z",
+    "duration": 47526,
+    "error": "销售: 统计时间不一致！期望: 2026-03, 实际: 2026-04-22",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03",
+    "status": "failed",
+    "startTime": "2026-04-22T15:35:42.674Z",
+    "endTime": "2026-04-22T15:36:34.690Z",
+    "duration": 52015,
+    "error": "销售: 统计时间不一致！期望: 2026-03, 实际: 2026-03-01",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03",
+    "status": "success",
+    "startTime": "2026-04-22T15:38:27.794Z",
+    "endTime": "2026-04-22T15:39:28.441Z",
+    "duration": 60647,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "64919.68",
+        "成交订单数": "7608",
+        "成交买家数": "7337",
+        "成交转化率": "10.47%",
+        "客单价": "8.85",
+        "成交老买家占比": "11.76%",
+        "店铺关注用户数": "118",
+        "退款金额": "8557.04",
+        "退款单数": "1118",
+        "平均访客价值": "0.93"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T15:40:36.116Z",
+    "endTime": "2026-04-22T15:41:33.600Z",
+    "duration": 57483,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "2390.18",
+        "成交订单数": "285",
+        "成交买家数": "276",
+        "成交转化率": "12.25%",
+        "客单价": "8.66",
+        "成交老买家占比": "14.13%",
+        "店铺关注用户数": "5",
+        "退款金额": "357.48",
+        "退款单数": "48",
+        "平均访客价值": "1.06"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T15:43:58.568Z",
+    "endTime": "2026-04-22T15:44:56.185Z",
+    "duration": 57616,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "",
+        "成交订单数": "",
+        "成交买家数": "",
+        "成交转化率": "",
+        "客单价": "",
+        "成交老买家占比": "",
+        "店铺关注用户数": "",
+        "退款金额": "",
+        "退款单数": "",
+        "平均访客价值": ""
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T15:46:58.554Z",
+    "endTime": "2026-04-22T15:47:59.951Z",
+    "duration": 61396,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "2390.18",
+        "成交订单数": "285",
+        "成交买家数": "276",
+        "成交转化率": "12.25%",
+        "客单价": "8.66",
+        "成交老买家占比": "14.13%",
+        "店铺关注用户数": "5",
+        "退款金额": "357.48",
+        "退款单数": "48",
+        "平均访客价值": "1.06"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "success",
+    "startTime": "2026-04-22T15:49:46.682Z",
+    "endTime": "2026-04-22T15:50:46.408Z",
+    "duration": 59725,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "15191.94",
+        "成交订单数": "1796",
+        "成交买家数": "1740",
+        "成交转化率": "11.02%",
+        "客单价": "8.73",
+        "成交老买家占比": "10.63%",
+        "店铺关注用户数": "18",
+        "退款金额": "2422.83",
+        "退款单数": "309",
+        "平均访客价值": "0.96"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "failed",
+    "startTime": "2026-04-22T17:13:27.020Z",
+    "endTime": "2026-04-22T17:13:55.939Z",
+    "duration": 28919,
+    "error": "销售: getCssQuerySelectors is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-30",
+    "status": "failed",
+    "startTime": "2026-04-22T17:16:01.953Z",
+    "endTime": "2026-04-22T17:16:35.249Z",
+    "duration": 33296,
+    "error": "销售: page.evaluate: TypeError: Cannot destructure property 'monthTitleSelector' of 'selectors' as it is undefined.\n    at eval (eval at evaluate (:302:30), <anonymous>:2:13)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-05",
+    "status": "failed",
+    "startTime": "2026-04-22T17:24:31.016Z",
+    "endTime": "2026-04-22T17:25:03.220Z",
+    "duration": 32203,
+    "error": "销售: page.evaluate: TypeError: Cannot destructure property 'monthTitleSelector' of 'selectors' as it is undefined.\n    at eval (eval at evaluate (:302:30), <anonymous>:2:13)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-05",
+    "status": "failed",
+    "startTime": "2026-04-22T17:27:04.845Z",
+    "endTime": "2026-04-22T17:28:00.040Z",
+    "duration": 55194,
+    "error": "销售: 统计时间不一致！期望: 2026-04-05~2026-04-06, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-05",
+    "status": "success",
+    "startTime": "2026-04-22T17:29:49.683Z",
+    "endTime": "2026-04-22T17:30:53.987Z",
+    "duration": 64304,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "5368.12",
+        "成交订单数": "643",
+        "成交买家数": "627",
+        "成交转化率": "11.15%",
+        "客单价": "8.56",
+        "成交老买家占比": "8.93%",
+        "店铺关注用户数": "8",
+        "退款金额": "641.00",
+        "退款单数": "80",
+        "平均访客价值": "0.95"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-05",
+    "status": "success",
+    "startTime": "2026-04-22T17:31:55.218Z",
+    "endTime": "2026-04-22T17:32:33.072Z",
+    "duration": 37854,
+    "error": null,
+    "metrics": {
+      "service": "2026-04-05~2026-04-06"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-05",
+    "status": "success",
+    "startTime": "2026-04-22T17:55:18.949Z",
+    "endTime": "2026-04-22T17:56:02.290Z",
+    "duration": 43341,
+    "error": null,
+    "metrics": {
+      "service": "2026-04-05~2026-04-06"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-05",
+    "status": "failed",
+    "startTime": "2026-04-22T17:59:55.392Z",
+    "endTime": "2026-04-22T18:00:21.483Z",
+    "duration": 26090,
+    "error": "客服: page.evaluate: ReferenceError: targetMonth is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:19:37)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-05",
+    "status": "success",
+    "startTime": "2026-04-22T18:02:08.229Z",
+    "endTime": "2026-04-22T18:02:48.970Z",
+    "duration": 40741,
+    "error": null,
+    "metrics": {
+      "service": "2026-04-05~2026-04-06"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-22",
+    "status": "success",
+    "startTime": "2026-04-22T18:20:17.767Z",
+    "endTime": "2026-04-22T18:21:03.671Z",
+    "duration": 45904,
+    "error": null,
+    "metrics": {
+      "service": "2026-03-22~2026-04-21"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-05",
+    "status": "success",
+    "startTime": "2026-04-22T19:14:46.720Z",
+    "endTime": "2026-04-22T19:15:24.326Z",
+    "duration": 37605,
+    "error": null,
+    "metrics": {
+      "service": "2026-04-05~2026-04-06"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-03-22",
+    "status": "success",
+    "startTime": "2026-04-22T19:16:53.724Z",
+    "endTime": "2026-04-22T19:17:36.193Z",
+    "duration": 42469,
+    "error": null,
+    "metrics": {
+      "service": "2026-03-22~2026-04-21"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-22T19:25:39.925Z",
+    "endTime": "2026-04-22T19:26:16.998Z",
+    "duration": 37072,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-22T19:31:01.103Z",
+    "endTime": "2026-04-22T19:31:44.999Z",
+    "duration": 43896,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T19:44:49.276Z",
+    "endTime": "2026-04-22T19:45:58.168Z",
+    "duration": 68892,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-23, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T19:52:30.874Z",
+    "endTime": "2026-04-22T19:53:24.947Z",
+    "duration": 54073,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T19:56:36.973Z",
+    "endTime": "2026-04-22T19:57:25.773Z",
+    "duration": 48800,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T19:59:37.967Z",
+    "endTime": "2026-04-22T20:00:32.789Z",
+    "duration": 54822,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T20:06:04.815Z",
+    "endTime": "2026-04-22T20:06:42.831Z",
+    "duration": 38015,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T20:09:56.586Z",
+    "endTime": "2026-04-22T20:10:42.754Z",
+    "duration": 46167,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01",
+    "status": "failed",
+    "startTime": "2026-04-22T20:19:59.583Z",
+    "endTime": "2026-04-22T20:21:06.716Z",
+    "duration": 67132,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22, 实际: 2026-03-01",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T04:16:15.201Z",
+    "endTime": "2026-04-23T04:17:26.162Z",
+    "duration": 70961,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "55198.75",
+        "成交订单数": "6413",
+        "成交买家数": "6199",
+        "成交转化率": "11.13%",
+        "客单价": "8.90",
+        "成交老买家占比": "10.89%",
+        "店铺关注用户数": "70",
+        "退款金额": "7918.14",
+        "退款单数": "970",
+        "平均访客价值": "0.99"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-23T04:18:24.206Z",
+    "endTime": "2026-04-23T04:19:02.502Z",
+    "duration": 38295,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T04:39:24.098Z",
+    "endTime": "2026-04-23T04:40:27.321Z",
+    "duration": 63223,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "55198.75",
+        "成交订单数": "",
+        "成交买家数": "6199",
+        "成交转化率": "11.13%",
+        "客单价": "8.90",
+        "成交老买家占比": "10.89%",
+        "店铺关注用户数": "70",
+        "退款金额": "7918.14",
+        "退款单数": "970",
+        "平均访客价值": "0.99"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-23T04:42:31.721Z",
+    "endTime": "2026-04-23T04:43:09.514Z",
+    "duration": 37793,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "failed",
+    "startTime": "2026-04-23T04:50:42.579Z",
+    "endTime": "2026-04-23T04:51:26.606Z",
+    "duration": 44027,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "failed",
+    "startTime": "2026-04-23T04:55:17.368Z",
+    "endTime": "2026-04-23T04:56:00.621Z",
+    "duration": 43253,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "failed",
+    "startTime": "2026-04-23T05:05:27.793Z",
+    "endTime": "2026-04-23T05:06:12.799Z",
+    "duration": 45006,
+    "error": "销售: 统计时间不一致！期望: 2026-04-01~2026-04-22~2026-04-22, 实际: 2026-04-23",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T05:09:03.202Z",
+    "endTime": "2026-04-23T05:10:06.499Z",
+    "duration": 63297,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "55198.75",
+        "成交订单数": "6413",
+        "成交买家数": "6199",
+        "成交转化率": "11.13%",
+        "客单价": "8.90",
+        "成交老买家占比": "10.89%",
+        "店铺关注用户数": "70",
+        "退款金额": "7918.14",
+        "退款单数": "970",
+        "平均访客价值": "0.99"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-23T05:12:09.737Z",
+    "endTime": "2026-04-23T05:12:47.860Z",
+    "duration": 38122,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T05:31:54.830Z",
+    "endTime": "2026-04-23T05:33:08.018Z",
+    "duration": 73187,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "55198.75",
+        "成交订单数": "6413",
+        "成交买家数": "6199",
+        "成交转化率": "11.13%",
+        "客单价": "8.90",
+        "成交老买家占比": "10.89%",
+        "店铺关注用户数": "70",
+        "退款金额": "7918.14",
+        "退款单数": "970",
+        "平均访客价值": "0.99"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-23T05:35:04.324Z",
+    "endTime": "2026-04-23T05:35:42.499Z",
+    "duration": 38174,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-01~2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T05:41:11.063Z",
+    "endTime": "2026-04-23T05:42:25.597Z",
+    "duration": 74533,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "55198.75",
+        "成交订单数": "6413",
+        "成交买家数": "6199",
+        "成交转化率": "11.13%",
+        "客单价": "8.90",
+        "成交老买家占比": "10.89%",
+        "店铺关注用户数": "70",
+        "退款金额": "7918.14",
+        "退款单数": "970",
+        "平均访客价值": "0.99"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "service",
+    "date": "2026-04-01",
+    "status": "success",
+    "startTime": "2026-04-23T05:44:18.875Z",
+    "endTime": "2026-04-23T05:44:57.018Z",
+    "duration": 38143,
+    "error": null,
+    "metrics": {
+      "service": "2026-04"
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-03-20~2026-04-15",
+    "status": "failed",
+    "startTime": "2026-04-23T05:47:40.195Z",
+    "endTime": "2026-04-23T05:49:05.017Z",
+    "duration": 84822,
+    "error": "销售: page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n",
+    "metrics": null
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "sales",
+    "date": "2026-04-10",
+    "status": "success",
+    "startTime": "2026-04-23T05:57:34.991Z",
+    "endTime": "2026-04-23T05:58:40.787Z",
+    "duration": 65795,
+    "error": null,
+    "metrics": {
+      "sales": {
+        "成交金额": "1780.46",
+        "成交订单数": "205",
+        "成交买家数": "201",
+        "成交转化率": "10.09%",
+        "客单价": "8.86",
+        "成交老买家占比": "10.45%",
+        "店铺关注用户数": "1",
+        "退款金额": "252.62",
+        "退款单数": "30",
+        "平均访客价值": "0.89"
+      }
+    }
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T09:20:46.033Z",
+    "endTime": "2026-04-23T09:21:54.746Z",
+    "duration": 68713,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T09:20:46.033Z",
+    "endTime": "2026-04-23T09:22:47.285Z",
+    "duration": 121251,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "JEWELRY DOLL旗舰店",
+    "type": "all",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T10:28:05.134Z",
+    "endTime": "2026-04-23T10:28:52.151Z",
+    "duration": 47017,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T10:59:10.786Z",
+    "endTime": "2026-04-23T11:00:25.570Z",
+    "duration": 74783,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-07",
+    "status": "success",
+    "startTime": "2026-04-23T11:43:59.619Z",
+    "endTime": "2026-04-23T11:44:46.898Z",
+    "duration": 47278,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "XIDOO隐形眼镜旗舰店",
+    "type": "all",
+    "date": "2026-04-07",
+    "status": "success",
+    "startTime": "2026-04-23T11:43:59.619Z",
+    "endTime": "2026-04-23T11:45:27.990Z",
+    "duration": 88370,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "ads",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T12:30:06.661Z",
+    "endTime": "2026-04-23T12:30:53.712Z",
+    "duration": 47050,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T12:51:07.907Z",
+    "endTime": "2026-04-23T12:51:54.592Z",
+    "duration": 46685,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T16:15:18.251Z",
+    "endTime": "2026-04-23T16:16:27.512Z",
+    "duration": 69260,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T17:07:33.103Z",
+    "endTime": "2026-04-23T17:08:44.117Z",
+    "duration": 71014,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-23T17:11:34.687Z",
+    "endTime": "2026-04-23T17:12:44.780Z",
+    "duration": 70093,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-22",
+    "status": "success",
+    "startTime": "2026-04-24T01:05:32.926Z",
+    "endTime": "2026-04-24T01:06:44.130Z",
+    "duration": 71204,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "failed",
+    "startTime": "2026-04-24T05:02:39.828Z",
+    "endTime": "2026-04-24T05:03:09.842Z",
+    "duration": 30014,
+    "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://mms.pinduoduo.com/goods/evaluation/index?msfrom=mms_sidenav\", waiting until \"networkidle\"\u001b[22m\n",
+    "metrics": null
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "failed",
+    "startTime": "2026-04-24T05:05:57.705Z",
+    "endTime": "2026-04-24T05:06:27.722Z",
+    "duration": 30016,
+    "error": "Cannot read properties of undefined (reading 'get')",
+    "metrics": null
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:10:31.309Z",
+    "endTime": "2026-04-24T05:11:31.329Z",
+    "duration": 60019,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:14:30.389Z",
+    "endTime": "2026-04-24T05:14:41.587Z",
+    "duration": 11197,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:18:04.847Z",
+    "endTime": "2026-04-24T05:18:40.968Z",
+    "duration": 36120,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:22:37.688Z",
+    "endTime": "2026-04-24T05:23:13.802Z",
+    "duration": 36114,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:26:23.388Z",
+    "endTime": "2026-04-24T05:26:59.522Z",
+    "duration": 36134,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:29:51.431Z",
+    "endTime": "2026-04-24T05:30:27.547Z",
+    "duration": 36116,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:34:41.153Z",
+    "endTime": "2026-04-24T05:35:17.270Z",
+    "duration": 36116,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:40:07.031Z",
+    "endTime": "2026-04-24T05:40:15.212Z",
+    "duration": 8180,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:44:11.093Z",
+    "endTime": "2026-04-24T05:45:18.427Z",
+    "duration": 67333,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:48:33.497Z",
+    "endTime": "2026-04-24T05:48:40.806Z",
+    "duration": 7309,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T05:53:06.652Z",
+    "endTime": "2026-04-24T05:53:18.110Z",
+    "duration": 11458,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T06:24:27.924Z",
+    "endTime": "2026-04-24T06:26:15.729Z",
+    "duration": 107802,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T06:27:42.742Z",
+    "endTime": "2026-04-24T06:29:34.215Z",
+    "duration": 111473,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T06:31:37.390Z",
+    "endTime": "2026-04-24T06:34:25.304Z",
+    "duration": 167913,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T06:46:52.989Z",
+    "endTime": "2026-04-24T06:47:32.611Z",
+    "duration": 39622,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "failed",
+    "startTime": "2026-04-24T13:23:30.249Z",
+    "endTime": "2026-04-24T13:23:30.250Z",
+    "duration": 1,
+    "error": "navigateToReviewPage is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T13:26:00.278Z",
+    "endTime": "2026-04-24T13:27:31.947Z",
+    "duration": 91669,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T13:42:43.445Z",
+    "endTime": "2026-04-24T13:42:54.909Z",
+    "duration": 11463,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-23",
+    "status": "success",
+    "startTime": "2026-04-24T13:57:24.284Z",
+    "endTime": "2026-04-24T13:57:29.848Z",
+    "duration": 5563,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "reported": 0,
+      "skipped": 1
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-24",
+    "status": "success",
+    "startTime": "2026-04-25T08:29:42.102Z",
+    "endTime": "2026-04-25T08:29:47.816Z",
+    "duration": 5714,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-24",
+    "status": "success",
+    "startTime": "2026-04-25T08:33:43.109Z",
+    "endTime": "2026-04-25T08:34:15.110Z",
+    "duration": 32001,
+    "error": null,
+    "metrics": {
+      "replied": 1,
+      "reported": 0,
+      "skipped": 9
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-24",
+    "status": "success",
+    "startTime": "2026-04-25T08:37:43.918Z",
+    "endTime": "2026-04-25T08:38:14.313Z",
+    "duration": 30395,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "reported": 0,
+      "skipped": 10
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-24",
+    "status": "success",
+    "startTime": "2026-04-25T08:53:51.948Z",
+    "endTime": "2026-04-25T08:54:34.989Z",
+    "duration": 43041,
+    "error": null,
+    "metrics": {
+      "replied": 1,
+      "reported": 0,
+      "skipped": 9
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-24",
+    "status": "success",
+    "startTime": "2026-04-25T08:59:17.687Z",
+    "endTime": "2026-04-25T08:59:49.350Z",
+    "duration": 31662,
+    "error": null,
+    "metrics": {
+      "replied": 4,
+      "reported": 0,
+      "skipped": 6
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "failed",
+    "startTime": "2026-04-27T04:29:46.723Z",
+    "endTime": "2026-04-27T04:29:46.730Z",
+    "duration": 7,
+    "error": "matchCurrentPage is not a function",
+    "metrics": null
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T04:29:46.723Z",
+    "endTime": "2026-04-27T04:30:48.561Z",
+    "duration": 61838,
+    "error": "matchCurrentPage is not a function",
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "failed",
+    "startTime": "2026-04-27T04:29:46.723Z",
+    "endTime": "2026-04-27T04:30:48.562Z",
+    "duration": 61839,
+    "error": "extractCustomerPerformancePlaywright is not a function",
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T04:37:23.545Z",
+    "endTime": "2026-04-27T04:38:18.899Z",
+    "duration": 55354,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T04:37:23.545Z",
+    "endTime": "2026-04-27T04:39:13.166Z",
+    "duration": 109620,
+    "error": null,
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "failed",
+    "startTime": "2026-04-27T04:37:23.545Z",
+    "endTime": "2026-04-27T04:39:18.927Z",
+    "duration": 115381,
+    "error": "Chrome 启动后端口 undefined 仍未被占用，启动失败",
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T04:43:17.809Z",
+    "endTime": "2026-04-27T04:44:07.466Z",
+    "duration": 49656,
+    "error": null,
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "failed",
+    "startTime": "2026-04-27T04:43:17.809Z",
+    "endTime": "2026-04-27T04:44:13.133Z",
+    "duration": 55324,
+    "error": "Chrome 启动后端口 undefined 仍未被占用，启动失败",
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T04:49:25.419Z",
+    "endTime": "2026-04-27T04:50:22.201Z",
+    "duration": 56782,
+    "error": null,
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-26",
+    "status": "failed",
+    "startTime": "2026-04-27T04:49:25.419Z",
+    "endTime": "2026-04-27T04:50:27.936Z",
+    "duration": 62516,
+    "error": "Chrome 启动后端口 undefined 仍未被占用，启动失败",
+    "metrics": {
+      "replyResult": {
+        "replied": 4,
+        "skipped": 6
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:30:38.379Z",
+    "endTime": "2026-04-27T16:31:00.987Z",
+    "duration": 22608,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 3,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 10
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:33:16.431Z",
+    "endTime": "2026-04-27T16:33:39.382Z",
+    "duration": 22950,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 3,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 10
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:42:54.248Z",
+    "endTime": "2026-04-27T16:43:21.888Z",
+    "duration": 27639,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 5,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 20
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:46:36.478Z",
+    "endTime": "2026-04-27T16:47:04.103Z",
+    "duration": 27625,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 5,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 20
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:49:19.169Z",
+    "endTime": "2026-04-27T16:49:46.435Z",
+    "duration": 27266,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 3,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 20
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:51:40.100Z",
+    "endTime": "2026-04-27T16:52:04.477Z",
+    "duration": 24376,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:53:54.438Z",
+    "endTime": "2026-04-27T16:54:19.634Z",
+    "duration": 25195,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 20
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:56:16.955Z",
+    "endTime": "2026-04-27T16:56:41.353Z",
+    "duration": 24398,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T16:59:21.965Z",
+    "endTime": "2026-04-27T16:59:46.361Z",
+    "duration": 24396,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:02:40.136Z",
+    "endTime": "2026-04-27T17:03:04.601Z",
+    "duration": 24464,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:05:23.698Z",
+    "endTime": "2026-04-27T17:05:48.163Z",
+    "duration": 24465,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:15:11.143Z",
+    "endTime": "2026-04-27T17:15:34.788Z",
+    "duration": 23645,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 5,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:21:15.531Z",
+    "endTime": "2026-04-27T17:21:41.730Z",
+    "duration": 26198,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 3,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:24:34.230Z",
+    "endTime": "2026-04-27T17:24:59.516Z",
+    "duration": 25285,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:28:53.374Z",
+    "endTime": "2026-04-27T17:29:18.666Z",
+    "duration": 25292,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:32:03.194Z",
+    "endTime": "2026-04-27T17:32:28.441Z",
+    "duration": 25246,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:34:40.863Z",
+    "endTime": "2026-04-27T17:35:05.201Z",
+    "duration": 24338,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:37:29.121Z",
+    "endTime": "2026-04-27T17:37:54.011Z",
+    "duration": 24890,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:43:32.825Z",
+    "endTime": "2026-04-27T17:43:58.014Z",
+    "duration": 25189,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:46:34.973Z",
+    "endTime": "2026-04-27T17:47:00.193Z",
+    "duration": 25219,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:48:41.285Z",
+    "endTime": "2026-04-27T17:49:06.503Z",
+    "duration": 25218,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T17:53:54.697Z",
+    "endTime": "2026-04-27T17:54:19.870Z",
+    "duration": 25172,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:09:02.384Z",
+    "endTime": "2026-04-27T18:09:20.829Z",
+    "duration": 18445,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 0,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:12:00.413Z",
+    "endTime": "2026-04-27T18:13:12.661Z",
+    "duration": 72247,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 0,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:14:51.459Z",
+    "endTime": "2026-04-27T18:16:03.682Z",
+    "duration": 72223,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 0,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:16:39.835Z",
+    "endTime": "2026-04-27T18:17:13.049Z",
+    "duration": 33213,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:19:22.120Z",
+    "endTime": "2026-04-27T18:19:57.323Z",
+    "duration": 35202,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:22:00.147Z",
+    "endTime": "2026-04-27T18:22:28.566Z",
+    "duration": 28418,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:27:54.033Z",
+    "endTime": "2026-04-27T18:28:29.441Z",
+    "duration": 35408,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:30:37.555Z",
+    "endTime": "2026-04-27T18:31:08.073Z",
+    "duration": 30517,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:33:21.041Z",
+    "endTime": "2026-04-27T18:33:51.088Z",
+    "duration": 30047,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:35:22.620Z",
+    "endTime": "2026-04-27T18:35:51.245Z",
+    "duration": 28625,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T18:37:18.302Z",
+    "endTime": "2026-04-27T18:37:46.914Z",
+    "duration": 28611,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T19:15:52.822Z",
+    "endTime": "2026-04-27T19:16:27.567Z",
+    "duration": 34744,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T19:18:35.631Z",
+    "endTime": "2026-04-27T19:19:03.845Z",
+    "duration": 28214,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T19:23:30.092Z",
+    "endTime": "2026-04-27T19:23:58.842Z",
+    "duration": 28750,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T19:25:09.606Z",
+    "endTime": "2026-04-27T19:25:39.075Z",
+    "duration": 29469,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:06:50.049Z",
+    "endTime": "2026-04-27T20:07:20.892Z",
+    "duration": 30842,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:11:17.522Z",
+    "endTime": "2026-04-27T20:11:55.791Z",
+    "duration": 38269,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:28:12.430Z",
+    "endTime": "2026-04-27T20:29:12.230Z",
+    "duration": 59799,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:30:34.141Z",
+    "endTime": "2026-04-27T20:31:34.330Z",
+    "duration": 60189,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:33:28.603Z",
+    "endTime": "2026-04-27T20:34:33.285Z",
+    "duration": 64681,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:47:50.935Z",
+    "endTime": "2026-04-27T20:48:20.398Z",
+    "duration": 29462,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:55:35.950Z",
+    "endTime": "2026-04-27T20:56:35.831Z",
+    "duration": 59881,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T20:57:46.505Z",
+    "endTime": "2026-04-27T20:58:16.589Z",
+    "duration": 30083,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T21:19:30.058Z",
+    "endTime": "2026-04-27T21:20:00.488Z",
+    "duration": 30429,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1,
+      "autoClosed": 0,
+      "needForceClose": 0,
+      "excelAdded": 0
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-26",
+    "status": "success",
+    "startTime": "2026-04-27T21:51:48.848Z",
+    "endTime": "2026-04-27T21:52:06.032Z",
+    "duration": 17183,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T01:14:46.022Z",
+    "endTime": "2026-04-28T01:15:07.589Z",
+    "duration": 21566,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T07:21:55.553Z",
+    "endTime": "2026-04-28T07:22:23.958Z",
+    "duration": 28404,
+    "error": null,
+    "metrics": {
+      "replied": 2,
+      "skipped": 1
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T07:29:47.032Z",
+    "endTime": "2026-04-28T07:30:09.668Z",
+    "duration": 22636,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 3
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T07:46:28.419Z",
+    "endTime": "2026-04-28T07:47:27.489Z",
+    "duration": 59068,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 50
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T07:52:10.196Z",
+    "endTime": "2026-04-28T07:55:29.064Z",
+    "duration": 198867,
+    "error": null,
+    "metrics": {
+      "replied": 5,
+      "skipped": 45
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T09:16:50.503Z",
+    "endTime": "2026-04-28T09:17:21.557Z",
+    "duration": 31052,
+    "error": null,
+    "metrics": {
+      "replied": 1,
+      "skipped": 4
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T09:33:02.570Z",
+    "endTime": "2026-04-28T09:36:14.067Z",
+    "duration": 191496,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 50
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T09:44:04.495Z",
+    "endTime": "2026-04-28T09:47:17.187Z",
+    "duration": 192691,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 50
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T09:56:44.563Z",
+    "endTime": "2026-04-28T09:57:16.086Z",
+    "duration": 31522,
+    "error": null,
+    "metrics": {
+      "replied": 1,
+      "skipped": 4
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T10:00:19.844Z",
+    "endTime": "2026-04-28T10:00:40.616Z",
+    "duration": 20771,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T10:10:25.443Z",
+    "endTime": "2026-04-28T10:11:05.996Z",
+    "duration": 40552,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T10:13:31.874Z",
+    "endTime": "2026-04-28T10:13:47.487Z",
+    "duration": 15612,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 1
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T10:16:52.068Z",
+    "endTime": "2026-04-28T10:17:11.238Z",
+    "duration": 19169,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 2
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T10:21:49.612Z",
+    "endTime": "2026-04-28T10:22:12.563Z",
+    "duration": 22951,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T10:59:01.600Z",
+    "endTime": "2026-04-28T10:59:08.451Z",
+    "duration": 6851,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:17:20.323Z",
+    "endTime": "2026-04-28T11:17:27.211Z",
+    "duration": 6887,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:22:09.833Z",
+    "endTime": "2026-04-28T11:22:16.607Z",
+    "duration": 6774,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:25:27.783Z",
+    "endTime": "2026-04-28T11:25:47.159Z",
+    "duration": 19375,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:28:28.524Z",
+    "endTime": "2026-04-28T11:29:05.547Z",
+    "duration": 37022,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:32:08.945Z",
+    "endTime": "2026-04-28T11:32:32.305Z",
+    "duration": 23359,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:34:27.833Z",
+    "endTime": "2026-04-28T11:34:37.706Z",
+    "duration": 9872,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:44:21.138Z",
+    "endTime": "2026-04-28T11:44:30.677Z",
+    "duration": 9538,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T11:59:46.471Z",
+    "endTime": "2026-04-28T12:00:13.341Z",
+    "duration": 26870,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T12:04:17.956Z",
+    "endTime": "2026-04-28T12:04:33.630Z",
+    "duration": 15674,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 1,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T12:07:56.437Z",
+    "endTime": "2026-04-28T12:08:03.158Z",
+    "duration": 6720,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-27",
+    "status": "success",
+    "startTime": "2026-04-28T12:34:29.407Z",
+    "endTime": "2026-04-28T12:34:43.169Z",
+    "duration": 13761,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T05:54:08.381Z",
+    "endTime": "2026-04-29T05:55:22.897Z",
+    "duration": 74515,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T06:27:54.203Z",
+    "endTime": "2026-04-29T06:29:38.918Z",
+    "duration": 104714,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T06:46:15.556Z",
+    "endTime": "2026-04-29T06:50:12.884Z",
+    "duration": 237327,
+    "error": null,
+    "metrics": {
+      "replyResult": {
+        "replied": 9,
+        "skipped": 41
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T06:46:15.556Z",
+    "endTime": "2026-04-29T06:50:45.907Z",
+    "duration": 270351,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T06:51:45.616Z",
+    "endTime": "2026-04-29T06:52:21.677Z",
+    "duration": 36060,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T06:59:06.675Z",
+    "endTime": "2026-04-29T07:00:46.570Z",
+    "duration": 99894,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T07:19:19.353Z",
+    "endTime": "2026-04-29T07:21:06.096Z",
+    "duration": 106743,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T07:37:06.304Z",
+    "endTime": "2026-04-29T07:38:47.773Z",
+    "duration": 101468,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T07:57:51.642Z",
+    "endTime": "2026-04-29T07:58:25.495Z",
+    "duration": 33850,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T08:08:59.937Z",
+    "endTime": "2026-04-29T08:09:32.021Z",
+    "duration": 32084,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T08:21:05.338Z",
+    "endTime": "2026-04-29T08:21:28.690Z",
+    "duration": 23351,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T08:24:52.045Z",
+    "endTime": "2026-04-29T08:25:18.541Z",
+    "duration": 26495,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 1,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T08:37:00.498Z",
+    "endTime": "2026-04-29T08:37:24.958Z",
+    "duration": 24459,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T08:55:23.426Z",
+    "endTime": "2026-04-29T08:55:47.506Z",
+    "duration": 24080,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 9
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T09:34:34.769Z",
+    "endTime": "2026-04-29T09:35:00.853Z",
+    "duration": 26083,
+    "error": null,
+    "metrics": {
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T09:57:36.947Z",
+    "endTime": "2026-04-29T09:59:24.536Z",
+    "duration": 107588,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T12:02:20.714Z",
+    "endTime": "2026-04-29T12:06:10.929Z",
+    "duration": 230214,
+    "error": null,
+    "metrics": {
+      "replyResult": {
+        "replied": 3,
+        "skipped": 47
+      },
+      "reportResult": {
+        "reported": 0,
+        "skipped": 0,
+        "excelAdded": 0
+      }
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "all",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T12:02:20.714Z",
+    "endTime": "2026-04-29T12:06:44.473Z",
+    "duration": 263759,
+    "error": null,
+    "metrics": {}
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "browse",
+    "date": "2026-04-28",
+    "status": "success",
+    "startTime": "2026-04-29T12:42:07.942Z",
+    "endTime": "2026-04-29T12:44:10.052Z",
+    "duration": 122109,
+    "error": null,
+    "metrics": {
+      "replied": 0,
+      "skipped": 30
+    }
+  },
+  {
+    "shop": "瞳粉美瞳专营店",
+    "type": "sales",
+    "date": "2026-05-07",
+    "status": "success",
+    "startTime": "2026-05-08T10:08:33.379Z",
+    "endTime": "2026-05-08T10:09:43.951Z",
+    "duration": 70571,
+    "error": null,
+    "metrics": {}
+  }
+]

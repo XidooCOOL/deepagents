@@ -105,6 +105,16 @@ const routes: RouteRecordRaw[] = [
     path: '/ai-assistant',
     name: 'AIAssistant',
     component: () => import('../views/AIAssistant.vue')
+  },
+  {
+    path: '/pdd/stores',
+    name: 'PddStores',
+    component: () => import('../views/pdd/Stores.vue')
+  },
+  {
+    path: '/pdd/dashboard',
+    name: 'PddDashboard',
+    component: () => import('../views/pdd/Dashboard.vue')
   }
 ]
 

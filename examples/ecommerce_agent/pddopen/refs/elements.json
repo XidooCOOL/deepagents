@@ -1,0 +1,1529 @@
+{
+  "_meta": {
+    "version": "1.4.0",
+    "updated": "2026-04-25",
+    "notes": "新增分页相关元素（每页数量选择器、分页容器、分页信息）"
+  },
+  "mms": {
+    "url": "*/mms.pinduoduo.com/*",
+    "description": "MMS 域名（首页/交易数据/客服绩效）",
+    "elements": {
+      "shopName": {
+        "description": "店铺名称",
+        "keyword": "店铺名称",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".user-name-name",
+            "note": "只返回店铺名，不含管理员"
+          },
+          {
+            "type": "css",
+            "value": ".user-name-text",
+            "note": "备用"
+          }
+        ]
+      },
+      "adminName": {
+        "description": "管理员名称",
+        "keyword": "管理员",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".user-name-id",
+            "note": "如'古宇浩18号'"
+          }
+        ]
+      }
+    }
+  },
+  "yingxiao": {
+    "url": "*/yingxiao.pinduoduo.com/*",
+    "description": "营销域名（推广报表）",
+    "elements": {
+      "shopName": {
+        "description": "店铺名称",
+        "keyword": "店铺名称",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "mallName",
+            "note": "匹配 class 包含 mallName"
+          },
+          {
+            "type": "css-prefix",
+            "value": "AccountNew_mallName__"
+          }
+        ]
+      },
+      "adminName": {
+        "description": "管理员名称（此域名无管理员信息）",
+        "keyword": "管理员",
+        "selectors": []
+      }
+    }
+  },
+  "shared": {
+    "_comment": "跨页面复用的通用元素",
+    "modalCloseBtn": {
+      "description": "弹窗关闭/知道了按钮",
+      "keyword": "关闭",
+      "selectors": [
+        {
+          "type": "text",
+          "value": "我知道了"
+        },
+        {
+          "type": "text",
+          "value": "知道了"
+        },
+        {
+          "type": "text",
+          "value": "确认"
+        },
+        {
+          "type": "text",
+          "value": "好的"
+        },
+        {
+          "type": "text",
+          "value": "关闭"
+        }
+      ]
+    },
+    "notificationCloseBtn": {
+      "description": "右侧新消息通知面板关闭按钮",
+      "keyword": "关闭",
+      "selectors": [
+        {
+          "type": "css-prefix",
+          "value": "ImportantList_close__",
+          "note": "通知面板右上角关闭图标（css前缀，不依赖hash）"
+        }
+      ]
+    },
+    "maskOverlay": {
+      "description": "遮罩层（点击关闭）",
+      "keyword": "mask",
+      "selectors": [
+        {
+          "type": "css",
+          "value": "[class*='mask']"
+        },
+        {
+          "type": "css",
+          "value": "[class*='overlay']"
+        },
+        {
+          "type": "css",
+          "value": "[class*='modal']"
+        }
+      ]
+    }
+  },
+  "login": {
+    "url": "*/login/*",
+    "urlContains": "/login/",
+    "description": "扫码登录页",
+    "elements": {
+      "qrCanvas": {
+        "description": "二维码 canvas",
+        "keyword": "二维码",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "canvas",
+            "index": 0,
+            "note": "第一个 canvas 通常是 QR"
+          },
+          {
+            "type": "css",
+            "value": ".qr-code canvas"
+          }
+        ]
+      },
+      "qrExpired": {
+        "description": "二维码已失效提示",
+        "keyword": "二维码已失效",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "二维码已失效"
+          }
+        ]
+      },
+      "refreshBtn": {
+        "description": "刷新二维码按钮",
+        "keyword": "刷新",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "点击刷新"
+          }
+        ]
+      }
+    }
+  },
+  "home": {
+    "url": "*/home*",
+    "urlContains": "/home",
+    "description": "商家后台首页",
+    "elements": {
+      "shopName": {
+        "description": "店铺名称（头部）",
+        "keyword": "店铺名称",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".mms-header__user-info",
+            "note": "header 店铺名"
+          },
+          {
+            "type": "css",
+            "value": "[class*='shop-name']"
+          }
+        ]
+      },
+      "shopId": {
+        "description": "店铺 ID/账号信息",
+        "keyword": "店铺ID",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".mms-header__shop-id",
+            "note": "header 店铺 ID"
+          },
+          {
+            "type": "text",
+            "value": "店铺ID"
+          }
+        ]
+      },
+      "adminName": {
+        "description": "当前登录管理员名称",
+        "keyword": "管理员",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".user-name-id",
+            "note": "header 用户 ID 区"
+          },
+          {
+            "type": "css",
+            "value": ".user-name-text"
+          }
+        ]
+      },
+      "accountInfoBtn": {
+        "description": "账号信息按钮",
+        "keyword": "账号信息",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "账号信息"
+          }
+        ]
+      },
+      "logoutCurrentAccount": {
+        "description": "退出当前账号",
+        "keyword": "退出当前账号",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "退出当前账号"
+          }
+        ]
+      },
+      "storesDataLink": {
+        "description": "交易数据链接（侧边栏）",
+        "keyword": "交易数据",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "交易数据"
+          },
+          {
+            "type": "css",
+            "value": "a[href*='stores_data']"
+          }
+        ]
+      },
+      "customerServiceLink": {
+        "description": "客服数据入口（侧边栏，点击展开后需要点客服绩效数据）",
+        "keyword": "客服数据",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "客服数据"
+          }
+        ]
+      },
+      "customerPerformanceTab": {
+        "description": "客服绩效数据 tab（客服数据子菜单）",
+        "keyword": "客服绩效数据",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "客服绩效数据"
+          }
+        ]
+      },
+      "tuikeReportLink": {
+        "description": "推广报表入口（侧边栏，直接到目标页面）",
+        "keyword": "推广报表",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "推广报表"
+          }
+        ]
+      }
+    }
+  },
+  "salesData": {
+    "url": "*/stores_data/operation*",
+    "urlContains": "/stores_data/operation",
+    "description": "交易数据页面（昨日概况）",
+    "elements": {
+      "storesDataLink": {
+        "description": "交易数据菜单入口（侧边栏）",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "交易数据"
+          },
+          {
+            "type": "css",
+            "value": "a[href*='stores_data']"
+          }
+        ]
+      },
+      "datePickerGroup": {
+        "description": "日期选择器容器（顶部右侧）",
+        "keyword": "日期选择",
+        "selectors": [
+          {
+            "type": "css-class",
+            "value": "date-picker-group_date-picker-item-inner__",
+            "note": "日期项通用类"
+          }
+        ]
+      },
+      "yesterdayBtn": {
+        "description": "昨日日期按钮（页面顶部日期栏）",
+        "keyword": "昨日",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "div.date-picker-group_date-picker-item-inner__1BAKo:has-text(\"昨日\")",
+            "note": "DIV 元素"
+          }
+        ]
+      },
+      "customBtn": {
+        "description": "自定义日期按钮",
+        "keyword": "自定义",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "div.date-picker-group_date-picker-item-inner__1BAKo:has-text(\"自定义\")",
+            "note": "DIV 元素"
+          }
+        ]
+      },
+      "dateRangeInputs": {
+        "description": "日历选择器的开始/结束日期输入框",
+        "keyword": "日期输入",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*=\"RangePicker\"] input",
+            "note": "日期范围输入框"
+          }
+        ]
+      },
+      "confirmBtn": {
+        "description": "日历选择器确定按钮",
+        "keyword": "确定",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "div[class*=\"Calendar\"] button:has-text(\"确定\"), button:has-text(\"确定\")",
+            "note": "确定按钮"
+          }
+        ]
+      },
+      "refreshBtn": {
+        "description": "刷新按钮",
+        "keyword": "刷新",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "刷新"
+          }
+        ],
+        "fallbackCoords": {
+          "x": 2116,
+          "y": 223
+        }
+      },
+      "customBtn": {
+        "description": "自定义日期按钮",
+        "keyword": "自定义",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".date-picker-group_date-picker-item__1YivV:has-text(\"自定义\")",
+            "note": "顶部导航栏 date-picker-group 精确匹配"
+          },
+          {
+            "type": "css",
+            "value": "button:has-text(\"自定义\")",
+            "note": "按钮元素"
+          },
+          {
+            "type": "css-prefix",
+            "value": "date-picker-group_date-picker-item__",
+            "note": "CSS 前缀备用"
+          }
+        ]
+      },
+      "queryBtn": {
+        "description": "查询按钮",
+        "keyword": "查询",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".nav-item",
+            "note": "普通 CSS 类"
+          }
+        ]
+      },
+      "dataTable": {
+        "description": "交易数据表格",
+        "keyword": "交易数据",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".TB_tableWrapper_5-158-0"
+          },
+          {
+            "type": "css",
+            "value": "table"
+          }
+        ]
+      },
+      "setTargetBtn": {
+        "description": "设置目标成交额按钮",
+        "keyword": "设置目标成交额",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "设置目标成交额"
+          }
+        ]
+      },
+      "dataCard": {
+        "description": "交易概况数据卡片（核心数据区）",
+        "keyword": "交易概况",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "card-box_container__",
+            "note": "匹配 class 前缀，hash 变化也能用"
+          }
+        ],
+        "filters": [
+          {
+            "type": "hasText",
+            "value": "交易概况"
+          },
+          {
+            "type": "hasText",
+            "value": "成交金额"
+          }
+        ]
+      },
+      "calendarPanel": {
+        "description": "日历选择器面板（展开后显示双月）",
+        "keyword": "日历",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_calendarPanel__",
+            "note": "日历面板容器（css前缀）"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_calendarPanel']",
+            "note": "备用：包含 RPR_calendarPanel 的元素"
+          }
+        ]
+      },
+      "calendarPanelHeader": {
+        "description": "日历面板头部（包含月份和箭头）",
+        "keyword": "月份",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_panelHeader__",
+            "note": "日历面板头部"
+          }
+        ]
+      },
+      "calendarLeftArrow": {
+        "description": "日历左侧月份切换箭头",
+        "keyword": "上页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader__'] svg:first-of-type",
+            "note": "面板头部内的第一个 SVG（通常是左箭头）"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader__'] button:first-of-type svg",
+            "note": "面板头部内的第一个 button 中的 SVG"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader__'] i:first-of-type",
+            "note": "面板头部内的第一个 <i> 元素（斜体图标）"
+          }
+        ]
+      },
+      "calendarRightArrow": {
+        "description": "日历右侧月份切换箭头",
+        "keyword": "下页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader__'] svg:last-of-type",
+            "note": "面板头部内的最后一个 SVG（通常是右箭头）"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader__'] button:last-of-type svg",
+            "note": "面板头部内的最后一个 button 中的 SVG"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader__'] i:last-of-type",
+            "note": "面板头部内的最后一个 <i> 元素"
+          }
+        ]
+      },
+      "calendarMonthText": {
+        "description": "日历月份显示文本",
+        "keyword": "月",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_dateText__",
+            "note": "月份文本（如'4月'）"
+          }
+        ]
+      },
+      "calendarDayCell": {
+        "description": "日历日期单元格",
+        "keyword": "日",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_calendar'] td:not([class*='outOfMonth']):not([class*='disabled'])",
+            "note": "有效日期单元格（排除跨月灰显和禁用）"
+          }
+        ]
+      },
+      "calendarConfirmBtn": {
+        "description": "日历选择器确定按钮",
+        "keyword": "确定",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_calendarPanel__'] button:has-text('确定')",
+            "note": "日历面板内的确定按钮"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_'] button:has-text('确定')",
+            "note": "任意 RPR 容器内的确定按钮"
+          }
+        ]
+      }
+    }
+  },
+  "customerService": {
+    "url": "*/mms-chat/overview/*",
+    "urlContains": "/mms-chat/overview",
+    "description": "客服数据页面",
+    "elements": {
+      "csTab": {
+        "description": "客服绩效数据 tab",
+        "keyword": "客服绩效数据",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "客服绩效数据"
+          }
+        ]
+      },
+      "dateInput": {
+        "description": "日期范围输入框",
+        "keyword": "日期",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".ant-picker"
+          },
+          {
+            "type": "css",
+            "value": "input[placeholder*='开始']"
+          }
+        ]
+      },
+      "refreshBtn": {
+        "description": "刷新按钮",
+        "keyword": "刷新",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "刷新"
+          }
+        ],
+        "fallbackCoords": {
+          "x": 2116,
+          "y": 223
+        }
+      },
+      "queryBtn": {
+        "description": "查询按钮",
+        "keyword": "查询",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "查询"
+          },
+          {
+            "type": "text",
+            "value": "搜索"
+          }
+        ]
+      },
+      "dataTable": {
+        "description": "客服绩效数据表格",
+        "keyword": "客服绩效",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "table",
+            "note": "取行数最多的 table"
+          }
+        ]
+      },
+      "totalRow": {
+        "description": "店铺总计行",
+        "keyword": "店铺总计",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "店铺总计"
+          }
+        ]
+      },
+      "customerServiceLink": {
+        "description": "多多客服入口（侧边栏）",
+        "keyword": "多多客服",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "多多客服"
+          }
+        ]
+      },
+      "csDataTab": {
+        "description": "客服数据 tab（在顶部导航）",
+        "keyword": "客服数据",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "客服数据"
+          }
+        ]
+      }
+    }
+  },
+  "tuike": {
+    "url": "*/tuike*",
+    "urlContains": "/tuike",
+    "description": "推广数据页面",
+    "elements": {
+      "tuikeSummaryTab": {
+        "description": "推广汇总 tab",
+        "keyword": "推广汇总",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "推广汇总"
+          },
+          {
+            "type": "text",
+            "value": "推广数据"
+          }
+        ]
+      },
+      "yesterdayBtn": {
+        "description": "昨日按钮",
+        "keyword": "昨日",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "昨日"
+          }
+        ]
+      },
+      "dateInput": {
+        "description": "日期选择器",
+        "keyword": "日期",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".ant-picker-input > input"
+          },
+          {
+            "type": "css",
+            "value": ".ant-picker"
+          },
+          {
+            "type": "css",
+            "value": "input[placeholder*='开始']"
+          },
+          {
+            "type": "text",
+            "value": "开始日期"
+          }
+        ]
+      },
+      "queryBtn": {
+        "description": "查询按钮",
+        "keyword": "查询",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "查询"
+          },
+          {
+            "type": "text",
+            "value": "搜索"
+          }
+        ]
+      },
+      "dataTable": {
+        "description": "推广数据表格",
+        "keyword": "推广数据",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".ant-table-content"
+          },
+          {
+            "type": "css",
+            "value": "table.ant-table"
+          },
+          {
+            "type": "css",
+            "value": ".ant-table table"
+          }
+        ]
+      },
+      "customDateBtn": {
+        "description": "自定义日期按钮（打开日历选择器）",
+        "keyword": "自定义",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".date-picker-group_date-picker-item-inner__1BAKo",
+            "note": "销售页面日历自定义按钮"
+          }
+        ]
+      }
+    }
+  },
+  "customerService": {
+    "urlContains": "mms-chat",
+    "description": "客服绩效页面",
+    "elements": {
+      "calendarInput": {
+        "description": "日历输入框（开始时间）",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "input[placeholder*='开始时间']",
+            "note": "客服页面日期选择器输入框"
+          }
+        ]
+      }
+    }
+  },
+  "salesData": {
+    "urlContains": "stores_data/operation",
+    "description": "销售数据页面",
+    "elements": {
+      "statTime": {
+        "description": "统计时间显示",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='statTime'], [class*='stat-time'], [class*='dateRange']"
+          }
+        ]
+      },
+      "dataCard": {
+        "description": "数据卡片",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "card-box_container__",
+            "note": "销售数据卡片容器"
+          }
+        ]
+      },
+      "customDateBtn": {
+        "description": "自定义日期按钮",
+        "selectors": [
+          {
+            "type": "css",
+            "value": ".date-picker-group_date-picker-item-inner__1BAKo"
+          }
+        ]
+      }
+    }
+  },
+  "calendar": {
+    "_meta": {
+      "description": "日历选择器通用组件（销售/客服页面通用）",
+      "note": "月份标题是动态的（当前月-1 和 当前月），不依赖固定文本。核心策略：通过 DOM 结构（而非坐标）判断日期归属面板"
+    },
+    "domStructure": {
+      "description": "DOM 结构（从上到下）",
+      "chain": [
+        { "level": 1, "tag": "SPAN", "class": "RPR_dateText_*", "description": "月份标题（如'3月'）" },
+        { "level": 2, "tag": "DIV", "class": "RPR_headerSelector_*", "description": "标题容器" },
+        { "level": 3, "tag": "SECTION", "class": "RPR_panelHeader_*", "description": "面板头部（包含月份和箭头）" },
+        { "level": 4, "tag": "DIV", "class": "RPR_headerWrapper_*", "description": "头部包裹" },
+        { "level": 5, "tag": "DIV", "class": "RPR_outerPickerWrapper_*", "description": "外层包裹（每个面板的根）" },
+        { "level": 6, "tag": "DIV", "class": "RPR_contentPickerWrapper_*", "description": "内容包裹" },
+        { "level": 7, "tag": "DIV", "class": "RPR_tableWrapper_*", "description": "日期表格包裹" }
+      ],
+      "panelContainer": "两个 RPR_outerPickerWrapper_* 是兄弟节点，通过 parentElement 找同一容器内的所有面板"
+    },
+    "matchingStrategy": {
+      "description": "日期匹配策略（抗分辨率/缩放）",
+      "step1": "获取所有 RPR_outerPickerWrapper_*（按 DOM 顺序 = 左右顺序）",
+      "step2": "在每个 outerWrapper 内查询 RPR_dateText_* 获取月份文本（如 '3月'）",
+      "step3": "解析目标日期月份 parseInt(date.split('-')[1])，匹配对应面板",
+      "step4": "在对应面板内查询 td.RPR_tdDay_*，排除 RPR_outOfMonth_*，匹配目标日期",
+      "benefit": "不依赖坐标，完全抗分辨率/缩放/窗口大小变化"
+    },
+    "elements": {
+      "monthTitle": {
+        "description": "月份标题（动态显示：当前月-1 和 当前月）",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_dateText_",
+            "note": "主选择器，如 '3月'"
+          }
+        ]
+      },
+      "dayCell": {
+        "description": "日期单元格",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_tdDay_"
+          }
+        ]
+      },
+      "outOfMonth": {
+        "description": "跨月日期单元格（需排除）",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_outOfMonth_",
+            "note": "className 包含此值表示非当前月日期"
+          }
+        ]
+      },
+      "disabled": {
+        "description": "禁用日期单元格",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_disabled_"
+          }
+        ]
+      },
+      "outerPickerWrapper": {
+        "description": "单个月份面板根元素（用于通过 DOM 结构定位）",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_outerPickerWrapper_"
+          }
+        ],
+        "note": "两个是兄弟节点，DOM 顺序即左右顺序"
+      },
+      "contentPickerWrapper": {
+        "description": "日期内容区域包裹",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_contentPickerWrapper_"
+          }
+        ],
+        "note": "outerWrapper → contentPickerWrapper → tableWrapper → table → td"
+      },
+      "tableWrapper": {
+        "description": "日期表格包裹",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_tableWrapper_"
+          }
+        ]
+      },
+      "panelHeader": {
+        "description": "面板头部（包含月份标题和箭头）",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_panelHeader_"
+          }
+        ]
+      },
+      "headerWrapper": {
+        "description": "头部包裹",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "RPR_headerWrapper_"
+          }
+        ]
+      },
+      "prevArrow": {
+        "description": "上一月箭头（左箭头 <）",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader_'] svg:first-of-type",
+            "note": "面板头部内的第一个 SVG"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader_'] i:first-of-type",
+            "note": "备用：面板头部内的第一个 <i>"
+          }
+        ]
+      },
+      "nextArrow": {
+        "description": "下一月箭头（右箭头 >）",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader_'] svg:last-of-type",
+            "note": "面板头部内的最后一个 SVG"
+          },
+          {
+            "type": "css",
+            "value": "[class*='RPR_panelHeader_'] i:last-of-type",
+            "note": "备用：面板头部内的最后一个 <i>"
+          }
+        ]
+      },
+      "todayBtn": {
+        "description": "今天按钮",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_today_']"
+          },
+          {
+            "type": "text",
+            "value": "今天"
+          }
+        ]
+      },
+      "confirmBtn": {
+        "description": "确定按钮",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RPR_'] button:has-text('确定')",
+            "note": "任意 RPR 容器内的确定按钮"
+          }
+        ]
+      },
+      "dateInputs": {
+        "description": "日期范围输入框（用于显示当前选择范围）",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='RangePicker'] input"
+          }
+        ]
+      },
+      "yearPicker": {
+        "description": "年份选择下拉框容器",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "ST_dropdownPanel_",
+            "note": "年份下拉框容器（点击输入框后弹出）"
+          }
+        ]
+      },
+      "yearItem": {
+        "description": "年份列表项（如'2026年'）",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "cIL_",
+            "note": "年份列表项 class 前缀"
+          }
+        ]
+      }
+    }
+  },
+  "review": {
+    "url": "*/goods/evaluation/index*",
+    "urlContains": "/goods/evaluation/index",
+    "description": "评价管理页面",
+    "elements": {
+      "quickReplyModal": {
+        "description": "快速回复弹窗（回复/举报 共用此弹窗）",
+        "keyword": "回复",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "MDL_modal__",
+            "note": "beast modal 类名（通用）"
+          }
+        ]
+      },
+      "replyInput": {
+        "description": "回复内容输入框",
+        "keyword": "回复",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='MDL_modal__'] textarea"
+          }
+        ]
+      },
+      "sendButton": {
+        "description": "发送按钮",
+        "keyword": "发送",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "发送"
+          },
+          {
+            "type": "css",
+            "value": "[class*='MDL_modal__'] button"
+          }
+        ]
+      },
+      "replyButton": {
+        "description": "回复/互动按钮（列表行内）",
+        "keyword": "回复/互动",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "回复/互动"
+          },
+          {
+            "type": "css-prefix",
+            "value": "BTN_outerWrapperLink_"
+          },
+          {
+            "type": "css-prefix",
+            "value": "BTN_"
+          }
+        ]
+      },
+      "reportButton": {
+        "description": "举报按钮（列表行内）",
+        "keyword": "举报",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "举报"
+          },
+          {
+            "type": "css-prefix",
+            "value": "BTN_"
+          }
+        ]
+      },
+      "reportReasonRadio": {
+        "description": "举报原因单选按钮",
+        "keyword": "举报原因",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='MDL_modal__'] [data-testid='beast-core-radio']",
+            "note": "beast radio 组件"
+          },
+          {
+            "type": "css",
+            "value": "[class*='MDL_modal__'] label"
+          }
+        ]
+      },
+      "reportContentInput": {
+        "description": "举报内容输入框",
+        "keyword": "举报内容",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='MDL_modal__'] textarea"
+          }
+        ]
+      },
+      "submitReportButton": {
+        "description": "提交举报按钮",
+        "keyword": "提交举报",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "提交举报"
+          },
+          {
+            "type": "css",
+            "value": "[data-testid='beast-core-modal-ok-button']"
+          }
+        ]
+      },
+      "filterContainer": {
+        "description": "评价筛选区域容器",
+        "keyword": "评价筛选",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='evaluation_search_content']",
+            "note": "评价搜索内容区"
+          }
+        ]
+      },
+      "filterBtn": {
+        "description": "筛选按钮（通用）",
+        "keyword": "筛选",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='evaluation_search_btn']",
+            "note": "所有筛选按钮的 class 前缀"
+          }
+        ]
+      },
+      "filterBtnChecked": {
+        "description": "已选中的筛选按钮",
+        "keyword": "选中",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='evaluation_search_btn_checked']",
+            "note": "包含 checked 状态的按钮"
+          }
+        ]
+      },
+      "replyFilter": {
+        "description": "回复状态筛选按钮组",
+        "keyword": "回复",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "全部评价"
+          },
+          {
+            "type": "text",
+            "value": "已回复"
+          },
+          {
+            "type": "text",
+            "value": "未回复"
+          }
+        ]
+      },
+      "timeFilter": {
+        "description": "评价时间筛选按钮组",
+        "keyword": "时间",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "近30天"
+          },
+          {
+            "type": "text",
+            "value": "近90天"
+          },
+          {
+            "type": "text",
+            "value": "近180天"
+          },
+          {
+            "type": "text",
+            "value": "自定义"
+          }
+        ]
+      },
+      "starFilter": {
+        "description": "星级筛选按钮组（1-5星）",
+        "keyword": "星级",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "1星"
+          },
+          {
+            "type": "text",
+            "value": "2星"
+          },
+          {
+            "type": "text",
+            "value": "3星"
+          },
+          {
+            "type": "text",
+            "value": "4星"
+          },
+          {
+            "type": "text",
+            "value": "5星"
+          }
+        ]
+      },
+      "contentFilter": {
+        "description": "内容筛选按钮组",
+        "keyword": "内容",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "有图片"
+          },
+          {
+            "type": "text",
+            "value": "有视频"
+          },
+          {
+            "type": "text",
+            "value": "主评有文字"
+          },
+          {
+            "type": "text",
+            "value": "有追加评价"
+          }
+        ]
+      },
+      "searchForm": {
+        "description": "搜索表单容器",
+        "keyword": "搜索",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='Grid_filterWrapper']",
+            "note": "搜索表单包裹"
+          }
+        ]
+      },
+      "searchInput": {
+        "description": "搜索输入框（订单编号/商品ID/关键词）",
+        "keyword": "搜索",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='Grid_filterWrapper'] input.IPT_input_5-178-0",
+            "note": "搜索表单内的输入框"
+          }
+        ]
+      },
+      "orderIdInput": {
+        "description": "订单编号输入框（第1个）",
+        "keyword": "订单编号",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='Grid_filterWrapper'] input.IPT_input_5-178-0:nth-of-type(1)",
+            "note": "第1个输入框"
+          }
+        ]
+      },
+      "goodsIdInput": {
+        "description": "商品ID输入框（第2个）",
+        "keyword": "商品ID",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='Grid_filterWrapper'] input.IPT_input_5-178-0:nth-of-type(2)",
+            "note": "第2个输入框"
+          }
+        ]
+      },
+      "keywordInput": {
+        "description": "关键词输入框（第3个）",
+        "keyword": "关键词",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='Grid_filterWrapper'] input.IPT_input_5-178-0:nth-of-type(3)",
+            "note": "第3个输入框"
+          }
+        ]
+      },
+      "queryBtn": {
+        "description": "查询按钮",
+        "keyword": "查询",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='Grid_filterWrapper'] [class*='BTN_primary']",
+            "note": "查询按钮"
+          },
+          {
+            "type": "text",
+            "value": "查询"
+          }
+        ]
+      },
+      "reviewTable": {
+        "description": "评价表格",
+        "keyword": "评价",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "table"
+          }
+        ]
+      },
+      "reviewRow": {
+        "description": "评价表格行",
+        "keyword": "评价",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "table tbody tr"
+          }
+        ]
+      },
+      "groupHeaderRow": {
+        "description": "分组表头行（包含星星，用于判断星级）",
+        "keyword": "分组",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "bodyGroupHeader",
+            "note": "分组表头行 class 包含 bodyGroupHeader"
+          }
+        ]
+      },
+      "groupCellRow": {
+        "description": "分组单元格行（包含星星）",
+        "keyword": "分组",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "bodyGroupCell",
+            "note": "分组单元格行 class 包含 bodyGroupCell"
+          }
+        ]
+      },
+      "stickyHeaderRow": {
+        "description": "粘性表头行（需要跳过的固定行）",
+        "keyword": "表头",
+        "selectors": [
+          {
+            "type": "css-prefix",
+            "value": "stickyHeader",
+            "note": "粘性表头 class 包含 stickyHeader"
+          }
+        ]
+      },
+      "starRating": {
+        "description": "星级评分（通过 SVG 星星数量判断）",
+        "keyword": "星",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "svg[data-testid='beast-core-icon-star_filled']",
+            "note": "分组表头中的实心星星，用于判断星级"
+          },
+          {
+            "type": "css",
+            "value": "[class*='star']",
+            "note": "备用星星选择器"
+          }
+        ]
+      },
+      "replyButton": {
+        "description": "回复/互动按钮",
+        "keyword": "回复/互动",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "回复/互动"
+          }
+        ]
+      },
+      "quickReplyModal": {
+        "description": "快捷回复弹窗",
+        "keyword": "快捷回复",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='MDL_modal']",
+            "note": "模态框"
+          },
+          {
+            "type": "text",
+            "value": "快捷回复",
+            "note": "弹窗标题"
+          }
+        ]
+      },
+      "replyInput": {
+        "description": "回复输入框",
+        "keyword": "回复",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[data-testid='beast-core-textArea-htmlInput']",
+            "note": "textarea"
+          },
+          {
+            "type": "css",
+            "value": "textarea"
+          }
+        ]
+      },
+      "submitReply": {
+        "description": "提交回复按钮",
+        "keyword": "回复",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[data-tracking-click-viewid='reply_btn']",
+            "note": "回复按钮"
+          },
+          {
+            "type": "text",
+            "value": "回复",
+            "note": "包含回复文本的按钮"
+          }
+        ]
+      },
+      "cancelReply": {
+        "description": "取消回复按钮",
+        "keyword": "取消",
+        "selectors": [
+          {
+            "type": "text",
+            "value": "取消"
+          }
+        ]
+      },
+      "pageSizeDropdown": {
+        "description": "每页条数下拉框（自定义beast-core-select）",
+        "keyword": "每页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[data-testid='beast-core-select']",
+            "note": "自定义下拉组件"
+          },
+          {
+            "type": "css",
+            "value": "[class*='sizeChanger'] [class*='select']",
+            "note": "备用"
+          }
+        ]
+      },
+      "pagination": {
+        "description": "分页区域",
+        "keyword": "页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='pagination']"
+          }
+        ]
+      },
+      "nextPageBtn": {
+        "description": "下一页按钮",
+        "keyword": "下一页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[data-testid='beast-core-pagination-next']",
+            "note": "分页下一页"
+          }
+        ]
+      },
+      "totalCount": {
+        "description": "总评价数",
+        "keyword": "条",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='pagination']"
+          }
+        ]
+      },
+      "pageSizeInput": {
+        "description": "每页数量输入框（beast-core-select 的 HTML input）",
+        "keyword": "每页数量",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[data-testid='beast-core-select-htmlInput']",
+            "note": "只读输入框，显示当前值"
+          }
+        ]
+      },
+      "paginationContainer": {
+        "description": "分页容器（UL 元素）",
+        "keyword": "分页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "ul[class*='pgtOuterWrapper']",
+            "note": "分页外层包裹"
+          }
+        ]
+      },
+      "pageInfo": {
+        "description": "分页信息（显示总条数）",
+        "keyword": "页",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='pgtTotalText']",
+            "note": "如'共有 1016 条'"
+          }
+        ]
+      },
+      "currentPageIndicator": {
+        "description": "当前页码指示器",
+        "keyword": "页码",
+        "selectors": [
+          {
+            "type": "css",
+            "value": "[class*='pgtCurrent_']",
+            "note": "当前页码样式"
+          }
+        ]
+      }
+    }
+  }
+}

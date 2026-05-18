@@ -16,6 +16,18 @@
         </div>
         
         <div class="menu-section">
+          <div class="menu-title" v-show="!isCollapsed">🛒 拼多多平台</div>
+          <el-menu-item index="/pdd/dashboard">
+            <el-icon><component :is="icons.DataAnalysis" /></el-icon>
+            <template #title>数据概览</template>
+          </el-menu-item>
+          <el-menu-item index="/pdd/stores">
+            <el-icon><component :is="icons.Shop" /></el-icon>
+            <template #title>店铺管理</template>
+          </el-menu-item>
+        </div>
+        
+        <div class="menu-section">
           <div class="menu-title" v-show="!isCollapsed">🤖 AI Agent</div>
           <el-menu-item index="/ai-assistant">
             <el-icon><component :is="icons.MagicStick" /></el-icon>

@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "comment": "pdd-open 全局配置",
+
+  "paths": {
+    "accounts_dir": "accounts",
+    "data_dir": "data",
+    "temp_dir": "temp"
+  },
+
+  "port_range": {
+    "base": 49152,
+    "max_offset": 100
+  },
+
+  "chrome": {
+    "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  },
+
+  "feishu": {
+    "agent_id": "default",
+    "channel": "feishu",
+    "session_name_group": "飞书",
+    "session_name_pm": "私信"
+  },
+
+  "notify": {
+    "on_success": true,
+    "on_error": true
+  },
+
+  "hooks": {
+    "enabled": true,
+    "log_to_console": true
+  },
+
+  "pdd": {
+    "base_url": "https://mms.pinduoduo.com",
+    "login_url": "https://mms.pinduoduo.com/login",
+    "login_timeout_ms": 600000,
+    "poll_interval_ms": 3000,
+    "page_load_wait_ms": 3000,
+    "data_render_wait_ms": 15000
+  },
+
+  "review": {
+    "page_url": "https://mms.pinduoduo.com/goods/evaluation/index?msfrom=mms_sidenav",
+    "page_size": 40,
+    "auto_reply": true,
+    "reply_only_if_empty": true,
+    "reply_templates": [
+      "谢谢惠顾🌹",
+      "感谢您的支持，祝您购物愉快！",
+      "欢迎再次光临～",
+      "祝您生活愉快！",
+      "感谢反馈，我们会继续努力！",
+      "亲，很高兴为您服务～",
+      "祝您天天好心情！",
+      "期待再次为您服务！"
+    ],
+    "export_fields": [
+      "star",
+      "orderId",
+      "buyerName",
+      "goodsId",
+      "content",
+      "time"
+    ]
+  }
+}
