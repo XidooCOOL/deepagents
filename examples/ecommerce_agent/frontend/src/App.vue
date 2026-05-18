@@ -1,151 +1,191 @@
 <template>
-  <el-container class="app-container">
-    <el-aside :width="isCollapsed ? '64px' : '240px'" class="sidebar" :class="{ collapsed: isCollapsed }">
-      <div class="logo">
-        <el-icon :size="isCollapsed ? 32 : 28" color="#409eff"><component :is="icons.ShoppingCart" /></el-icon>
-        <h2 v-show="!isCollapsed">电商助手</h2>
+  <div class="app-container h-screen flex bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden">
+    <!-- 侧边栏 -->
+    <aside 
+      class="sidebar flex-col border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 flex-shrink-0 transition-all duration-300 flex"
+      :class="isCollapsed ? 'w-16' : 'w-64'"
+    >
+      <!-- Logo 区域 -->
+      <div class="logo-area h-16 px-4 flex items-center border-b border-neutral-200 dark:border-neutral-800">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
+            <el-icon :size="20" class="text-white"><component :is="icons.ShoppingCart" /></el-icon>
+          </div>
+          <h1 v-show="!isCollapsed" class="text-lg font-semibold tracking-tight m-0">电商助手</h1>
+        </div>
       </div>
       
-      <el-menu :default-active="activeMenu" class="sidebar-menu" router :collapse="isCollapsed">
-        <div class="menu-section">
-          <div class="menu-title" v-show="!isCollapsed">🖥️ 核心功能</div>
-          <el-menu-item index="/">
-            <el-icon><component :is="icons.HomeFilled" /></el-icon>
-            <template #title>控制台</template>
-          </el-menu-item>
+      <!-- 菜单区域 -->
+      <nav class="flex-1 overflow-y-auto py-3">
+        <div class="px-3 mb-2">
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🖥️ 核心功能</div>
+          <div class="space-y-1">
+            <router-link to="/" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.HomeFilled" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">控制台</span>
+            </router-link>
+          </div>
         </div>
         
-        <div class="menu-section">
-          <div class="menu-title" v-show="!isCollapsed">🛒 拼多多平台</div>
-          <el-menu-item index="/pdd/dashboard">
-            <el-icon><component :is="icons.DataAnalysis" /></el-icon>
-            <template #title>数据概览</template>
-          </el-menu-item>
-          <el-menu-item index="/pdd/stores">
-            <el-icon><component :is="icons.Shop" /></el-icon>
-            <template #title>店铺管理</template>
-          </el-menu-item>
+        <div class="px-3 mb-2">
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🛒 拼多多平台</div>
+          <div class="space-y-1">
+            <router-link to="/pdd/dashboard" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/pdd/dashboard' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.DataAnalysis" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">数据概览</span>
+            </router-link>
+            <router-link to="/pdd/stores" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/pdd/stores' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Shop" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">店铺管理</span>
+            </router-link>
+          </div>
         </div>
         
-        <div class="menu-section">
-          <div class="menu-title" v-show="!isCollapsed">🤖 AI Agent</div>
-          <el-menu-item index="/ai-assistant">
-            <el-icon><component :is="icons.MagicStick" /></el-icon>
-            <template #title>智能助手</template>
-          </el-menu-item>
-          <el-menu-item index="/agent">
-            <el-icon><component :is="icons.Robot" /></el-icon>
-            <template #title>Agent工作台</template>
-          </el-menu-item>
-          <el-menu-item index="/chat">
-            <el-icon><component :is="icons.ChatDotRound" /></el-icon>
-            <template #title>任务对话</template>
-          </el-menu-item>
-          <el-menu-item index="/workflow-config">
-            <el-icon><component :is="icons.Setting" /></el-icon>
-            <template #title>工作流配置</template>
-          </el-menu-item>
+        <div class="px-3 mb-2">
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🤖 AI Agent</div>
+          <div class="space-y-1">
+            <router-link to="/ai-assistant" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/ai-assistant' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.MagicStick" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">智能助手</span>
+            </router-link>
+            <router-link to="/agent" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/agent' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Robot" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">Agent工作台</span>
+            </router-link>
+            <router-link to="/chat" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/chat' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.ChatDotRound" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">任务对话</span>
+            </router-link>
+            <router-link to="/workflow-config" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/workflow-config' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Setting" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">工作流配置</span>
+            </router-link>
+          </div>
         </div>
         
-        <div class="menu-section">
-          <div class="menu-title" v-show="!isCollapsed">⚙️ 配置管理</div>
-          <el-menu-item index="/stores">
-            <el-icon><component :is="icons.OfficeBuilding" /></el-icon>
-            <template #title>店铺管理</template>
-          </el-menu-item>
-          <el-menu-item index="/elements">
-            <el-icon><component :is="icons.Document" /></el-icon>
-            <template #title>元素管理</template>
-          </el-menu-item>
-          <el-menu-item index="/skills">
-            <el-icon><component :is="icons.Tools" /></el-icon>
-            <template #title>技能管理</template>
-          </el-menu-item>
-          <el-menu-item index="/llm-config">
-            <el-icon><component :is="icons.Cpu" /></el-icon>
-            <template #title>模型配置</template>
-          </el-menu-item>
-          <el-menu-item index="/feishu">
-            <el-icon><component :is="icons.Message" /></el-icon>
-            <template #title>飞书集成</template>
-          </el-menu-item>
-          <el-menu-item index="/webhooks">
-            <el-icon><component :is="icons.Bell" /></el-icon>
-            <template #title>Webhook管理</template>
-          </el-menu-item>
+        <div class="px-3 mb-2">
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">⚙️ 配置管理</div>
+          <div class="space-y-1">
+            <router-link to="/stores" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/stores' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.OfficeBuilding" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">店铺管理</span>
+            </router-link>
+            <router-link to="/elements" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/elements' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Document" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">元素管理</span>
+            </router-link>
+            <router-link to="/skills" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/skills' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Tools" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">技能管理</span>
+            </router-link>
+            <router-link to="/llm-config" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/llm-config' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Cpu" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">模型配置</span>
+            </router-link>
+            <router-link to="/feishu" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/feishu' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Message" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">飞书集成</span>
+            </router-link>
+            <router-link to="/webhooks" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/webhooks' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Bell" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">Webhook管理</span>
+            </router-link>
+          </div>
         </div>
         
-        <div class="menu-section">
-          <div class="menu-title" v-show="!isCollapsed">📋 任务中心</div>
-          <el-menu-item index="/tasks">
-            <el-icon><component :is="icons.List" /></el-icon>
-            <template #title>任务管理</template>
-          </el-menu-item>
-          <el-menu-item index="/scheduled-tasks">
-            <el-icon><component :is="icons.Clock" /></el-icon>
-            <template #title>定时任务</template>
-          </el-menu-item>
+        <div class="px-3 mb-2">
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">📋 任务中心</div>
+          <div class="space-y-1">
+            <router-link to="/tasks" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/tasks' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.List" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">任务管理</span>
+            </router-link>
+            <router-link to="/scheduled-tasks" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/scheduled-tasks' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Clock" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">定时任务</span>
+            </router-link>
+          </div>
         </div>
         
-        <div class="menu-section">
-          <div class="menu-title" v-show="!isCollapsed">📊 数据中心</div>
-          <el-menu-item index="/orders">
-            <el-icon><component :is="icons.ShoppingCart" /></el-icon>
-            <template #title>订单管理</template>
-          </el-menu-item>
-          <el-menu-item index="/products">
-            <el-icon><component :is="icons.Goods" /></el-icon>
-            <template #title>商品管理</template>
-          </el-menu-item>
-          <el-menu-item index="/product-library">
-            <el-icon><component :is="icons.Box" /></el-icon>
-            <template #title>商品库</template>
-          </el-menu-item>
-          <el-menu-item index="/product-publish">
-            <el-icon><component :is="icons.Upload" /></el-icon>
-            <template #title>批量发布</template>
-          </el-menu-item>
-          <el-menu-item index="/published-products">
-            <el-icon><component :is="icons.DocumentChecked" /></el-icon>
-            <template #title>已发布</template>
-          </el-menu-item>
-          <el-menu-item index="/data">
-            <el-icon><component :is="icons.DataAnalysis" /></el-icon>
-            <template #title>数据分析</template>
-          </el-menu-item>
+        <div class="px-3 mb-2">
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">📊 数据中心</div>
+          <div class="space-y-1">
+            <router-link to="/orders" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/orders' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.ShoppingCart" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">订单管理</span>
+            </router-link>
+            <router-link to="/products" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/products' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Goods" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">商品管理</span>
+            </router-link>
+            <router-link to="/product-library" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/product-library' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Box" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">商品库</span>
+            </router-link>
+            <router-link to="/product-publish" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/product-publish' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.Upload" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">批量发布</span>
+            </router-link>
+            <router-link to="/published-products" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/published-products' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.DocumentChecked" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">已发布</span>
+            </router-link>
+            <router-link to="/data" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/data' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+              <el-icon :size="18"><component :is="icons.DataAnalysis" /></el-icon>
+              <span v-show="!isCollapsed" class="text-sm">数据分析</span>
+            </router-link>
+          </div>
         </div>
-      </el-menu>
+      </nav>
       
-      <div class="sidebar-footer">
-        <div class="version-info" v-show="!isCollapsed">
-          <el-tag size="small" type="success">v1.0.0</el-tag>
-          <span>DeepAgents</span>
+      <!-- 底部区域 -->
+      <div class="border-t border-neutral-200 dark:border-neutral-800 p-3">
+        <div class="flex items-center justify-between">
+          <div v-show="!isCollapsed" class="flex items-center gap-2">
+            <span class="text-xs text-neutral-500">v1.0.0</span>
+          </div>
+          <button 
+            @click="toggleSidebar" 
+            class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          >
+            <el-icon :size="18">
+              <component :is="isCollapsed ? icons.ArrowRight : icons.ArrowLeft" />
+            </el-icon>
+          </button>
         </div>
-        <el-button class="collapse-btn" @click="toggleSidebar" :icon="isCollapsed ? icons.ArrowRight : icons.ArrowLeft" circle size="small" />
       </div>
-    </el-aside>
+    </aside>
     
-    <el-container>
-      <el-header class="header">
-        <div class="header-left">
-          <h1>{{ pageTitle }}</h1>
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ pageTitle }}</el-breadcrumb-item>
-          </el-breadcrumb>
+    <!-- 主内容区 -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <!-- 顶部导航栏 -->
+      <header class="header h-16 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 flex items-center px-6 gap-4">
+        <!-- 面包屑 -->
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 text-sm">
+            <span class="text-neutral-600 dark:text-neutral-400">电商助手</span>
+            <span class="text-neutral-400">/</span>
+            <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ pageTitle }}</span>
+          </div>
+          <el-tag size="small" type="warning" effect="light" class="ml-2">PRODUCTION</el-tag>
         </div>
-        <div class="header-right">
-          <el-button-group>
-            <el-button @click="refreshData" :icon="icons.Refresh" size="default">刷新</el-button>
-            <el-button @click="showQuickAction = true" :icon="icons.Lightning" size="default" type="primary">快捷操作</el-button>
-            <el-button @click="showHelp" :icon="icons.QuestionFilled" size="default">帮助</el-button>
-          </el-button-group>
-          <el-badge :value="3" class="notification-badge">
-            <el-button :icon="icons.Bell" circle size="default" />
-          </el-badge>
+        
+        <div class="flex-1"></div>
+        
+        <!-- 右侧操作区 -->
+        <div class="flex items-center gap-3">
+          <el-button size="small" @click="showQuickAction = true" class="gap-2">
+            <el-icon><component :is="icons.Lightning" /></el-icon>
+            <span class="hidden sm:inline">快捷操作</span>
+          </el-button>
+          
+          <el-button size="small" @click="refreshData">
+            <el-icon><component :is="icons.Refresh" /></el-icon>
+          </el-button>
+          
           <el-dropdown>
-            <div class="user-avatar">
-              <el-avatar :size="36" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center cursor-pointer">
+              <span class="text-white text-sm font-medium">U</span>
             </div>
             <template #dropdown>
               <el-dropdown-menu>
@@ -156,27 +196,20 @@
             </template>
           </el-dropdown>
         </div>
-      </el-header>
+      </header>
       
-      <el-main class="main">
+      <!-- 内容区域 -->
+      <div class="flex-1 overflow-auto p-6">
         <router-view />
-      </el-main>
-      
-      <el-footer class="footer" height="60px">
-        <div class="footer-content">
-          <span>© 2024 电商助手 - 基于 DeepAgents 框架</span>
-          <el-link type="primary" href="https://github.com/XidooCOOL/deepagents" target="_blank">
-            GitHub
-          </el-link>
-        </div>
-      </el-footer>
-    </el-container>
+      </div>
+    </main>
     
+    <!-- 快捷操作抽屉 -->
     <el-drawer v-model="showQuickAction" title="⚡ 快捷操作" size="400px" direction="rtl">
-      <div class="quick-actions">
-        <div class="action-section">
-          <h4>🎯 创建任务</h4>
-          <el-button type="primary" @click="$router.push('/agent')" style="width: 100%; margin-bottom: 10px;">
+      <div class="p-4 space-y-4">
+        <div class="space-y-2">
+          <h4 class="text-sm font-semibold text-neutral-500">🎯 创建任务</h4>
+          <el-button type="primary" @click="$router.push('/agent')" style="width: 100%;">
             智能任务创建
           </el-button>
           <el-button @click="$router.push('/tasks')" style="width: 100%;">
@@ -186,9 +219,9 @@
         
         <el-divider />
         
-        <div class="action-section">
-          <h4>📝 快速配置</h4>
-          <el-button @click="$router.push('/workflow-config')" style="width: 100%; margin-bottom: 10px;">
+        <div class="space-y-2">
+          <h4 class="text-sm font-semibold text-neutral-500">📝 快速配置</h4>
+          <el-button @click="$router.push('/workflow-config')" style="width: 100%;">
             工作流配置
           </el-button>
           <el-button @click="$router.push('/elements')" style="width: 100%;">
@@ -198,9 +231,9 @@
         
         <el-divider />
         
-        <div class="action-section">
-          <h4>📊 查看数据</h4>
-          <el-button @click="$router.push('/data')" style="width: 100%; margin-bottom: 10px;">
+        <div class="space-y-2">
+          <h4 class="text-sm font-semibold text-neutral-500">📊 查看数据</h4>
+          <el-button @click="$router.push('/data')" style="width: 100%;">
             数据分析
           </el-button>
           <el-button @click="$router.push('/orders')" style="width: 100%;">
@@ -209,69 +242,18 @@
         </div>
       </div>
     </el-drawer>
-    
-    <el-dialog v-model="showHelpDialog" title="❓ 帮助指南" width="60%">
-      <el-tabs>
-        <el-tab-pane label="快速开始">
-          <el-steps direction="vertical" :space="100" :active="4">
-            <el-step title="步骤 1: 创建工作流" description="在【工作流配置】中定义自动化步骤" />
-            <el-step title="步骤 2: 配置技能" description="在【技能管理】中选择 Agent 能力" />
-            <el-step title="步骤 3: 创建任务" description="在【Agent工作台】中输入任务指令" />
-            <el-step title="步骤 4: 执行监控" description="实时查看任务执行进度和日志" />
-          </el-steps>
-        </el-tab-pane>
-        <el-tab-pane label="常见问题">
-          <el-collapse>
-            <el-collapse-item title="如何配置商品发布工作流？">
-              <p>1. 进入【工作流配置】页面</p>
-              <p>2. 创建新模板，选择"商品发布"类型</p>
-              <p>3. 添加步骤：导航、输入、上传等</p>
-              <p>4. 定义参数占位符：{title}, {price}, {images}</p>
-            </el-collapse-item>
-            <el-collapse-item title="如何上传商品图片？">
-              <p>1. 在步骤中添加"上传"类型的操作</p>
-              <p>2. 配置选择器和参数名（如 images）</p>
-              <p>3. 创建任务时，系统会提示上传图片</p>
-            </el-collapse-item>
-            <el-collapse-item title="多 Agent 如何并行执行？">
-              <p>1. 配置多个 Agent 实例</p>
-              <p>2. 为每个 Agent 分配不同的技能</p>
-              <p>3. 输入任务时，Agent 会自动分配</p>
-            </el-collapse-item>
-          </el-collapse>
-        </el-tab-pane>
-        <el-tab-pane label="快捷键">
-          <el-table :data="shortcuts" size="small">
-            <el-table-column prop="key" label="快捷键" width="150" />
-            <el-table-column prop="action" label="功能" />
-          </el-table>
-        </el-tab-pane>
-      </el-tabs>
-    </el-dialog>
-  </el-container>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import * as icons from '@element-plus/icons-vue'
 
 const route = useRoute()
-
-const activeMenu = computed(() => route.path)
 const showQuickAction = ref(false)
-const showHelpDialog = ref(false)
 const isCollapsed = ref(false)
-
-const shortcuts = [
-  { key: 'Ctrl + N', action: '创建新任务' },
-  { key: 'Ctrl + S', action: '保存当前配置' },
-  { key: 'Ctrl + R', action: '刷新页面' },
-  { key: 'Ctrl + Q', action: '打开快捷操作' },
-  { key: 'Ctrl + B', action: '切换侧边栏' },
-  { key: 'Esc', action: '关闭弹窗' }
-]
 
 const pageTitleMap: Record<string, string> = {
   '/': '控制台',
@@ -294,13 +276,15 @@ const pageTitleMap: Record<string, string> = {
   '/feishu': '飞书集成',
   '/webhooks': 'Webhook管理',
   '/ai-assistant': '智能助手',
-  '/tasks/:id': '任务详情'
+  '/pdd/dashboard': '数据概览',
+  '/pdd/stores': '店铺管理'
 }
 
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
+  localStorage.setItem('sidebarCollapsed', String(isCollapsed.value))
 }
 
 const refreshData = () => {
@@ -308,223 +292,24 @@ const refreshData = () => {
   window.location.reload()
 }
 
-const showHelp = () => {
-  showHelpDialog.value = true
-}
-
-const handleKeyDown = (e: KeyboardEvent) => {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'q') {
-    e.preventDefault()
-    showQuickAction.value = true
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
-    e.preventDefault()
-    toggleSidebar()
-  }
-}
-
 onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
+  const savedCollapsed = localStorage.getItem('sidebarCollapsed')
+  if (savedCollapsed !== null) {
+    isCollapsed.value = savedCollapsed === 'true'
+  }
 })
 </script>
 
 <style scoped>
 .app-container {
-  height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-.sidebar {
-  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+.menu-item {
+  text-decoration: none;
 }
 
-.sidebar.collapsed {
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
-}
-
-.logo {
-  padding: 24px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid #f0f0f0;
-  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
-  transition: all 0.3s ease;
-}
-
-.logo h2 {
-  margin: 0;
-  font-size: 18px;
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-.sidebar-menu {
-  border-right: none;
-  height: calc(100vh - 200px);
-  overflow-y: auto;
-  padding: 10px 0;
-}
-
-.menu-section {
-  margin-bottom: 16px;
-}
-
-.menu-title {
-  padding: 12px 20px 8px;
-  font-size: 11px;
-  color: #909399;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.sidebar-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  border-top: 1px solid #f0f0f0;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.version-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: #909399;
-}
-
-.collapse-btn {
-  background: #f5f7fa;
-  border: 1px solid #e4e7ed;
-  transition: all 0.3s ease;
-}
-
-.collapse-btn:hover {
-  background: #409eff;
-  border-color: #409eff;
-  color: white;
-  transform: scale(1.1);
-}
-
-.header {
-  background: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 32px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.header-left h1 {
-  margin: 0 0 6px 0;
-  font-size: 26px;
-  color: #303133;
-  font-weight: 600;
-  background: linear-gradient(135deg, #303133 0%, #409eff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.notification-badge {
-  margin-left: 8px;
-}
-
-.user-avatar {
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.user-avatar:hover {
-  transform: scale(1.1);
-}
-
-.main {
-  padding: 24px 32px;
-  overflow-y: auto;
-}
-
-.footer {
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top: 1px solid #f0f0f0;
-}
-
-.footer-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  font-size: 14px;
-  color: #909399;
-}
-
-.quick-actions {
-  padding: 24px;
-}
-
-.action-section {
-  margin-bottom: 24px;
-}
-
-.action-section h4 {
-  margin: 0 0 16px 0;
-  font-size: 16px;
-  color: #303133;
-  font-weight: 600;
-}
-
-:deep(.el-menu-item) {
-  height: 48px;
-  line-height: 48px;
-  margin: 4px 12px;
-  border-radius: 10px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-:deep(.el-menu-item:hover) {
-  background: linear-gradient(135deg, #ecf5ff 0%, #d9ecff 100%);
-  transform: translateX(4px);
-}
-
-:deep(.el-menu-item.is-active) {
-  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
-}
-
-:deep(.el-menu-item.is-active .el-icon) {
-  color: white;
-}
-
-:deep(.el-menu--collapse .el-menu-item) {
-  margin: 4px 8px;
+.menu-item:hover {
+  text-decoration: none;
 }
 </style>

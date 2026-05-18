@@ -1,260 +1,281 @@
 <template>
-  <div class="home">
-    <div class="connection-status">
-      <el-tag v-if="connected" type="success" size="small">
-        <el-icon><CircleCheck /></el-icon>
-        实时连接已建立
-      </el-tag>
-      <el-tag v-else type="warning" size="small">
-        <el-icon><Loading /></el-icon>
-        正在连接...
-      </el-tag>
-      <span class="connection-info" v-if="resourceUsage">
-        CPU: {{ resourceUsage.cpu?.percent || 0 }}% |
-        内存: {{ resourceUsage.memory?.percent || 0 }}%
-      </span>
+  <div class="home-container">
+    <!-- 状态栏 -->
+    <div class="status-section mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- 状态卡片 1 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
+              <el-icon :size="20" class="text-emerald-600"><CircleCheck /></el-icon>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">Status</div>
+              <div class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Healthy</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 状态卡片 2 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+              <el-icon :size="20" class="text-neutral-600 dark:text-neutral-400"><Cpu /></el-icon>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">Compute</div>
+              <el-tag size="small" type="info">N/A</el-tag>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 状态卡片 3 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+              <el-icon :size="20" class="text-neutral-600 dark:text-neutral-400"><Connection /></el-icon>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">GitHub</div>
+              <div class="text-sm text-neutral-600 dark:text-neutral-400">No repository connected</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 状态卡片 4 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+              <el-icon :size="20" class="text-neutral-600 dark:text-neutral-400"><Guide /></el-icon>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">Recent Branch</div>
+              <div class="text-sm text-neutral-600 dark:text-neutral-400">No branches</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 状态卡片 5 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+              <el-icon :size="20" class="text-neutral-600 dark:text-neutral-400"><Box /></el-icon>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">Last Migration</div>
+              <div class="text-sm text-neutral-600 dark:text-neutral-400">No migrations</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 状态卡片 6 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center">
+              <el-icon :size="20" class="text-neutral-600 dark:text-neutral-400"><Delete /></el-icon>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">Last Backup</div>
+              <div class="text-sm text-neutral-600 dark:text-neutral-400">No backups</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <el-card class="stat-card">
-          <div class="stat-icon tasks">
-            <el-icon><component :is="icons.List" /></el-icon>
+    
+    <!-- 数据库面板（绝对定位） -->
+    <div class="database-panel absolute top-24 right-8 z-10">
+      <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 shadow-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center">
+            <el-icon :size="18" class="text-white"><Connection /></el-icon>
           </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ dashboardStats.tasks?.today || 0 }}</div>
-            <div class="stat-label">今日任务</div>
-            <div class="stat-sub">{{ dashboardStats.tasks?.running || 0 }} 运行中</div>
+          <div class="flex-1">
+            <div class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Primary Database</div>
+            <div class="text-xs text-neutral-500">Northeast Asia (Tokyo)</div>
+            <div class="text-xs text-neutral-500">ap-northeast-1 · t4g.nano</div>
           </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-card class="stat-card">
-          <div class="stat-icon success">
-            <el-icon><component :is="icons.CircleCheck" /></el-icon>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ dashboardStats.tasks?.completed || 0 }}</div>
-            <div class="stat-label">完成任务</div>
-            <div class="stat-sub">成功率 {{ dashboardStats.tasks?.success_rate || 0 }}%</div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-card class="stat-card">
-          <div class="stat-icon stores">
-            <el-icon><component :is="icons.OfficeBuilding" /></el-icon>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ dashboardStats.stores?.active_today || 0 }}</div>
-            <div class="stat-label">活跃店铺</div>
-            <div class="stat-sub">共 {{ dashboardStats.stores?.total || 0 }} 个</div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-card class="stat-card">
-          <div class="stat-icon alerts" :class="{ 'has-alerts': systemAlerts.length > 0 }">
-            <el-icon><component :is="icons.BellFilled" /></el-icon>
-          </div>
-          <div class="stat-content">
-            <div class="stat-value">{{ systemAlerts.length }}</div>
-            <div class="stat-label">待处理告警</div>
-            <div class="stat-sub">{{ failedTasks }} 个失败任务</div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="20" style="margin-top: 20px;">
-      <el-col :span="12">
-        <el-card title="运行中任务" class="task-list-card">
-          <template #header>
-            <div class="card-header">
-              <span>运行中任务</span>
-              <el-tag type="info" size="small">{{ activeTasks.length }} 个</el-tag>
+          <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-neutral-500">CPU</span>
+          <span class="font-medium text-neutral-900 dark:text-neutral-100">0%</span>
+          <span class="text-neutral-300">·</span>
+          <span class="text-neutral-500">Disk</span>
+          <span class="font-medium text-neutral-900 dark:text-neutral-100">16%</span>
+          <span class="text-neutral-300">·</span>
+          <span class="text-neutral-500">RAM</span>
+          <span class="font-medium text-neutral-900 dark:text-neutral-100">69%</span>
+          <span class="text-neutral-300">·</span>
+          <span class="text-neutral-500">3/60 conns</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 数据看板区域 -->
+    <div class="dashboard-section mt-20">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
+          <el-icon :size="18" class="text-neutral-500"><List /></el-icon>
+          0 Total Requests
+        </h2>
+        <el-select v-model="selectedPeriod" size="small" style="width: 140px;">
+          <el-option label="Last 60 minutes" value="60min" />
+          <el-option label="Last 24 hours" value="24h" />
+          <el-option label="Last 7 days" value="7d" />
+        </el-select>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- 数据卡片 1 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">Database Requests</div>
+          <div class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">0</div>
+          <div class="h-32 flex items-center justify-center border border-dashed border-neutral-200 dark:border-neutral-800 rounded">
+            <div class="text-center">
+              <el-icon :size="24" class="text-neutral-400"><DataAnalysis /></el-icon>
+              <div class="text-xs text-neutral-500 mt-2">No data for selected period</div>
             </div>
-          </template>
-          <div v-if="activeTasks.length === 0" class="empty-state">
-            <el-icon :size="48"><Finished /></el-icon>
-            <p>暂无运行中的任务</p>
           </div>
-          <div v-else class="task-list">
-            <div v-for="task in activeTasks" :key="task.task_id" class="task-item">
-              <div class="task-info">
-                <span class="task-name">{{ task.task_name }}</span>
-                <el-tag size="small" type="primary">Step {{ task.current_step }}/{{ task.total_steps }}</el-tag>
+        </div>
+        
+        <!-- 数据卡片 2 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">Auth Requests</div>
+          <div class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">0</div>
+          <div class="h-32 flex items-center justify-center border border-dashed border-neutral-200 dark:border-neutral-800 rounded">
+            <div class="text-center">
+              <el-icon :size="24" class="text-neutral-400"><DataAnalysis /></el-icon>
+              <div class="text-xs text-neutral-500 mt-2">No data for selected period</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 数据卡片 3 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">Storage Requests</div>
+          <div class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">0</div>
+          <div class="h-32 flex items-center justify-center border border-dashed border-neutral-200 dark:border-neutral-800 rounded">
+            <div class="text-center">
+              <el-icon :size="24" class="text-neutral-400"><DataAnalysis /></el-icon>
+              <div class="text-xs text-neutral-500 mt-2">No data for selected period</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 数据卡片 4 -->
+        <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div class="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">Realtime Requests</div>
+          <div class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">0</div>
+          <div class="h-32 flex items-center justify-center border border-dashed border-neutral-200 dark:border-neutral-800 rounded">
+            <div class="text-center">
+              <el-icon :size="24" class="text-neutral-400"><DataAnalysis /></el-icon>
+              <div class="text-xs text-neutral-500 mt-2">No data for selected period</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 原有内容区域 -->
+    <div class="existing-content mt-12">
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-card class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+            <template #header>
+              <div class="flex justify-between items-center">
+                <span class="font-medium text-neutral-900 dark:text-neutral-100">运行中任务</span>
+                <el-tag type="info" size="small">{{ activeTasks.length }} 个</el-tag>
               </div>
-              <el-progress :percentage="task.progress || 0" :stroke-width="8" />
-              <div class="task-message">{{ task.message || '处理中...' }}</div>
+            </template>
+            <div v-if="activeTasks.length === 0" class="flex flex-col items-center justify-center h-48 text-neutral-400">
+              <el-icon :size="48"><Finished /></el-icon>
+              <p class="mt-3">暂无运行中的任务</p>
             </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card title="系统状态" class="system-status-card">
-          <template #header>
-            <div class="card-header">
-              <span>系统状态</span>
-              <el-button size="small" @click="refreshStatus" :loading="loadingStatus">刷新</el-button>
-            </div>
-          </template>
-          <el-table :data="systemStatus" border size="small">
-            <el-table-column prop="name" label="服务" width="120" />
-            <el-table-column prop="status" label="状态" width="100">
-              <template #default="scope">
-                <el-tag :type="scope.row.status === '运行中' ? 'success' : 'danger'" size="small">
-                  {{ scope.row.status }}
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cpu" label="CPU" width="80">
-              <template #default="scope">
-                <span :class="{ 'high-usage': parseFloat(scope.row.cpu) > 80 }">
-                  {{ scope.row.cpu }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="memory" label="内存" />
-          </el-table>
-
-          <el-divider>实时资源</el-divider>
-          <div class="resource-bars">
-            <div class="resource-item">
-              <span class="resource-label">CPU</span>
-              <el-progress :percentage="resourceUsage?.cpu?.percent || 0" :stroke-width="10"
-                :color="getResourceColor(resourceUsage?.cpu?.percent)" />
-              <span class="resource-value">{{ resourceUsage?.cpu?.percent || 0 }}%</span>
-            </div>
-            <div class="resource-item">
-              <span class="resource-label">内存</span>
-              <el-progress :percentage="resourceUsage?.memory?.percent || 0" :stroke-width="10"
-                :color="getResourceColor(resourceUsage?.memory?.percent)" />
-              <span class="resource-value">{{ resourceUsage?.memory?.percent || 0 }}%</span>
-            </div>
-            <div class="resource-item">
-              <span class="resource-label">磁盘</span>
-              <el-progress :percentage="resourceUsage?.disk?.percent || 0" :stroke-width="10"
-                :color="getResourceColor(resourceUsage?.disk?.percent)" />
-              <span class="resource-value">{{ resourceUsage?.disk?.percent || 0 }}%</span>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="20" style="margin-top: 20px;">
-      <el-col :span="12">
-        <el-card title="最近活动" class="activity-card">
-          <template #header>
-            <div class="card-header">
-              <span>最近活动</span>
-              <el-tag size="small">{{ recentLogs.length }} 条</el-tag>
-            </div>
-          </template>
-          <div v-if="recentLogs.length === 0" class="empty-state">
-            <p>暂无活动记录</p>
-          </div>
-          <el-timeline v-else>
-            <el-timeline-item
-              v-for="log in recentLogs.slice(0, 10)"
-              :key="log.id"
-              :timestamp="formatTime(log.timestamp)"
-              :type="getLogType(log.level)"
-            >
-              <div class="log-content">
-                <el-tag size="small" :type="getLogType(log.level)">{{ log.level?.toUpperCase() }}</el-tag>
-                <span>{{ log.message }}</span>
-              </div>
-            </el-timeline-item>
-          </el-timeline>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card title="浏览器状态" class="browser-card">
-          <template #header>
-            <div class="card-header">
-              <span>浏览器状态</span>
-              <el-tag type="info" size="small">{{ browserCount }} 个已打开</el-tag>
-            </div>
-          </template>
-          <div v-if="Object.keys(browserStatus).length === 0" class="empty-state">
-            <el-icon :size="48"><Monitor /></el-icon>
-            <p>暂无已打开的浏览器</p>
-          </div>
-          <div v-else class="browser-list">
-            <div v-for="(status, storeId) in browserStatus" :key="storeId" class="browser-item">
-              <div class="browser-info">
-                <span class="browser-name">{{ status.store_name || `店铺 ${storeId}` }}</span>
-                <el-tag :type="status.status === 'open' ? 'success' : 'info'" size="small">
-                  {{ status.status === 'open' ? '已打开' : '已关闭' }}
-                </el-tag>
-              </div>
-              <div class="browser-time" v-if="status.openedAt">
-                打开时间: {{ formatTime(status.openedAt) }}
+            <div v-else class="max-h-64 overflow-y-auto">
+              <div v-for="task in activeTasks" :key="task.task_id" class="p-3 border-b border-neutral-100 dark:border-neutral-800 last:border-0">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-semibold text-neutral-700 dark:text-neutral-300">{{ task.task_name }}</span>
+                  <el-tag size="small" type="primary">Step {{ task.current_step }}/{{ task.total_steps }}</el-tag>
+                </div>
+                <el-progress :percentage="task.progress || 0" :stroke-width="8" />
+                <div class="text-xs text-neutral-400 mt-1">{{ task.message || '处理中...' }}</div>
               </div>
             </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+            <template #header>
+              <div class="flex justify-between items-center">
+                <span class="font-medium text-neutral-900 dark:text-neutral-100">系统状态</span>
+                <el-button size="small" @click="refreshStatus" :loading="loadingStatus">刷新</el-button>
+              </div>
+            </template>
+            <el-table :data="systemStatus" border size="small">
+              <el-table-column prop="name" label="服务" width="120" />
+              <el-table-column prop="status" label="状态" width="100">
+                <template #default="scope">
+                  <el-tag :type="scope.row.status === '运行中' ? 'success' : 'danger'" size="small">
+                    {{ scope.row.status }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="cpu" label="CPU" width="80">
+                <template #default="scope">
+                  <span :class="{ 'text-red-500 font-bold': parseFloat(scope.row.cpu) > 80 }">
+                    {{ scope.row.cpu }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="memory" label="内存" />
+            </el-table>
 
-    <el-row :gutter="20" style="margin-top: 20px;">
-      <el-col :span="24">
-        <el-card title="告警信息" class="alerts-card" v-if="systemAlerts.length > 0">
-          <template #header>
-            <div class="card-header">
-              <span>告警信息</span>
-              <el-button size="small" type="danger" @click="clearAlerts">清除全部</el-button>
+            <el-divider>实时资源</el-divider>
+            <div class="py-3">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="w-10 text-xs text-neutral-500">CPU</span>
+                <el-progress :percentage="resourceUsage?.cpu?.percent || 0" :stroke-width="10"
+                  :color="getResourceColor(resourceUsage?.cpu?.percent)" />
+                <span class="w-12 text-right text-xs text-neutral-500">{{ resourceUsage?.cpu?.percent || 0 }}%</span>
+              </div>
+              <div class="flex items-center gap-3 mb-3">
+                <span class="w-10 text-xs text-neutral-500">内存</span>
+                <el-progress :percentage="resourceUsage?.memory?.percent || 0" :stroke-width="10"
+                  :color="getResourceColor(resourceUsage?.memory?.percent)" />
+                <span class="w-12 text-right text-xs text-neutral-500">{{ resourceUsage?.memory?.percent || 0 }}%</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-10 text-xs text-neutral-500">磁盘</span>
+                <el-progress :percentage="resourceUsage?.disk?.percent || 0" :stroke-width="10"
+                  :color="getResourceColor(resourceUsage?.disk?.percent)" />
+                <span class="w-12 text-right text-xs text-neutral-500">{{ resourceUsage?.disk?.percent || 0 }}%</span>
+              </div>
             </div>
-          </template>
-          <el-alert
-            v-for="(alert, index) in systemAlerts.slice(0, 5)"
-            :key="index"
-            :title="alert.title"
-            :description="alert.message"
-            :type="getAlertType(alert.level)"
-            :closable="true"
-            style="margin-bottom: 10px;"
-          />
-        </el-card>
-      </el-col>
-    </el-row>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import * as icons from '@element-plus/icons-vue'
-import { useRealtime, realtimeClient } from '@/composables/useRealtime'
+import { CircleCheck, Cpu, Connection, Guide, Box, Delete, List, DataAnalysis, Finished } from '@element-plus/icons-vue'
+import { useRealtime } from '@/composables/useRealtime'
 import axios from 'axios'
 
 const {
   connected,
   resourceUsage,
-  activeTasks,
-  systemAlerts,
-  browserStatus,
-  recentLogs
+  activeTasks
 } = useRealtime()
 
-const dashboardStats = ref<any>({
-  tasks: { today: 0, running: 0, completed: 0, success_rate: 0 },
-  stores: { total: 0, active_today: 0 },
-  resources: {}
-})
+const selectedPeriod = ref('60min')
 
 const loadingStatus = ref(false)
 let refreshInterval: number | null = null
-
-const browserCount = computed(() => {
-  return Object.values(browserStatus.value).filter(b => b.status === 'open').length
-})
-
-const failedTasks = computed(() => {
-  return activeTasks.value.filter(t => t.status === 'failed').length
-})
 
 const systemStatus = computed(() => [
   { name: '浏览器服务', status: '运行中', cpu: `${resourceUsage.value?.cpu?.percent || 0}%`, memory: formatMemory(resourceUsage.value?.memory?.used) },
@@ -269,36 +290,6 @@ const getResourceColor = (percent: number) => {
   return '#67C23A'
 }
 
-const getLogType = (level: string) => {
-  switch (level?.toLowerCase()) {
-    case 'error': return 'danger'
-    case 'warning': return 'warning'
-    case 'success': return 'success'
-    default: return 'primary'
-  }
-}
-
-const getAlertType = (level: string) => {
-  switch (level?.toLowerCase()) {
-    case 'error': return 'error'
-    case 'warning': return 'warning'
-    case 'info': return 'info'
-    default: return 'info'
-  }
-}
-
-const formatTime = (timestamp: string | number) => {
-  if (!timestamp) return ''
-  const date = new Date(timestamp)
-  const now = new Date()
-  const diff = now.getTime() - date.getTime()
-
-  if (diff < 60000) return '刚刚'
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`
-  return date.toLocaleString('zh-CN')
-}
-
 const formatMemory = (bytes: number) => {
   if (!bytes) return '-'
   return `${(bytes / 1024 / 1024).toFixed(0)}MB`
@@ -307,16 +298,11 @@ const formatMemory = (bytes: number) => {
 const refreshStatus = async () => {
   loadingStatus.value = true
   try {
-    const res = await axios.get('/api/status/dashboard')
-    dashboardStats.value = res.data
+    await axios.get('/api/status/dashboard')
   } catch (e) {
     console.error('获取状态失败:', e)
   }
   loadingStatus.value = false
-}
-
-const clearAlerts = () => {
-  systemAlerts.value = []
 }
 
 onMounted(async () => {
@@ -335,133 +321,16 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.home {
-  @apply p-6 bg-gray-50 min-h-screen;
-}
-
-.connection-status {
-  @apply flex items-center gap-4 mb-5 p-3 bg-white rounded-lg shadow-sm;
-  border-left: 3px solid var(--color-primary);
-}
-
-.connection-info {
-  @apply text-gray-400 text-xs;
-}
-
-.stat-card {
-  @apply flex items-center gap-4 p-5;
-}
-
-.stat-icon {
-  @apply w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-transform hover:scale-105;
-}
-
-.stat-icon.tasks { @apply bg-blue-100 text-blue-600; }
-.stat-icon.success { @apply bg-green-100 text-green-600; }
-.stat-icon.stores { @apply bg-amber-100 text-amber-600; }
-.stat-icon.alerts { @apply bg-red-100 text-red-600; }
-.stat-icon.alerts.has-alerts {
-  animation: pulse 2s infinite;
+.home-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.5; }
 }
 
-.stat-content { @apply flex-1; }
-
-.stat-value {
-  @apply text-3xl font-bold text-gray-800;
-}
-
-.stat-label {
-  @apply text-sm text-gray-500;
-}
-
-.stat-sub {
-  @apply text-xs text-gray-400 mt-1;
-}
-
-.card-header {
-  @apply flex justify-between items-center;
-}
-
-.task-list-card,
-.system-status-card,
-.activity-card,
-.browser-card,
-.alerts-card {
-  @apply rounded-xl;
-}
-
-.empty-state {
-  @apply flex flex-col items-center justify-center h-48 text-gray-400;
-}
-
-.empty-state p { @apply mt-3; }
-
-.task-list {
-  @apply max-h-64 overflow-y-auto;
-}
-
-.task-item {
-  @apply p-3 border-b border-gray-100 last:border-0;
-}
-
-.task-info {
-  @apply flex justify-between items-center mb-2;
-}
-
-.task-name {
-  @apply font-semibold text-gray-700;
-}
-
-.task-message {
-  @apply text-xs text-gray-400 mt-1;
-}
-
-.resource-bars {
-  @apply py-3;
-}
-
-.resource-item {
-  @apply flex items-center gap-3 mb-3;
-}
-
-.resource-label {
-  @apply w-10 text-xs text-gray-500;
-}
-
-.resource-value {
-  @apply w-12 text-right text-xs text-gray-500;
-}
-
-.high-usage {
-  @apply text-red-500 font-bold;
-}
-
-.log-content {
-  @apply flex items-center gap-2;
-}
-
-.browser-list {
-  @apply max-h-64 overflow-y-auto;
-}
-
-.browser-item {
-  @apply p-3 border-b border-gray-100 last:border-0;
-}
-
-.browser-info {
-  @apply flex justify-between items-center;
-}
-
-.browser-name {
-  @apply font-semibold text-gray-700;
-}
-
-.browser-time {
-  @apply text-xs text-gray-400 mt-1;
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>
