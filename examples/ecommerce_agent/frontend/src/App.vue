@@ -42,19 +42,15 @@
         </div>
         
         <div class="px-3 mb-2">
-          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🤖 AI Agent</div>
+          <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🤖 AI 助手</div>
           <div class="space-y-1">
-            <router-link to="/ai-assistant" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/ai-assistant' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
+            <router-link to="/ai" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/ai' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
               <el-icon :size="18"><component :is="icons.MagicStick" /></el-icon>
-              <span v-show="!isCollapsed" class="text-sm">智能助手</span>
+              <span v-show="!isCollapsed" class="text-sm">智能 AI 助手</span>
             </router-link>
             <router-link to="/agent" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/agent' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
               <el-icon :size="18"><component :is="icons.Robot" /></el-icon>
               <span v-show="!isCollapsed" class="text-sm">Agent工作台</span>
-            </router-link>
-            <router-link to="/chat" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/chat' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-              <el-icon :size="18"><component :is="icons.ChatDotRound" /></el-icon>
-              <span v-show="!isCollapsed" class="text-sm">任务对话</span>
             </router-link>
             <router-link to="/workflow-config" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/workflow-config' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
               <el-icon :size="18"><component :is="icons.Setting" /></el-icon>
@@ -263,6 +259,7 @@ const isDark = ref(false)
 
 const pageTitleMap: Record<string, string> = {
   '/': '控制台',
+  '/ai': '智能 AI 助手',
   '/agent': 'Agent工作台',
   '/chat': '任务对话',
   '/workflow-config': '工作流配置',

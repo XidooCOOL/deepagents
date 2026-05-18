@@ -7,6 +7,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/Home.vue')
   },
   {
+    path: '/ai',
+    name: 'UnifiedAI',
+    component: () => import('../views/UnifiedAI.vue')
+  },
+  {
     path: '/agent',
     name: 'AgentConsole',
     component: () => import('../views/AgentConsole.vue')
