@@ -176,7 +176,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, h } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NMenu, NButton, NIcon, NTag, NSpace, NBreadcrumb, NBreadcrumbItem, NDrawer, NDrawerContent, NDivider, NDropdown, NDropdownOption } from 'naive-ui'
+import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NMenu, NButton, NIcon, NTag, NSpace, NBreadcrumb, NBreadcrumbItem, NDrawer, NDrawerContent, NDivider, NDropdown } from 'naive-ui'
 import * as icons from '@vicons/ionicons5'
 
 const route = useRoute()
