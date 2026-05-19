@@ -1,250 +1,172 @@
 <template>
-  <n-config-provider>
+  <n-config-provider :theme="theme" :theme-overrides="themeOverrides">
     <n-message-provider>
       <n-notification-provider>
         <n-dialog-provider>
-          <div class="app-container h-screen flex bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden">
+          <n-layout has-sider position="absolute" class="h-screen">
             <!-- 侧边栏 -->
-            <aside
-              class="sidebar flex-col border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 flex-shrink-0 transition-all duration-300 flex"
-              :class="isCollapsed ? 'w-16' : 'w-64'"
+            <n-layout-sider
+              bordered
+              collapse-mode="width"
+              :collapsed-width="64"
+              :width="240"
+              :collapsed="isCollapsed"
+              @collapse="toggleSidebar"
+              @expand="toggleSidebar"
             >
               <!-- Logo 区域 -->
-              <div class="logo-area h-16 px-4 flex items-center border-b border-neutral-200 dark:border-neutral-800">
-                <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                    <n-icon :size="20" color="white"><component :is="icons.Cart" /></n-icon>
-                  </div>
-                  <h1 v-show="!isCollapsed" class="text-lg font-semibold tracking-tight m-0">电商助手</h1>
+              <div class="p-4 flex items-center gap-3 border-b border-divider">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <n-icon :size="22" color="white"><component :is="icons.Cart" /></n-icon>
+                </div>
+                <div v-show="!isCollapsed" class="flex-1 overflow-hidden">
+                  <h1 class="text-lg font-bold text-neutral-900 dark:text-white m-0 truncate">电商助手</h1>
                 </div>
               </div>
 
               <!-- 菜单区域 -->
-              <nav class="flex-1 overflow-y-auto py-3">
-                <div class="px-3 mb-2">
-                  <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🖥️ 核心功能</div>
-                  <div class="space-y-1">
-                    <router-link to="/" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Home" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">控制台</span>
-                    </router-link>
-                  </div>
-                </div>
-
-                <div class="px-3 mb-2">
-                  <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🛒 拼多多平台</div>
-                  <div class="space-y-1">
-                    <router-link to="/pdd/dashboard" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/pdd/dashboard' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.StatsChart" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">数据概览</span>
-                    </router-link>
-                    <router-link to="/pdd/stores" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/pdd/stores' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Storefront" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">店铺管理</span>
-                    </router-link>
-                  </div>
-                </div>
-
-                <div class="px-3 mb-2">
-                  <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">🤖 AI 助手</div>
-                  <div class="space-y-1">
-                    <router-link to="/ai" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/ai' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Magic" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">智能 AI 助手</span>
-                    </router-link>
-                    <router-link to="/agent" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/agent' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Person" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">Agent工作台</span>
-                    </router-link>
-                    <router-link to="/workflow-config" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/workflow-config' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Settings" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">工作流配置</span>
-                    </router-link>
-                  </div>
-                </div>
-
-                <div class="px-3 mb-2">
-                  <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">⚙️ 配置管理</div>
-                  <div class="space-y-1">
-                    <router-link to="/stores" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/stores' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Business" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">店铺管理</span>
-                    </router-link>
-                    <router-link to="/elements" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/elements' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.DocText" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">元素管理</span>
-                    </router-link>
-                    <router-link to="/skills" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/skills' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Hammer" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">技能管理</span>
-                    </router-link>
-                    <router-link to="/llm-config" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/llm-config' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Cube" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">模型配置</span>
-                    </router-link>
-                    <router-link to="/feishu" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/feishu' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Chatbubbles" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">飞书集成</span>
-                    </router-link>
-                    <router-link to="/webhooks" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/webhooks' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Notification" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">Webhook管理</span>
-                    </router-link>
-                  </div>
-                </div>
-
-                <div class="px-3 mb-2">
-                  <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">📋 任务中心</div>
-                  <div class="space-y-1">
-                    <router-link to="/tasks" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/tasks' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.List" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">任务管理</span>
-                    </router-link>
-                    <router-link to="/scheduled-tasks" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/scheduled-tasks' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Time" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">定时任务</span>
-                    </router-link>
-                  </div>
-                </div>
-
-                <div class="px-3 mb-2">
-                  <div class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2 px-2" v-show="!isCollapsed">📊 数据中心</div>
-                  <div class="space-y-1">
-                    <router-link to="/orders" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/orders' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Cart" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">订单管理</span>
-                    </router-link>
-                    <router-link to="/products" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/products' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Pricetags" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">商品管理</span>
-                    </router-link>
-                    <router-link to="/product-library" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/product-library' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.Cube" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">商品库</span>
-                    </router-link>
-                    <router-link to="/product-publish" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/product-publish' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.CloudUpload" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">批量发布</span>
-                    </router-link>
-                    <router-link to="/published-products" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/published-products' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.CheckmarkDone" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">已发布</span>
-                    </router-link>
-                    <router-link to="/data" class="menu-item flex items-center gap-3 px-3 py-2 rounded-md transition-colors" :class="route.path === '/data' ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'">
-                      <n-icon :size="18"><component :is="icons.StatsChart" /></n-icon>
-                      <span v-show="!isCollapsed" class="text-sm">数据分析</span>
-                    </router-link>
-                  </div>
-                </div>
-              </nav>
+              <n-menu
+                :collapsed="isCollapsed"
+                :collapsed-width="64"
+                :collapsed-icon-size="22"
+                :options="menuOptions"
+                :value="currentRoute"
+                @update:value="handleMenuClick"
+              />
 
               <!-- 底部区域 -->
-              <div class="border-t border-neutral-200 dark:border-neutral-800 p-3">
+              <div class="p-3 border-t border-divider">
                 <div class="flex items-center justify-between">
                   <div v-show="!isCollapsed" class="flex items-center gap-2">
-                    <span class="text-xs text-neutral-500">v1.0.0</span>
+                    <n-tag size="small" type="info">v1.0.0</n-tag>
                   </div>
-                  <button
-                    @click="toggleSidebar"
-                    class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  >
-                    <n-icon :size="18">
-                      <component :is="isCollapsed ? icons.ArrowForward : icons.ArrowBack" />
-                    </n-icon>
-                  </button>
+                  <n-button size="small" quaternary @click="toggleSidebar">
+                    <template #icon>
+                      <n-icon>
+                        <component :is="isCollapsed ? icons.ArrowForward : icons.ArrowBack" />
+                      </n-icon>
+                    </template>
+                  </n-button>
                 </div>
               </div>
-            </aside>
+            </n-layout-sider>
 
             <!-- 主内容区 -->
-            <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <n-layout style="min-width: 0">
               <!-- 顶部导航栏 -->
-              <header class="header h-16 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 flex items-center px-6 gap-4">
-                <!-- 面包屑 -->
-                <div class="flex items-center gap-2">
-                  <div class="flex items-center gap-2 text-sm">
-                    <span class="text-neutral-600 dark:text-neutral-400">电商助手</span>
-                    <span class="text-neutral-400">/</span>
-                    <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ pageTitle }}</span>
-                  </div>
-                  <n-tag size="small" type="warning" class="ml-2">PRODUCTION</n-tag>
-                </div>
+              <n-layout-header bordered class="px-6 flex items-center">
+                <n-breadcrumb>
+                  <n-breadcrumb-item>
+                    <n-icon><component :is="icons.Home" /></n-icon>
+                  </n-breadcrumb-item>
+                  <n-breadcrumb-item>
+                    {{ pageTitle }}
+                  </n-breadcrumb-item>
+                </n-breadcrumb>
 
                 <div class="flex-1"></div>
 
                 <!-- 右侧操作区 -->
-                <div class="flex items-center gap-3">
-                  <n-button size="small" @click="toggleTheme" quaternary>
+                <n-space align="center">
+                  <n-button size="small" quaternary circle @click="toggleTheme">
                     <template #icon>
                       <n-icon><component :is="isDark ? icons.Sunny : icons.Moon" /></n-icon>
                     </template>
-                    <span class="hidden sm:inline">{{ isDark ? '亮色' : '暗色' }}</span>
                   </n-button>
-
-                  <n-button size="small" @click="showQuickAction = true" quaternary>
+                  
+                  <n-button size="small" quaternary circle @click="showQuickAction = true">
                     <template #icon>
                       <n-icon><component :is="icons.Flash" /></n-icon>
                     </template>
-                    <span class="hidden sm:inline">快捷操作</span>
                   </n-button>
-
-                  <n-button size="small" @click="refreshData" quaternary>
+                  
+                  <n-button size="small" quaternary circle @click="refreshData">
                     <template #icon>
                       <n-icon><component :is="icons.Refresh" /></n-icon>
                     </template>
                   </n-button>
-
-                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center cursor-pointer">
-                    <span class="text-white text-sm font-medium">U</span>
-                  </div>
-                </div>
-              </header>
+                  
+                  <n-dropdown trigger="click">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center cursor-pointer">
+                      <span class="text-white text-sm font-medium">U</span>
+                    </div>
+                    <template #options>
+                      <n-dropdown-option :icon="renderIcon(icons.Person)">
+                        个人中心
+                      </n-dropdown-option>
+                      <n-dropdown-option :icon="renderIcon(icons.Settings)">
+                        设置
+                      </n-dropdown-option>
+                      <n-dropdown-option :icon="renderIcon(icons.LogOut)">
+                        退出登录
+                      </n-dropdown-option>
+                    </template>
+                  </n-dropdown>
+                </n-space>
+              </n-layout-header>
 
               <!-- 内容区域 -->
-              <div class="flex-1 overflow-auto p-6">
+              <n-layout-content content-style="padding: 24px; min-height: calc(100vh - 64px);">
                 <router-view />
-              </div>
-            </main>
+              </n-layout-content>
+            </n-layout>
+          </n-layout>
 
-            <!-- 快捷操作抽屉 -->
-            <n-drawer v-model:show="showQuickAction" title="⚡ 快捷操作" placement="right" :width="400">
-              <div class="p-4 space-y-4">
-                <div class="space-y-2">
-                  <h4 class="text-sm font-semibold text-neutral-500">🎯 创建任务</h4>
-                  <n-button type="primary" @click="$router.push('/agent')" style="width: 100%;">
+          <!-- 快捷操作抽屉 -->
+          <n-drawer v-model:show="showQuickAction" placement="right" :width="360">
+            <n-drawer-content title="⚡ 快捷操作" native-scrollbar>
+              <div class="p-4 space-y-6">
+                <div class="space-y-3">
+                  <div class="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    <n-icon><component :is="icons.Create" /></n-icon>
+                    <span>创建任务</span>
+                  </div>
+                  <n-button type="primary" @click="$router.push('/agent')" block>
+                    <template #icon><n-icon><component :is="icons.Magic" /></n-icon></template>
                     智能任务创建
                   </n-button>
-                  <n-button @click="$router.push('/tasks')" style="width: 100%;">
+                  <n-button @click="$router.push('/tasks')" block>
+                    <template #icon><n-icon><component :is="icons.Add" /></n-icon></template>
                     手动创建任务
                   </n-button>
                 </div>
 
                 <n-divider />
 
-                <div class="space-y-2">
-                  <h4 class="text-sm font-semibold text-neutral-500">📝 快速配置</h4>
-                  <n-button @click="$router.push('/workflow-config')" style="width: 100%;">
+                <div class="space-y-3">
+                  <div class="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    <n-icon><component :is="icons.Settings" /></n-icon>
+                    <span>快速配置</span>
+                  </div>
+                  <n-button @click="$router.push('/workflow-config')" block>
+                    <template #icon><n-icon><component :is="icons.Filter" /></n-icon></template>
                     工作流配置
                   </n-button>
-                  <n-button @click="$router.push('/elements')" style="width: 100%;">
+                  <n-button @click="$router.push('/elements')" block>
+                    <template #icon><n-icon><component :is="icons.DocText" /></n-icon></template>
                     元素管理
                   </n-button>
                 </div>
 
                 <n-divider />
 
-                <div class="space-y-2">
-                  <h4 class="text-sm font-semibold text-neutral-500">📊 查看数据</h4>
-                  <n-button @click="$router.push('/data')" style="width: 100%;">
+                <div class="space-y-3">
+                  <div class="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    <n-icon><component :is="icons.StatsChart" /></n-icon>
+                    <span>查看数据</span>
+                  </div>
+                  <n-button @click="$router.push('/data')" block>
+                    <template #icon><n-icon><component :is="icons.TrendingUp" /></n-icon></template>
                     数据分析
                   </n-button>
-                  <n-button @click="$router.push('/orders')" style="width: 100%;">
+                  <n-button @click="$router.push('/orders')" block>
+                    <template #icon><n-icon><component :is="icons.Cart" /></n-icon></template>
                     订单列表
                   </n-button>
                 </div>
               </div>
-            </n-drawer>
-          </div>
+            </n-drawer-content>
+          </n-drawer>
         </n-dialog-provider>
       </n-notification-provider>
     </n-message-provider>
@@ -253,17 +175,177 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, h } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NMenu, NButton, NIcon, NTag, NSpace, NBreadcrumb, NBreadcrumbItem, NDrawer, NDrawerContent, NDivider, NDropdown, NDropdownOption } from 'naive-ui'
 import * as icons from '@vicons/ionicons5'
 
 const route = useRoute()
+const router = useRouter()
 const showQuickAction = ref(false)
 const isCollapsed = ref(false)
 const isDark = ref(false)
 
+const themeOverrides = {
+  common: {
+    primaryColor: '#18a058',
+    primaryColorHover: '#36ad6a',
+    primaryColorPressed: '#0c7a43',
+    primaryColorSuppl: '#36ad6a'
+  }
+}
+
+const theme = computed(() => {
+  return isDark.value ? { name: 'dark' } : { name: 'light' }
+})
+
 const renderIcon = (icon: any) => {
   return () => h(icon)
 }
+
+const menuOptions = [
+  {
+    label: '核心功能',
+    key: 'core',
+    type: 'group',
+    children: [
+      {
+        label: '控制台',
+        key: '/',
+        icon: renderIcon(icons.Home)
+      }
+    ]
+  },
+  {
+    label: '拼多多平台',
+    key: 'pdd',
+    type: 'group',
+    children: [
+      {
+        label: '数据概览',
+        key: '/pdd/dashboard',
+        icon: renderIcon(icons.StatsChart)
+      },
+      {
+        label: '店铺管理',
+        key: '/pdd/stores',
+        icon: renderIcon(icons.Storefront)
+      }
+    ]
+  },
+  {
+    label: 'AI 助手',
+    key: 'ai',
+    type: 'group',
+    children: [
+      {
+        label: '智能 AI 助手',
+        key: '/ai',
+        icon: renderIcon(icons.Magic)
+      },
+      {
+        label: 'Agent工作台',
+        key: '/agent',
+        icon: renderIcon(icons.Person)
+      },
+      {
+        label: '工作流配置',
+        key: '/workflow-config',
+        icon: renderIcon(icons.Settings)
+      }
+    ]
+  },
+  {
+    label: '配置管理',
+    key: 'config',
+    type: 'group',
+    children: [
+      {
+        label: '店铺管理',
+        key: '/stores',
+        icon: renderIcon(icons.Business)
+      },
+      {
+        label: '元素管理',
+        key: '/elements',
+        icon: renderIcon(icons.DocText)
+      },
+      {
+        label: '技能管理',
+        key: '/skills',
+        icon: renderIcon(icons.Hammer)
+      },
+      {
+        label: '模型配置',
+        key: '/llm-config',
+        icon: renderIcon(icons.Cube)
+      },
+      {
+        label: '飞书集成',
+        key: '/feishu',
+        icon: renderIcon(icons.Chatbubbles)
+      },
+      {
+        label: 'Webhook管理',
+        key: '/webhooks',
+        icon: renderIcon(icons.Notification)
+      }
+    ]
+  },
+  {
+    label: '任务中心',
+    key: 'tasks',
+    type: 'group',
+    children: [
+      {
+        label: '任务管理',
+        key: '/tasks',
+        icon: renderIcon(icons.List)
+      },
+      {
+        label: '定时任务',
+        key: '/scheduled-tasks',
+        icon: renderIcon(icons.Time)
+      }
+    ]
+  },
+  {
+    label: '数据中心',
+    key: 'data',
+    type: 'group',
+    children: [
+      {
+        label: '订单管理',
+        key: '/orders',
+        icon: renderIcon(icons.Cart)
+      },
+      {
+        label: '商品管理',
+        key: '/products',
+        icon: renderIcon(icons.Pricetags)
+      },
+      {
+        label: '商品库',
+        key: '/product-library',
+        icon: renderIcon(icons.Cube)
+      },
+      {
+        label: '批量发布',
+        key: '/product-publish',
+        icon: renderIcon(icons.CloudUpload)
+      },
+      {
+        label: '已发布商品',
+        key: '/published-products',
+        icon: renderIcon(icons.CheckmarkDone)
+      },
+      {
+        label: '数据分析',
+        key: '/data',
+        icon: renderIcon(icons.StatsChart)
+      }
+    ]
+  }
+]
 
 const pageTitleMap: Record<string, string> = {
   '/': '控制台',
@@ -291,7 +373,12 @@ const pageTitleMap: Record<string, string> = {
   '/pdd/stores': '店铺管理'
 }
 
+const currentRoute = computed(() => route.path)
 const pageTitle = computed(() => pageTitleMap[route.path] || '控制台')
+
+const handleMenuClick = (key: string) => {
+  router.push(key)
+}
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
@@ -336,15 +423,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.app-container {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-.menu-item {
-  text-decoration: none;
-}
-
-.menu-item:hover {
-  text-decoration: none;
+:deep(.n-layout-sider) {
+  transition: all 0.3s ease;
 }
 </style>
