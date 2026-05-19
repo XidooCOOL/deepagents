@@ -1,195 +1,255 @@
-# 多平台电商Agent系统需求与架构方案
 
-## 终极完整架构方案（适配：抖店 / 拼多多 / 淘宝 + 多 IM + 定时任务 + DOM 元素模块化 + Agent 实时状态进度 + 多店铺隔离 + 知识库 / 经验库 + 可打包 EXE）
+# 多平台电商 Agent 系统
 
-## 一、整体技术栈（定死，易开发、开源、好打包）
+基于 DeepAgents 框架的智能电商自动化系统，支持抖音、拼多多、淘宝等多个电商平台。
 
-### 核心底座
-- **AI Agent 框架：DeepAgents（本项目框架）
-- 浏览器内核：Playwright（多 Profile 隔离、Tab 复用、DOM 抓取、防串号）
-- 后端：FastAPI + 定时任务 APScheduler
-- 前端 UI：Vue3 + Element Plus + 进度可视化 + 任务看板
-- 数据库：业务库：SQLite（单文件，打包 EXE 无依赖）向量库：Chroma（本地文件向量库，不用装服务，适配 EXE）
-- IM 整合：企微 / 飞书 / 钉钉 / 千牛 / 抖店 IM / 拼多多 IM 统一网关
-- 打包：PyInstaller 打包成 单 EXE 桌面应用
+## 功能特性
 
-## 二、全部需求一一落地实现
+- 🌐 **多平台支持**：抖音、拼多多、淘宝等主流电商平台
+- 🤖 **智能 Agent**：基于 DeepAgents 的自动化任务执行
+- 📊 **数据管理**：订单、商品、数据统计一体化管理
+- ⏰ **定时任务**：支持灵活的定时任务配置
+- 🔒 **安全可靠**：浏览器指纹反检测，多账户隔离
+- 📱 **现代化 UI**：基于 Naive UI 的响应式前端界面
+- 💬 **实时通信**：WebSocket 实时任务状态更新
 
-### 1. 多电商平台支持：抖音 / 拼多多 / 淘宝
-- 每个平台独立 页面路由配置 + DOM 元素模块 + 操作流程模板
-- 新增平台只新增一套适配文件，不改动 Agent 核心逻辑
-- 支持：商品自动上架、自动好评、自动店铺运营、自动抓取订单 / 推广数据
+## 技术栈
 
-### 2. 定时任务系统
-- 按店铺、按平台设置定时：每日上架、定时好评、定时数据拉取、定时 AI 分析
-- 前端 UI 可视化：定时任务列表、启停、编辑周期、下次执行时间、执行日志
-- 任务串行 / 并发控制，防止多店铺浏览器冲突
+### 后端
+- **框架**: FastAPI
+- **数据库**: SQLite + SQLAlchemy ORM
+- **浏览器自动化**: Playwright
+- **任务调度**: APScheduler
+- **AI框架**: DeepAgents
 
-### 3. DOM 元素模块化（核心重点：不用每次重新找元素）
-- 把抖音 / 拼多多 / 淘宝每个页面的按钮、输入框、弹窗、列表 DOM 选择器单独抽成 JSON / 类模块
-- 按「平台 - 页面 - 元素名」统一注册：已生成代码
-- Agent 调用时直接按名称调用元素：get_element("拼多多-商品上架-发布按钮")
-- 页面改版只改对应 JSON 配置，不用改 Agent 业务逻辑
-- 内置元素智能重试、元素等待、弹窗拦截封装
+### 前端
+- **框架**: Vue 3 + TypeScript
+- **UI组件**: Naive UI
+- **路由**: Vue Router
+- **构建工具**: Vite
+- **CSS框架**: UnoCSS
 
-### 4. 多店铺多 Profile 隔离 + 浏览器复用 + Tab 识别
-- 每个店铺独立 Playwright Profile 隔离目录，Cookie / 指纹 / 账号完全隔离，绝不串店
-- 全局启动一个浏览器进程复用，每个店铺分配独立 Tab 标签
-- Tab 做唯一 ID 绑定店铺，Agent 自动识别切换标签、刷新、关闭
-- 支持后台静默运行 + 前台可视调试双模式
+## 快速开始
 
-### 5. Agent 工作状态 + 任务执行进度 可视化
-- Agent 全局状态：空闲 / 执行中 / 等待输入 / 异常暂停
-- 每个店铺任务：进度条、当前步骤、已完成 / 待完成、耗时、实时日志
-- 任务层级可视化：主任务→子步骤→每一步 DOM 操作记录
-- 异常标红、断点暂停、手动介入继续
+### 环境要求
 
-### 6. 产品知识库 + 运营经验库
-- 产品知识库：商品参数、规格、话术、平台规则
-- 经验库：历史运营操作、成功 / 失败案例、平台避坑点、定时策略模板
-- 向量检索：Agent 自动检索相似场景经验，自我进化生成运营策略
-- 每日交易 / 推广数据 + 店铺操作日志 自动入库，大模型每日做数据分析、给出优化策略
+- Python 3.11+
+- Node.js 18+
+- Playwright 浏览器
 
-### 7. 店铺操作日志 + 按类型筛选
-- 日志粒度：店铺 ID、平台、操作类型（上架 / 好评 / 数据采集 / IM 回复）、时间、状态、截图、报错信息
-- 前端支持：按店铺、平台、操作类型、时间范围筛选、搜索、导出
-- 日志实时推前端，可追溯每一步自动化动作
+### 后端启动
 
-### 8. 主流 IM 频道整合
-- 企微 / 飞书 / 钉钉 机器人 Webhook 接入
-- 千牛 / 抖店 / 拼多多 商家 IM 通过 Playwright 页面自动化抓取消息、自动回复
-- Telegram/Discord 预留扩展
-- 所有消息聚合到前端 IM 面板，AI 自动回复、工单告警、运营日报推送 IM 群
+```bash
+# 进入后端目录
+cd examples/ecommerce_agent
 
-## 三、项目目录结构（可直接照着开发）
+# 使用 uv 安装依赖（推荐）
+uv sync
+
+# 或使用 pip
+pip install -e .
+
+# 初始化数据库
+python -c "from backend.database.models import init_db; init_db()"
+
+# 启动后端服务
+python -m backend.main
+```
+
+后端服务将在 http://localhost:8000 启动
+
+### 前端启动
+
+```bash
+# 进入前端目录
+cd frontend
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+前端服务将在 http://localhost:5173 启动
+
+### 完整启动（使用脚本）
+
+```bash
+# 使用管理脚本启动
+./manage.sh start
+
+# 停止服务
+./manage.sh stop
+
+# 查看状态
+./manage.sh status
+```
+
+## 项目结构
 
 ```
 ecommerce_agent/
-├── README.md
-├── pyproject.toml
-├── uv.lock
-├── .gitignore
-├── backend/
-│   ├── __init__.py
-│   ├── main.py                 # FastAPI 主入口
-│   ├── config.py              # 配置管理
-│   ├── database/
-│   │   ├── __init__.py
-│   │   ├── models.py        # SQLite 数据库模型
-│   │   └── vector_store.py  # Chroma 向量库
-│   ├── agent/
-│   │   ├── __init__.py
-│   │   ├── core.py           # DeepAgents Agent 核心
-│   │   ├── tools.py          # Agent 工具定义
-│   │   ├── state.py        # 状态管理
-│   │   └── prompts.py      # 提示词
-│   ├── browser/
-│   │   ├── __init__.py
-│   │   ├── manager.py        # 浏览器管理
-│   │   ├── profile.py          # Profile 管理
-│   │   ├── tab.py           # Tab 管理
-│   │   ├── elements.py      # DOM 元素模块
-│   │   └── anti_detect.py  # 防检测反风控
-│   ├── scheduler/
-│   │   ├── __init__.py
-│   │   └── scheduler.py     # 定时任务
-│   ├── knowledge/
-│   │   ├── __init__.py
-│   │   ├── knowledge.py    # 知识库
-│   │   └── experience.py   # 经验库
-│   └── api/
-│       ├── __init__.py
-│       ├── stores.py        # 店铺 API
-│       ├── tasks.py         # 任务 API
-│       ├── logs.py          # 日志 API
-│       └── knowledge.py    # 知识库 API
-├── frontend/
-│   ├── index.html
-│   ├── package.json
-│   ├── vite.config.ts
-│   ├── tsconfig.json
-│   └── src/
-│       ├── main.ts
-│       ├── App.vue
-│       ├── router/
-│       ├── components/
-│       ├── views/
-│       └── api/
-├── configs/
-│   ├── platforms/
-│   │   ├── douyin.json
-│   │   ├── pinduoduo.json
-│   │   └── taobao.json
-│   └── elements/
-│       ├── douyin/
-│       ├── pinduoduo/
-│       └── taobao/
-├── data/
-│   ├── db/
-│   ├── screenshots/
-│   ├── recordings/
-│   └── profiles/
-├── im_gateway/           # 预留 IM 网关（暂不实现）
-└── scripts/
-    └── build.py
+├── backend/              # 后端代码
+│   ├── api/             # API 路由
+│   ├── agent/           # Agent 核心逻辑
+│   ├── browser/         # 浏览器自动化
+│   ├── database/        # 数据库模型
+│   ├── utils/           # 工具函数
+│   └── main.py          # FastAPI 入口
+├── frontend/            # 前端代码
+│   ├── src/
+│   │   ├── views/       # 页面组件
+│   │   ├── composables/ # 组合式函数
+│   │   ├── api/         # API 调用
+│   │   └── router/      # 路由配置
+│   └── package.json
+├── configs/             # 配置文件
+├── data/                # 数据目录
+├── tests/               # 测试文件
+└── pyproject.toml       # Python 项目配置
 ```
 
-## 四、前端 UI 必包含的功能模块
+## 使用指南
 
-- 总控制台：Agent 全局状态、在线店铺数、运行中任务数
-- 店铺管理：多店铺添加、平台选择、Profile 隔离配置、状态开关
-- 任务看板：所有任务进度条、实时步骤、暂停 / 终止 / 重试
-- 定时任务管理：添加定时、周期设置、启停、执行记录
-- DOM 元素模块管理：可视化编辑各平台页面元素、新增 / 修改选择器
-- 操作日志中心：多条件筛选、详情查看、截图预览、导出
-- 数据报表：每日交易 / 推广数据图表、AI 分析结论
-- 知识库 / 经验库：录入、检索、AI 自动沉淀经验
-- IM 聚合聊天：多 IM 频道统一会话、AI 自动回复、人工接管
+### 1. 配置店铺
 
-## 五、为什么这套架构能直接打包 EXE
+1. 访问前端页面，进入"店铺管理"
+2. 点击"添加店铺"
+3. 选择平台（抖音/拼多多/淘宝）
+4. 填写店铺信息并保存
 
-- 全用本地轻量化组件：SQLite + Chroma 无外部依赖
-- Playwright 浏览器可内嵌依赖
-- Vue 前端打包静态资源嵌入后端
-- 用 PyInstaller 一键打包成单文件 EXE，双击直接运行，不用装环境
+### 2. 创建任务
 
-## 六、最终确定需求（已剔除IM即时聊天，仅预留）
+1. 进入"任务管理"页面
+2. 点击"新建任务"
+3. 选择店铺和任务类型
+4. 配置任务参数并提交
 
-### 必做核心
-- 支持三大电商平台：抖音 / 拼多多 / 淘宝
-- 多店铺 + 多浏览器Profile隔离，完全互不串号、隔离Cookie指纹
-- 浏览器全局复用 + Tab标签识别绑定店铺
-- DOM元素模块化各平台页面元素抽成独立配置模块Agent直接调用元素名，不用每次重写定位器页面改版只改配置，不动业务逻辑
-- 定时任务系统定时自动上架、定时好评、定时数据拉取、定时AI分析前端可管理周期、启停、看执行记录
-- Agent工作状态 + 任务执行进度 可视化实时看每个任务步骤、进度条、运行状态、报错前端UI直观展示空闲/执行中/暂停/异常
-- 店铺独立操作日志按店铺、按操作类型筛选、时间筛选日志入库、可查看详情、截图、导出
-- 每日交易/推广数据自动采集入库大模型结合数据+日志做运营分析、给出策略
-- 产品知识库 + 运营经验库任务执行、日志、数据自动沉淀经验Agent具备自我进化、迭代运营策略能力
-- 前端UI完整可视化，操作简单
-- 整体项目可打包成单EXE桌面程序
+### 3. 查看数据
 
-### 搁置预留（暂不开发，架构留好插槽）
-- IM聚合聊天、多IM统一会话、AI自动回复、人工接管
-- 只在项目目录里预留 im_gateway 空目录和接口占位，后续要做直接补适配层即可，不用改整体架构。
+- **订单管理**: 查看和管理订单数据
+- **商品管理**: 管理商品库和已发布商品
+- **数据分析**: 查看销售数据和趋势分析
 
-### 技术栈不变（适配上面所有需求、好开发好打包）
-- Agent框架：DeepAgents
-- 浏览器：Playwright（多Profile、Tab管理、DOM模块化）
-- 后端：FastAPI + APScheduler 定时任务
-- 前端：Vue3 + Element Plus + 任务进度看板
-- 数据库：SQLite（业务/日志/任务）+ Chroma（向量知识库/经验库）
-- 打包：PyInstaller 打包独立EXE
+## 测试
 
-## 七、开发优先级建议
+### 后端测试
 
-### 第一阶段（先做这3个，保证能跑通且不封号）
-防检测反风控 → 全局异常自动恢复 → 自动截图
+```bash
+# 运行所有测试
+pytest
 
-### 第二阶段（保证能用且好维护）
-任务断点续跑 → DOM多选择器+版本管理 → 闲置Tab回收
+# 运行特定测试文件
+pytest backend/tests/test_api.py
 
-### 第三阶段（提升体验）
-任务模板+批量操作 → 配置导入导出 → 账号加密
+# 显示详细输出
+pytest -v
 
-### 第四阶段（后续扩展）
-本地大模型 → 资源监控 → Webhook告警
+# 生成覆盖率报告
+pytest --cov=backend
+```
+
+### 前端测试
+
+```bash
+# 运行测试
+npm run test
+
+# 启动测试 UI
+npm run test:ui
+
+# 生成覆盖率报告
+npm run test:coverage
+```
+
+## API 文档
+
+启动后端服务后，访问以下地址查看 API 文档：
+
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+### 主要 API 端点
+
+| 端点 | 方法 | 描述 |
+|------|------|------|
+| `/api/stores` | GET/POST | 店铺管理 |
+| `/api/tasks` | GET/POST | 任务管理 |
+| `/api/dom-elements` | GET/POST | DOM元素管理 |
+| `/api/scheduled-tasks` | GET/POST | 定时任务管理 |
+| `/api/orders` | GET | 订单数据 |
+| `/api/products` | GET | 商品数据 |
+| `/api/analytics/*` | GET | 数据分析 |
+| `/api/realtime/ws` | WS | 实时通信 |
+
+详细的 API 文档请参考 [API.md](./docs/API.md)
+
+## 开发指南
+
+### 添加新的电商平台
+
+1. 在 `backend/browser/` 创建平台适配模块
+2. 在 `configs/elements/` 添加平台元素配置
+3. 在前端添加相应的页面组件
+4. 更新路由配置
+
+### 创建新的任务类型
+
+1. 在 `backend/agent/task_templates.py` 添加任务模板
+2. 在前端添加任务配置界面
+3. 实现对应的自动化逻辑
+
+详细的开发指南请参考 [DEVELOPMENT.md](./docs/DEVELOPMENT.md)
+
+## 部署
+
+### Docker 部署
+
+```bash
+# 构建镜像
+docker build -t ecommerce-agent .
+
+# 运行容器
+docker run -p 8000:8000 -p 5173:5173 ecommerce-agent
+```
+
+### 生产环境配置
+
+1. 修改 `.env` 配置文件
+2. 设置生产环境变量
+3. 配置反向代理（Nginx）
+4. 设置 HTTPS 证书
+
+详细部署指南请参考 [DEPLOYMENT.md](./docs/DEPLOYMENT.md)
+
+## 贡献指南
+
+我们欢迎任何形式的贡献！请参考 [CONTRIBUTING.md](./docs/CONTRIBUTING.md) 了解如何参与项目。
+
+## 安全说明
+
+⚠️ 重要提示：
+- 请妥善保管店铺凭证
+- 不要在生产环境使用默认密钥
+- 定期备份数据库
+- 遵守各电商平台的使用规则
+
+## 许可证
+
+本项目采用 MIT 许可证。详见 [LICENSE](./LICENSE) 文件。
+
+## 联系方式
+
+- 问题反馈: GitHub Issues
+- 邮件: support@example.com
+
+## 致谢
+
+- [DeepAgents](https://github.com/langchain-ai/deepagents) - AI Agent 框架
+- [Naive UI](https://www.naiveui.com) - Vue 3 组件库
+- [Playwright](https://playwright.dev) - 浏览器自动化框架
+
+---
+
+**注意**: 本项目仅供学习和研究使用，请勿用于非法用途。使用本项目产生的一切后果由使用者自行承担。
