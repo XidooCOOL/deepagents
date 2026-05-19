@@ -38,7 +38,7 @@
             <div class="chat-messages" ref="messagesContainer">
               <div v-if="messages.length === 0" class="welcome-state">
                 <div class="welcome-icon">
-                  <el-icon :size="72"><MagicStick /></el-icon>
+                  <el-icon :size="72"><component :is="getIcon('MagicStick')" /></el-icon>
                 </div>
                 <h3>欢迎使用智能 AI 助手</h3>
                 <p>告诉我你想要做什么，AI 会自动识别你的需求并匹配合适的功能</p>
@@ -52,7 +52,7 @@
                       @click="selectScenario(scenario)"
                     >
                       <div class="scenario-icon" :style="{ background: scenario.color }">
-                        <el-icon :size="28"><component :is="scenario.icon" /></el-icon>
+                        <el-icon :size="28"><component :is="getIcon(scenario.icon)" /></el-icon>
                       </div>
                       <h4>{{ scenario.title }}</h4>
                       <p>{{ scenario.desc }}</p>
@@ -87,7 +87,7 @@
                     <div v-else-if="msg.type === 'intent'">
                       <div class="intent-detection">
                         <div class="intent-header">
-                          <el-icon :size="20"><MagicStick /></el-icon>
+                          <el-icon :size="20"><component :is="getIcon('MagicStick')" /></el-icon>
                           <span>智能识别结果</span>
                         </div>
                         
@@ -233,7 +233,7 @@
               <div v-if="isTyping" class="message assistant typing">
                 <div class="message-avatar">
                   <el-avatar :size="38" style="background: #67c23a;">
-                    <el-icon class="is-loading"><Loading /></el-icon>
+                    <el-icon class="is-loading"><component :is="getIcon('Loading')" /></el-icon>
                   </el-avatar>
                 </div>
                 <div class="message-content">
@@ -318,11 +318,11 @@
                 <span>🚀 快捷操作</span>
               </template>
               <div class="action-list">
-                <div v-for="action in quickActions" :key="action.id" class="action-item" @click="sendQuickAction(action.text)">
-                  <el-icon :size="18"><component :is="action.icon" /></el-icon>
-                  <span>{{ action.text }}</span>
-                </div>
-              </div>
+                    <div v-for="action in quickActions" :key="action.id" class="action-item" @click="sendQuickAction(action.text)">
+                      <el-icon :size="18"><component :is="getIcon(action.icon)" /></el-icon>
+                      <span>{{ action.text }}</span>
+                    </div>
+                  </div>
             </el-card>
 
             <!-- 最近任务 -->
@@ -334,22 +334,22 @@
                 </div>
               </template>
               <div class="task-list">
-                <div v-for="task in recentTasks" :key="task.id" class="task-item">
-                  <div class="task-icon" :style="{ background: task.color }">
-                    <el-icon><component :is="task.icon" /></el-icon>
+                    <div v-for="task in recentTasks" :key="task.id" class="task-item">
+                      <div class="task-icon" :style="{ background: task.color }">
+                        <el-icon><component :is="getIcon(task.icon)" /></el-icon>
+                      </div>
+                      <div class="task-info">
+                        <div class="task-name">{{ task.name }}</div>
+                        <div class="task-time">{{ task.time }}</div>
+                      </div>
+                      <el-tag :type="getTaskStatusType(task.status)" size="small">
+                        {{ task.status }}
+                      </el-tag>
+                    </div>
+                    <div v-if="recentTasks.length === 0" class="empty-tasks">
+                      暂无任务记录
+                    </div>
                   </div>
-                  <div class="task-info">
-                    <div class="task-name">{{ task.name }}</div>
-                    <div class="task-time">{{ task.time }}</div>
-                  </div>
-                  <el-tag :type="getTaskStatusType(task.status)" size="small">
-                    {{ task.status }}
-                  </el-tag>
-                </div>
-                <div v-if="recentTasks.length === 0" class="empty-tasks">
-                  暂无任务记录
-                </div>
-              </div>
             </el-card>
 
             <!-- 能力库 -->
@@ -358,13 +358,13 @@
                 <span>✨ AI 能力</span>
               </template>
               <div class="abilities-grid">
-                <div v-for="ability in aiAbilities" :key="ability.id" class="ability-item">
-                  <div class="ability-icon" :style="{ color: ability.color }">
-                    <el-icon :size="20"><component :is="ability.icon" /></el-icon>
+                    <div v-for="ability in aiAbilities" :key="ability.id" class="ability-item">
+                      <div class="ability-icon" :style="{ color: ability.color }">
+                        <el-icon :size="20"><component :is="getIcon(ability.icon)" /></el-icon>
+                      </div>
+                      <span class="ability-name">{{ ability.name }}</span>
+                    </div>
                   </div>
-                  <span class="ability-name">{{ ability.name }}</span>
-                </div>
-              </div>
             </el-card>
           </div>
         </el-col>
@@ -374,29 +374,29 @@
     <!-- 模板抽屉 -->
     <el-drawer v-model="showTemplates" title="📝 任务模板" size="420px" direction="rtl">
       <div class="template-list">
-        <el-card
-          v-for="template in taskTemplates"
-          :key="template.id"
-          class="template-card"
-          shadow="hover"
-          @click="useTemplate(template)"
-        >
-          <div class="template-header">
-            <div class="template-icon" :style="{ background: template.color }">
-              <el-icon :size="22"><component :is="template.icon" /></el-icon>
-            </div>
-            <div class="template-info">
-              <h4>{{ template.name }}</h4>
-              <p>{{ template.desc }}</p>
-            </div>
+            <el-card
+              v-for="template in taskTemplates"
+              :key="template.id"
+              class="template-card"
+              shadow="hover"
+              @click="useTemplate(template)"
+            >
+              <div class="template-header">
+                <div class="template-icon" :style="{ background: template.color }">
+                  <el-icon :size="22"><component :is="getIcon(template.icon)" /></el-icon>
+                </div>
+                <div class="template-info">
+                  <h4>{{ template.name }}</h4>
+                  <p>{{ template.desc }}</p>
+                </div>
+              </div>
+              <div class="template-tags">
+                <el-tag v-for="tag in template.tags" :key="tag" size="small" type="info">
+                  {{ tag }}
+                </el-tag>
+              </div>
+            </el-card>
           </div>
-          <div class="template-tags">
-            <el-tag v-for="tag in template.tags" :key="tag" size="small" type="info">
-              {{ tag }}
-            </el-tag>
-          </div>
-        </el-card>
-      </div>
     </el-drawer>
 
     <!-- 推荐抽屉 -->
@@ -491,13 +491,41 @@ import markdownIt from 'markdown-it'
 
 const md = markdownIt()
 
+// 类型定义
+interface Message {
+  role: 'user' | 'assistant'
+  content: string | any
+  type: 'text' | 'intent' | 'plan' | 'execution' | 'result'
+  intentType?: string
+  timestamp: number
+}
+
+interface IntentResult {
+  intentType: string
+  platforms: string[]
+  confidence: number
+  suggestedModes: Array<{ value: string; label: string }>
+  userInput: string
+}
+
+interface Plan {
+  steps: Array<{ name: string; desc: string }>
+  duration: number
+  priority: '高' | '中' | '低'
+}
+
+// 获取图标组件
+const getIcon = (iconName: string) => {
+  return (icons as any)[iconName] || icons.MagicStick
+}
+
 // 状态
 const currentMode = ref('auto')
-const messages = ref([])
+const messages = ref<Message[]>([])
 const inputMessage = ref('')
 const isProcessing = ref(false)
 const isTyping = ref(false)
-const messagesContainer = ref(null)
+const messagesContainer = ref<HTMLElement | null>(null)
 const showTemplates = ref(false)
 const showRecommendations = ref(false)
 const connected = ref(true)
@@ -695,7 +723,7 @@ const sendMessage = async () => {
 }
 
 // 智能模式处理
-const handleAutoMode = async (input) => {
+const handleAutoMode = async (input: string) => {
   const intentResult = analyzeIntent(input)
   isTyping.value = false
 
@@ -704,11 +732,30 @@ const handleAutoMode = async (input) => {
   addMessage('assistant', intentResult, 'intent', intentResult.intentType)
 }
 
+const getSuggestedModes = (intentType: string) => {
+  if (['publish', 'review', 'data', 'order'].includes(intentType)) {
+    return [
+      { value: 'agent', label: 'Agent 执行' },
+      { value: 'planning', label: '任务规划' }
+    ]
+  } else if (['price', 'platform'].includes(intentType)) {
+    return [
+      { value: 'chat', label: '对话交互' },
+      { value: 'planning', label: '任务规划' }
+    ]
+  }
+  return [
+    { value: 'chat', label: '对话交互' },
+    { value: 'planning', label: '任务规划' },
+    { value: 'agent', label: 'Agent 执行' }
+  ]
+}
+
 // 意图分析
-const analyzeIntent = (input) => {
+const analyzeIntent = (input: string): IntentResult => {
   const lower = input.toLowerCase()
   let intentType = 'unknown'
-  let platforms = []
+  let platforms: string[] = []
   let confidence = 0.5
 
   if (lower.includes('发布') || lower.includes('上架') || lower.includes('商品')) {
@@ -717,7 +764,7 @@ const analyzeIntent = (input) => {
   } else if (lower.includes('好评') || lower.includes('评价') || lower.includes('回复')) {
     intentType = 'review'
     confidence = 0.88
-  } else if (lower.includes('数据') || lower.includes('采集') || lower.includes('订单')) {
+  } else if (lower.includes('数据') || lower.includes('采集')) {
     intentType = 'data'
     confidence = 0.82
   } else if (lower.includes('订单') || lower.includes('发货') || lower.includes('处理')) {
@@ -750,27 +797,8 @@ const analyzeIntent = (input) => {
   }
 }
 
-const getSuggestedModes = (intentType) => {
-  if (['publish', 'review', 'data', 'order'].includes(intentType)) {
-    return [
-      { value: 'agent', label: 'Agent 执行' },
-      { value: 'planning', label: '任务规划' }
-    ]
-  } else if (['price', 'platform'].includes(intentType)) {
-    return [
-      { value: 'chat', label: '对话交互' },
-      { value: 'planning', label: '任务规划' }
-    ]
-  }
-  return [
-    { value: 'chat', label: '对话交互' },
-    { value: 'planning', label: '任务规划' },
-    { value: 'agent', label: 'Agent 执行' }
-  ]
-}
-
 // 继续执行建议
-const proceedWithSuggestion = async (msg) => {
+const proceedWithSuggestion = async (msg: Message) => {
   const mode = suggestedMode.value
   currentMode.value = mode
 
@@ -783,20 +811,20 @@ const proceedWithSuggestion = async (msg) => {
   }
 }
 
-const refineIntent = (msg) => {
+const refineIntent = (msg: Message) => {
   inputMessage.value = '我想调整一下需求：'
   scrollToBottom()
 }
 
 // 任务规划模式
-const handlePlanningMode = async (input) => {
+const handlePlanningMode = async (input: string) => {
   isTyping.value = false
 
   const plan = generatePlan(input)
   addMessage('assistant', plan, 'plan')
 }
 
-const generatePlan = (input) => {
+const generatePlan = (input: string): Plan => {
   const steps = [
     { name: '任务分析', desc: '分析任务需求和目标' },
     { name: 'Agent 分配', desc: '选择合适的 AI Agent' },
@@ -812,19 +840,19 @@ const generatePlan = (input) => {
   }
 }
 
-const getStepStatus = (i) => {
+const getStepStatus = (i: number): string => {
   if (i < planStepIndex.value) return 'success'
   if (i === planStepIndex.value) return 'process'
   return 'wait'
 }
 
-const getPriorityTag = (p) => {
+const getPriorityTag = (p: string) => {
   if (p === '高') return 'danger'
   if (p === '中') return 'warning'
   return 'info'
 }
 
-const executePlan = async (msg) => {
+const executePlan = async (msg: Message) => {
   isExecuting.value = true
   planStepIndex.value = 0
 
@@ -862,12 +890,12 @@ const executePlan = async (msg) => {
   }, 'result')
 }
 
-const savePlan = (msg) => {
+const savePlan = (msg: Message) => {
   ElMessage.success('计划已保存')
 }
 
 // Agent 模式
-const handleAgentMode = async (input) => {
+const handleAgentMode = async (input: string) => {
   isTyping.value = false
 
   addMessage('assistant', {
@@ -880,7 +908,7 @@ const handleAgentMode = async (input) => {
   await simulateExecution(input)
 }
 
-const simulateExecution = async (input) => {
+const simulateExecution = async (input: string) => {
   const steps = [
     { step: '分析任务', progress: 20, logType: 'info' },
     { step: '选择 Agent', progress: 35, logType: 'info' },
@@ -915,24 +943,28 @@ const simulateExecution = async (input) => {
   }, 'result')
 }
 
-const getExecIcon = (status) => {
-  const map = { running: 'Loading', completed: 'SuccessFilled', failed: 'CircleClose' }
-  return map[status] || 'Loading'
+const getExecIcon = (status: string) => {
+  const map: Record<string, any> = { 
+    running: icons.Loading, 
+    completed: icons.SuccessFilled, 
+    failed: icons.CircleClose 
+  }
+  return map[status] || icons.Loading
 }
 
-const getExecStatusText = (status) => {
-  const map = { running: '执行中...', completed: '执行完成', failed: '执行失败' }
+const getExecStatusText = (status: string) => {
+  const map: Record<string, string> = { running: '执行中...', completed: '执行完成', failed: '执行失败' }
   return map[status] || status
 }
 
-const getProgressColor = (p) => p < 40 ? '#f56c6c' : p < 80 ? '#e6a23c' : '#67c23a'
-const getLogType = (t) => {
-  const map = { info: 'info', success: 'success', warning: 'warning', error: 'danger' }
+const getProgressColor = (p: number): string => p < 40 ? '#f56c6c' : p < 80 ? '#e6a23c' : '#67c23a'
+const getLogType = (t: string): string => {
+  const map: Record<string, string> = { info: 'info', success: 'success', warning: 'warning', error: 'danger' }
   return map[t] || 'info'
 }
 
 // 对话模式
-const handleChatMode = async (input) => {
+const handleChatMode = async (input: string) => {
   isTyping.value = false
 
   const responses = [
@@ -945,15 +977,15 @@ const handleChatMode = async (input) => {
   addMessage('assistant', `${resp}\n\n你可以继续补充更多细节，或者告诉我还需要什么帮助。`)
 }
 
-const getTaskStatusType = (status) => {
+const getTaskStatusType = (status: string): string => {
   return status === '完成' ? 'success' : status === '进行中' ? 'warning' : 'info'
 }
 
-const viewHistory = (taskId) => {
+const viewHistory = (taskId: string | number) => {
   ElMessage.info(`查看任务 ${taskId} 的历史记录`)
 }
 
-const repeatTask = (content) => {
+const repeatTask = (content: any) => {
   ElMessage.info('准备重复执行任务...')
 }
 
