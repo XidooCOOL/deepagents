@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.3.0",
+    "@vicons/ionicons5": "^0.13.0",
     "axios": "^1.6.0",
-    "element-plus": "^2.5.0",
     "markdown-it": "^14.1.1",
+    "naive-ui": "^2.44.1",
     "vue": "^3.4.0",
     "vue-router": "^4.2.0",
     "vuedraggable": "^4.1.0"
