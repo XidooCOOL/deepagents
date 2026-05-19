@@ -3,7 +3,8 @@
  * 用于连接后端 WebSocket 服务，接收实时事件推送
  */
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { ElMessage } from 'element-plus'
+// 暂时注释掉，我们将在组件中处理消息提示
+// import { useMessage } from 'naive-ui'
 
 export interface RealtimeEvent {
   type: string
@@ -279,7 +280,8 @@ export function useRealtime() {
       if (systemAlerts.value.length > 50) {
         systemAlerts.value.pop()
       }
-      ElMessage.warning(`${event.data.title}: ${event.data.message}`)
+      // ElMessage.warning(`${event.data.title}: ${event.data.message}`)
+      console.warn(`${event.data.title}: ${event.data.message}`)
     })
 
     realtimeClient.on('browser:opened', (event) => {
@@ -301,7 +303,8 @@ export function useRealtime() {
         status: 'error',
         error: event.data.error
       }
-      ElMessage.error(`浏览器错误: ${event.data.error}`)
+      // ElMessage.error(`浏览器错误: ${event.data.error}`)
+      console.error(`浏览器错误: ${event.data.error}`)
     })
   }
 
