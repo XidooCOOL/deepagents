@@ -140,6 +140,21 @@ const routes: RouteRecordRaw[] = [
     path: '/pdd/data-detail',
     name: 'PddDataDetail',
     component: () => import('../views/pdd/DataDetail.vue')
+  },
+  {
+    path: '/system-monitor',
+    name: 'SystemMonitor',
+    component: () => import('../views/SystemMonitor.vue')
+  },
+  {
+    path: '/api-test',
+    name: 'ApiTest',
+    component: () => import('../views/ApiTest.vue')
+  },
+  {
+    path: '/system-settings',
+    name: 'SystemSettings',
+    component: () => import('../views/SystemSettings.vue')
   }
 ]
 

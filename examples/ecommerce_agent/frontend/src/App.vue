@@ -308,6 +308,21 @@ const menuOptions = [
         label: 'Webhook管理',
         key: '/webhooks',
         icon: renderIcon(icons.Notification)
+      },
+      {
+        label: '系统监控',
+        key: '/system-monitor',
+        icon: renderIcon(icons.Activity)
+      },
+      {
+        label: 'API测试',
+        key: '/api-test',
+        icon: renderIcon(icons.Terminal)
+      },
+      {
+        label: '系统设置',
+        key: '/system-settings',
+        icon: renderIcon(icons.Settings)
       }
     ]
   },
@@ -388,6 +403,9 @@ const pageTitleMap: Record<string, string> = {
   '/llm-config': '模型配置',
   '/feishu': '飞书集成',
   '/webhooks': 'Webhook管理',
+  '/system-monitor': '系统监控',
+  '/api-test': 'API测试',
+  '/system-settings': '系统设置',
   '/ai-assistant': '智能助手',
   '/pdd/dashboard': '数据概览',
   '/pdd/stores': '店铺管理',
