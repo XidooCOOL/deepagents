@@ -120,6 +120,21 @@ const routes: RouteRecordRaw[] = [
     path: '/pdd/dashboard',
     name: 'PddDashboard',
     component: () => import('../views/pdd/Dashboard.vue')
+  },
+  {
+    path: '/pdd/extract',
+    name: 'PddExtract',
+    component: () => import('../views/pdd/Extract.vue')
+  },
+  {
+    path: '/pdd/batch',
+    name: 'PddBatch',
+    component: () => import('../views/pdd/Batch.vue')
+  },
+  {
+    path: '/pdd/data-detail',
+    name: 'PddDataDetail',
+    component: () => import('../views/pdd/DataDetail.vue')
   }
 ]
 

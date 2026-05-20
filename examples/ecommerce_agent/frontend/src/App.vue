@@ -229,6 +229,21 @@ const menuOptions = [
         label: '店铺管理',
         key: '/pdd/stores',
         icon: renderIcon(icons.Storefront)
+      },
+      {
+        label: '数据提取',
+        key: '/pdd/extract',
+        icon: renderIcon(icons.CloudDownload)
+      },
+      {
+        label: '批量操作',
+        key: '/pdd/batch',
+        icon: renderIcon(icons.List)
+      },
+      {
+        label: '数据详情',
+        key: '/pdd/data-detail',
+        icon: renderIcon(icons.DocumentText)
       }
     ]
   },
@@ -370,7 +385,10 @@ const pageTitleMap: Record<string, string> = {
   '/webhooks': 'Webhook管理',
   '/ai-assistant': '智能助手',
   '/pdd/dashboard': '数据概览',
-  '/pdd/stores': '店铺管理'
+  '/pdd/stores': '店铺管理',
+  '/pdd/extract': '数据提取',
+  '/pdd/batch': '批量操作',
+  '/pdd/data-detail': '数据详情'
 }
 
 const currentRoute = computed(() => route.path)
