@@ -236,6 +236,11 @@ const menuOptions = [
         icon: renderIcon(icons.CloudDownload)
       },
       {
+        label: '评论管理',
+        key: '/pdd/comments',
+        icon: renderIcon(icons.MessageCircle)
+      },
+      {
         label: '批量操作',
         key: '/pdd/batch',
         icon: renderIcon(icons.List)
@@ -387,6 +392,7 @@ const pageTitleMap: Record<string, string> = {
   '/pdd/dashboard': '数据概览',
   '/pdd/stores': '店铺管理',
   '/pdd/extract': '数据提取',
+  '/pdd/comments': '评论管理',
   '/pdd/batch': '批量操作',
   '/pdd/data-detail': '数据详情'
 }

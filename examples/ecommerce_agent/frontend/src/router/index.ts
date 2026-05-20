@@ -127,6 +127,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/pdd/Extract.vue')
   },
   {
+    path: '/pdd/comments',
+    name: 'PddComments',
+    component: () => import('../views/pdd/Comments.vue')
+  },
+  {
     path: '/pdd/batch',
     name: 'PddBatch',
     component: () => import('../views/pdd/Batch.vue')
