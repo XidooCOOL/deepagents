@@ -150,11 +150,11 @@
         </n-descriptions>
         <n-space>
           <n-button size="small" @click="testDbConnection">
-            <template #icon><n-icon><component :is="icons.Database" /></n-icon></template>
+            <template #icon><n-icon><component :is="icons.Cube" /></n-icon></template>
             测试连接
           </n-button>
           <n-button size="small" @click="optimizeDb">
-            <template #icon><n-icon><component :is="icons.Wrench" /></n-icon></template>
+            <template #icon><n-icon><component :is="icons.Settings" /></n-icon></template>
             优化数据库
           </n-button>
         </n-space>
@@ -165,7 +165,7 @@
     <n-card title="最近日志">
       <template #header-extra>
         <n-button size="small" @click="viewFullLogs">
-          <template #icon><n-icon><component :is="icons.FileText" /></n-icon></template>
+          <template #icon><n-icon><component :is="icons.FileTray" /></n-icon></template>
           查看完整日志
         </n-button>
       </template>
@@ -207,8 +207,8 @@ const dbSize = ref('2.4 GB')
 const services = ref([
   { name: 'API 服务', description: '主 REST API', port: '8000', latency: '12ms', version: '1.0.0', status: 'up', icon: icons.Server, bgClass: 'bg-green-50', iconColor: '#10b981' },
   { name: 'WebSocket 服务', description: '实时通信', port: '8001', latency: '5ms', version: '1.0.0', status: 'up', icon: icons.Radio, bgClass: 'bg-blue-50', iconColor: '#3b82f6' },
-  { name: '定时任务服务', description: 'Scheduler', port: '-', latency: '3ms', version: '1.0.0', status: 'up', icon: icons.Clock, bgClass: 'bg-orange-50', iconColor: '#f59e0b' },
-  { name: '向量数据库', description: 'Vector Store', port: '6333', latency: '8ms', version: '1.0.0', status: 'up', icon: icons.Database, bgClass: 'bg-purple-50', iconColor: '#8b5cf6' },
+  { name: '定时任务服务', description: 'Scheduler', port: '-', latency: '3ms', version: '1.0.0', status: 'up', icon: icons.Time, bgClass: 'bg-orange-50', iconColor: '#f59e0b' },
+  { name: '向量数据库', description: 'Vector Store', port: '6333', latency: '8ms', version: '1.0.0', status: 'up', icon: icons.Cube, bgClass: 'bg-purple-50', iconColor: '#8b5cf6' },
   { name: '浏览器服务', description: 'Playwright', port: '-', latency: '45ms', version: '1.0.0', status: 'down', icon: icons.Globe, bgClass: 'bg-red-50', iconColor: '#ef4444' },
   { name: 'Redis 缓存', description: 'Cache Service', port: '6379', latency: '2ms', version: '7.0', status: 'up', icon: icons.Cube, bgClass: 'bg-emerald-50', iconColor: '#10b981' }
 ])

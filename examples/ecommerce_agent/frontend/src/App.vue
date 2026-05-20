@@ -122,7 +122,7 @@
                     <span>创建任务</span>
                   </div>
                   <n-button type="primary" @click="$router.push('/agent')" block>
-                    <template #icon><n-icon><component :is="icons.Magic" /></n-icon></template>
+                    <template #icon><n-icon><component :is="icons.ColorWand" /></n-icon></template>
                     智能任务创建
                   </n-button>
                   <n-button @click="$router.push('/tasks')" block>
@@ -143,7 +143,7 @@
                     工作流配置
                   </n-button>
                   <n-button @click="$router.push('/elements')" block>
-                    <template #icon><n-icon><component :is="icons.DocText" /></n-icon></template>
+                    <template #icon><n-icon><component :is="icons.FileTray" /></n-icon></template>
                     元素管理
                   </n-button>
                 </div>
@@ -238,7 +238,7 @@ const menuOptions = [
       {
         label: '评论管理',
         key: '/pdd/comments',
-        icon: renderIcon(icons.MessageCircle)
+        icon: renderIcon(icons.Chatbubble)
       },
       {
         label: '批量操作',
@@ -260,7 +260,7 @@ const menuOptions = [
       {
         label: '智能 AI 助手',
         key: '/ai',
-        icon: renderIcon(icons.Magic)
+        icon: renderIcon(icons.ColorWand)
       },
       {
         label: 'Agent工作台',
@@ -287,7 +287,7 @@ const menuOptions = [
       {
         label: '元素管理',
         key: '/elements',
-        icon: renderIcon(icons.DocText)
+        icon: renderIcon(icons.FileTray)
       },
       {
         label: '技能管理',
@@ -307,12 +307,12 @@ const menuOptions = [
       {
         label: 'Webhook管理',
         key: '/webhooks',
-        icon: renderIcon(icons.Notification)
+        icon: renderIcon(icons.AlertCircle)
       },
       {
         label: '系统监控',
         key: '/system-monitor',
-        icon: renderIcon(icons.Activity)
+        icon: renderIcon(icons.BarChart)
       },
       {
         label: 'API测试',

@@ -21,7 +21,7 @@
         <n-card>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-              <n-icon :size="20" color="#3b82f6"><component :is="icons.MessageCircle" /></n-icon>
+              <n-icon :size="20" color="#3b82f6"><component :is="icons.Chatbubble" /></n-icon>
             </div>
             <div>
               <div class="text-sm text-neutral-500">总评论数</div>
@@ -47,7 +47,7 @@
         <n-card>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-              <n-icon :size="20" color="#f59e0b"><component :is="icons.AlertTriangle" /></n-icon>
+              <n-icon :size="20" color="#f59e0b"><component :is="icons.AlertCircle" /></n-icon>
             </div>
             <div>
               <div class="text-sm text-neutral-500">中评数</div>
@@ -110,7 +110,7 @@
       <template #header-extra>
         <n-space>
           <n-button size="small" @click="handleBatchReply">
-            <template #icon><n-icon><component :is="icons.Reply" /></n-icon></template>
+            <template #icon><n-icon><component :is="icons.Send" /></n-icon></template>
             批量回复
           </n-button>
           <n-button size="small" type="error" @click="handleBatchDelete">
@@ -169,7 +169,7 @@
                   <template #icon><n-icon><component :is="icons.Eye" /></n-icon></template>
                 </n-button>
                 <n-button quaternary size="small" @click="replyComment(props.row)">
-                  <template #icon><n-icon><component :is="icons.Reply" /></n-icon></template>
+                  <template #icon><n-icon><component :is="icons.Send" /></n-icon></template>
                 </n-button>
               </n-space>
             </td>

@@ -225,7 +225,7 @@ const getCategoryIcon = (category: string) => {
     order: icons.Cart,
     sync: icons.Refresh,
     analysis: icons.StatsChart,
-    notification: icons.Notification
+    notification: icons.AlertCircle
   }
   return map[category] || icons.Hammer
 }

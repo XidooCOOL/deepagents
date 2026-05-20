@@ -82,7 +82,7 @@
               </n-space>
               <n-space>
                 <n-button @click="resetParams">
-                  <template #icon><n-icon><component :is="icons.RotateCcw" /></n-icon></template>
+                  <template #icon><n-icon><component :is="icons.Refresh" /></n-icon></template>
                   重置参数
                 </n-button>
                 <n-button type="primary" @click="sendRequest" :loading="isLoading">
@@ -107,7 +107,7 @@
 
           <div v-else class="text-center py-12">
             <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <n-icon :size="32" color="#a3a3a3"><component :is="icons.Select" /></n-icon>
+              <n-icon :size="32" color="#a3a3a3"><component :is="icons.List" /></n-icon>
             </div>
             <p class="text-neutral-500">请从左侧选择一个 API 接口进行测试</p>
           </div>

@@ -8,7 +8,7 @@
             导出配置
           </n-button>
           <n-button @click="importConfig">
-            <template #icon><n-icon><component :is="icons.Upload" /></n-icon></template>
+            <template #icon><n-icon><component :is="icons.CloudUpload" /></n-icon></template>
             导入配置
           </n-button>
           <n-button type="primary" @click="saveConfig">
@@ -158,7 +158,7 @@
               立即备份
             </n-button>
             <n-button @click="restoreBackup">
-              <template #icon><n-icon><component :is="icons.Upload" /></n-icon></template>
+              <template #icon><n-icon><component :is="icons.CloudUpload" /></n-icon></template>
               恢复备份
             </n-button>
           </n-space>

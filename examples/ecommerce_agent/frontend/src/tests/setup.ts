@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query =&gt; ({
+  value: vi.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
@@ -43,10 +43,10 @@ Object.defineProperty(window, 'ResizeObserver', {
 
 // Mock WebSocket
 class MockWebSocket {
-  onopen: () =&gt; void = () =&gt; {}
-  onmessage: (event: any) =&gt; void = () =&gt; {}
-  onclose: () =&gt; void = () =&gt; {}
-  onerror: (error: any) =&gt; void = () =&gt; {}
+  onopen: () => void = () => {}
+  onmessage: (event: any) => void = () => {}
+  onclose: () => void = () => {}
+  onerror: (error: any) => void = () => {}
   readyState = 1
   send = vi.fn()
   close = vi.fn()
@@ -74,7 +74,7 @@ Object.defineProperty(window, 'localStorage', {
 })
 
 // Reset mocks before each test
-beforeEach(() =&gt; {
+beforeEach(() => {
   vi.clearAllMocks()
   localStorageMock.getItem.mockReset()
   localStorageMock.setItem.mockReset()

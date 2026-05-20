@@ -13,7 +13,7 @@
         </div>
         <n-space>
           <n-button type="primary" size="large" @click="$router.push('/agent')">
-            <template #icon><n-icon><component :is="icons.Magic" /></n-icon></template>
+            <template #icon><n-icon><component :is="icons.ColorWand" /></n-icon></template>
             创建新任务
           </n-button>
           <n-button size="large" @click="$router.push('/ai')">

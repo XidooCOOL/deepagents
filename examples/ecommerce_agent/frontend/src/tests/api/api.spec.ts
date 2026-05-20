@@ -1,23 +1,22 @@
-
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { storesApi, tasksApi, ordersApi, productsApi } from '@/api'
 
 // Mock fetch
 global.fetch = vi.fn()
 
-describe('API Module', () =&gt; {
-  beforeEach(() =&gt; {
+describe('API Module', () => {
+  beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  describe('Stores API', () =&gt; {
-    it('should get all stores', async () =&gt; {
+  describe('Stores API', () => {
+    it('should get all stores', async () => {
       const mockStores = [
         { id: 1, name: 'Store 1', platform: 'douyin', is_active: true }
       ]
       ;(global.fetch as any).mockResolvedValue({
         ok: true,
-        json: async () =&gt; mockStores,
+        json: async () => mockStores,
       })
 
       const stores = await storesApi.getAll()
@@ -28,7 +27,7 @@ describe('API Module', () =&gt; {
       )
     })
 
-    it('should create a store', async () =&gt; {
+    it('should create a store', async () => {
       const newStore = { 
         name: 'New Store', 
         platform: 'douyin', 
@@ -38,14 +37,14 @@ describe('API Module', () =&gt; {
       const mockResponse = { id: 1 }
       ;(global.fetch as any).mockResolvedValue({
         ok: true,
-        json: async () =&gt; mockResponse,
+        json: async () => mockResponse,
       })
 
       const result = await storesApi.create(newStore)
       expect(result).toEqual(mockResponse)
     })
 
-    it('should handle API errors', async () =&gt; {
+    it('should handle API errors', async () => {
       ;(global.fetch as any).mockResolvedValue({
         ok: false,
         status: 500,
@@ -55,24 +54,24 @@ describe('API Module', () =&gt; {
     })
   })
 
-  describe('Tasks API', () =&gt; {
-    it('should get all tasks', async () =&gt; {
+  describe('Tasks API', () => {
+    it('should get all tasks', async () => {
       const mockTasks = [
         { id: 1, store_id: 1, name: 'Task 1', status: 'pending' }
       ]
       ;(global.fetch as any).mockResolvedValue({
         ok: true,
-        json: async () =&gt; mockTasks,
+        json: async () => mockTasks,
       })
 
       const tasks = await tasksApi.getAll()
       expect(tasks).toEqual(mockTasks)
     })
 
-    it('should get tasks by store id', async () =&gt; {
+    it('should get tasks by store id', async () => {
       ;(global.fetch as any).mockResolvedValue({
         ok: true,
-        json: async () =&gt; [],
+        json: async () => [],
       })
 
       await tasksApi.getAll(1)
@@ -83,11 +82,11 @@ describe('API Module', () =&gt; {
     })
   })
 
-  describe('Orders API', () =&gt; {
-    it('should get all orders', async () =&gt; {
+  describe('Orders API', () => {
+    it('should get all orders', async () => {
       ;(global.fetch as any).mockResolvedValue({
         ok: true,
-        json: async () =&gt; [],
+        json: async () => [],
       })
 
       const orders = await ordersApi.getAll()
@@ -95,11 +94,11 @@ describe('API Module', () =&gt; {
     })
   })
 
-  describe('Products API', () =&gt; {
-    it('should get all products', async () =&gt; {
+  describe('Products API', () => {
+    it('should get all products', async () => {
       ;(global.fetch as any).mockResolvedValue({
         ok: true,
-        json: async () =&gt; [],
+        json: async () => [],
       })
 
       const products = await productsApi.getAll()
@@ -107,4 +106,3 @@ describe('API Module', () =&gt; {
     })
   })
 })
-

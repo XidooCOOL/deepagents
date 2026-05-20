@@ -149,7 +149,8 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted } from 'vue'
-import { useMessage, useRouter } from 'naive-ui'
+import { useMessage } from 'naive-ui'
+import { useRouter } from 'vue-router'
 import * as icons from '@vicons/ionicons5'
 
 const message = useMessage()

@@ -314,7 +314,7 @@ const getRowClassName = ({ index }: { index: number }) => {
 const getTaskIcon = (type: string) => {
   const map: Record<string, any> = {
     '数据提取': icons.CloudDownload,
-    '批量发布': icons.Upload,
+    '批量发布': icons.CloudUpload,
     '数据同步': icons.Refresh
   }
   return map[type] || icons.List
